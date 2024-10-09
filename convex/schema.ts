@@ -8,6 +8,10 @@ export default defineSchema({
     first_name: v.optional(v.string()),
     last_name: v.optional(v.string()),
     image_url: v.optional(v.string()),
+    role: v.union(
+      v.literal('admin'),
+      v.literal('user'),
+    ),
     posts: v.optional(v.array(v.id('posts'))),
   }).index('byClerkUserId', ['clerkUserId']),
   posts: defineTable({

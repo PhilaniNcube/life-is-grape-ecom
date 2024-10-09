@@ -31,14 +31,21 @@ export const upsertFromClerk = internalMutation({
       first_name: data.first_name ?? undefined,
       last_name: data.last_name ?? undefined,
       image_url: data.image_url ?? undefined,
+
     }
 
     const user = await userByClerkUserId(ctx, data.id);
 
     if (user === null) {
-       await ctx.db.insert('users', userAttributes);
+       await ctx.db.insert('users', {
+          role: 'user',
+          ...userAttributes,
+       });
     } else {
-       await ctx.db.patch(user._id, userAttributes);
+       await ctx.db.patch(user._id, {
+          ...userAttributes,
+          role: 'user',
+       });
     }
   },
 });
