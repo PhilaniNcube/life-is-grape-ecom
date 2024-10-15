@@ -1,5 +1,6 @@
 import {v} from 'convex/values';
 import { mutation, query } from './_generated/server'
+import { getCurrentUser } from './users';
 
 export const getWines = query({
   args: {},
@@ -71,6 +72,15 @@ export const createWine = mutation({
 
   },
   handler: async (ctx, {brand, winery_id, name, description, year, price, main_image, images, in_stock, alcohol_content, serving_suggestion, variety, type}) => {
+
+    const user = await getCurrentUser(ctx);
+
+    // if user is not an admin, throw an error
+
+    if (user === null || user.role !== 'admin') {
+      throw new Error('You do not have permission to perform this operation')
+    }
+
     return await ctx.db.insert('wines', {
       brand,
       winery_id,

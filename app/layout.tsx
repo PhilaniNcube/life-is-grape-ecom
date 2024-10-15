@@ -13,26 +13,27 @@ import './globals.css'
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
-  weight: '100 900'
+  weight: '100 900',
 })
 const geistMono = localFont({
   src: './fonts/GeistMonoVF.woff',
   variable: '--font-geist-mono',
-  weight: '100 900'
+  weight: '100 900',
 })
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 const playfair = Playfair_Display({
   subsets: ['latin'],
-  variable: '--font-serif'
+  variable: '--font-serif',
 })
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn Template',
-  description: 'NextJs template with shadcn/ui'
+  title: 'Life Is Grape',
+  description: 'Established on 1 April 2016, our purpose is to introduce proudly South African brands of hand-crafted wines and spirits to those operating in the trade, and to consumers. These products are produced in South Africa with quality and passion. South Africa is recognised worldwide as producing premium quality, interesting and distinctive wines and spirits in an environmentally sensitive and ethically responsible manner.',
+  keywords: ['wine', 'wine tasting', 'brandy', 'whiskey', 'gin', 'vodka', 'rum', 'tequila', 'liqueur', 'south african', 'hand-crafted', 'artisanal', 'premium', 'quality', 'passion', 'environmentally sensitive', 'ethically responsible'],
 }
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
@@ -49,9 +50,9 @@ export default function RootLayout({
           )}
         >
           <Providers>
-            <Header />
-            <main className='grow'>{children}</main>
-            <Footer />
+
+              {children}
+
           </Providers>
         </body>
       </html>

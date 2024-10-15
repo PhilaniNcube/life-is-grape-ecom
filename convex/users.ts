@@ -9,6 +9,15 @@ export const getUsers = query({
   }
 })
 
+export const getUser = query({
+  args: {
+    clerkUserId: v.string(),
+  },
+  handler: async (ctx, {clerkUserId}) => {
+    return await userByClerkUserId(ctx, clerkUserId);
+  }
+})
+
 export const getRecentUsers = query({
   args: {},
   handler: async (ctx) => {
@@ -19,6 +28,24 @@ export const getRecentUsers = query({
 export const current = query({
   handler: async (ctx) => {
     return await getCurrentUser(ctx)
+  },
+})
+
+export const isAdmin = query({
+  handler: async (ctx) => {
+    const user = await getCurrentUser(ctx);
+
+    console.log(user);
+
+    if(user === null || user.role !== 'admin') {
+      return false;
+    }
+
+    if(user.role === 'admin') {
+      return true;
+    }
+
+    return false;
   },
 })
 
