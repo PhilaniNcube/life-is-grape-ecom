@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'quiet-caterpillar-834.convex.cloud',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.prismic.io',
+      },
     ],
   },
 }
