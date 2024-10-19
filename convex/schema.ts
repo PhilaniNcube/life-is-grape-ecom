@@ -60,6 +60,7 @@ export default defineSchema({
       v.literal('Cabernet Sauvignon'),
       v.literal('Pinot Noir'),
       v.literal('Pinot Grigio'),
+      v.literal('Pinotage'),
       v.literal('Syrah'),
       v.literal('Zinfandel'),
       v.literal('Riesling'),

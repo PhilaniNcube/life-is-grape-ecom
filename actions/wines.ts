@@ -14,6 +14,7 @@ type WineType =
   | 'Cabernet Sauvignon'
   | 'Pinot Noir'
   | 'Pinot Grigio'
+  | 'Pinotage'
   | 'Syrah'
   | 'Zinfandel'
   | 'Riesling'
