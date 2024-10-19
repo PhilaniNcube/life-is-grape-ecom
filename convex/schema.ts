@@ -74,6 +74,7 @@ export default defineSchema({
     ),
   }),
   tasting_experiences: defineTable({
+    name: v.string(),
     description: v.string(),
     price: v.number(),
     servings: v.string(),

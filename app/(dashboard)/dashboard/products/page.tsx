@@ -1,4 +1,8 @@
+import DashboardProductsHeader from "./_components/dashboard-products-header";
+
 const DashboardProductsPage = () => {
-  return <div>DashboardProductsPage</div>;
+  return <div>
+    <DashboardProductsHeader />
+  </div>;
 };
 export default DashboardProductsPage;

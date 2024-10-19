@@ -9,7 +9,7 @@ export default function PublicLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className='container h-[100dvh] flex flex-col'>
+    <div className='h-[100dvh] flex flex-col'>
       <Header />
       <main className='grow'>{children}</main>
       <Footer />

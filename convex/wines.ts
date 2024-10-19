@@ -1,42 +1,53 @@
-import {v} from 'convex/values';
+import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
-import { getCurrentUser } from './users';
+import { getCurrentUser } from './users'
 
 export const getWines = query({
   args: {},
-  handler: async (ctx) => {
-    return await ctx.db.query('wines').collect();
-  }
+  handler: async ctx => {
+    return await ctx.db.query('wines').collect()
+  },
 })
 
 export const getWine = query({
-  args: {wine_id: v.id('wines')},
-  handler: async (ctx, {wine_id}) => {
-    return await ctx.db.query('wines').filter((q) => q.eq(q.field("_id"), wine_id)).first();
-  }
+  args: { wine_id: v.id('wines') },
+  handler: async (ctx, { wine_id }) => {
+    return await ctx.db
+      .query('wines')
+      .filter(q => q.eq(q.field('_id'), wine_id))
+      .first()
+  },
 })
 
 export const getWinesByVariety = query({
-  args: {variety: v.string()},
-  handler: async (ctx, {variety}) => {
-    return await ctx.db.query('wines').filter((q) => q.eq(q.field("variety"), variety)).collect();
-  }
+  args: { variety: v.string() },
+  handler: async (ctx, { variety }) => {
+    return await ctx.db
+      .query('wines')
+      .filter(q => q.eq(q.field('variety'), variety))
+      .collect()
+  },
 })
 
 export const getWinesByType = query({
-  args: {type: v.string()},
-  handler: async (ctx, {type}) => {
-    return await ctx.db.query('wines').filter((q) => q.eq(q.field("type"), type)).collect();
-  }
+  args: { type: v.string() },
+  handler: async (ctx, { type }) => {
+    return await ctx.db
+      .query('wines')
+      .filter(q => q.eq(q.field('type'), type))
+      .collect()
+  },
 })
 
 export const getWinesByBrand = query({
-  args: {brand: v.id('brands')},
-  handler: async (ctx, {brand}) => {
-    return await ctx.db.query('wines').filter((q) => q.eq(q.field("brand"), brand)).collect();
-  }
+  args: { brand: v.id('brands') },
+  handler: async (ctx, { brand }) => {
+    return await ctx.db
+      .query('wines')
+      .filter(q => q.eq(q.field('brand'), brand))
+      .collect()
+  },
 })
-
 
 export const createWine = mutation({
   args: {
@@ -68,19 +79,32 @@ export const createWine = mutation({
       v.literal('Pinot Grigio'),
       v.literal('Syrah'),
       v.literal('Zinfandel'),
+      v.literal('Riesling'),
+      v.literal('Port'),
+      v.literal('Sherry'),
+      v.literal('Madeira'),
+      v.literal('Marsala'),
+      v.literal('Vermouth')
     ),
-
   },
-  handler: async (ctx, {brand, winery_id, name, description, year, price, main_image, images, in_stock, alcohol_content, serving_suggestion, variety, type}) => {
-
-    const user = await getCurrentUser(ctx);
-
-    // if user is not an admin, throw an error
-
-    if (user === null || user.role !== 'admin') {
-      throw new Error('You do not have permission to perform this operation')
+  handler: async (
+    ctx,
+    {
+      brand,
+      winery_id,
+      name,
+      description,
+      year,
+      price,
+      main_image,
+      images,
+      in_stock,
+      alcohol_content,
+      serving_suggestion,
+      variety,
+      type,
     }
-
+  ) => {
     return await ctx.db.insert('wines', {
       brand,
       winery_id,
@@ -95,6 +119,12 @@ export const createWine = mutation({
       serving_suggestion,
       variety,
       type,
-    });
-  }
+    })
+  },
+})
+
+export const generateUploadUrl = mutation(async ctx => {
+  const storageItem = await ctx.storage.generateUploadUrl()
+
+  return storageItem
 })

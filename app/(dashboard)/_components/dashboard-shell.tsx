@@ -28,6 +28,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { UserButton } from '@clerk/nextjs'
 import NavItems from './nav-items'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 export default function DashboardShell({children}:{children:ReactNode}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -97,7 +98,12 @@ export default function DashboardShell({children}:{children:ReactNode}) {
         </header>
 
         {/* Main content */}
-        <main className='flex-1 overflow-y-auto p-4'>{children}</main>
+        <main className='flex-1 overflow-y-auto p-4'>
+          <ScrollArea className="h-[calc(100dvh-100px)] pr-8">
+          {children}
+          <ScrollBar className="" />
+          </ScrollArea>
+        </main>
       </div>
     </div>
   )

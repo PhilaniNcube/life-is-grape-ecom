@@ -6,12 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "slicemachine": "start-slicemachine"
   },
   "dependencies": {
     "@clerk/backend": "^1.13.6",
     "@clerk/nextjs": "^5.6.0",
     "@hookform/resolvers": "^3.9.0",
+    "@prismicio/client": "^7.11.0",
+    "@prismicio/next": "^1.7.0",
+    "@prismicio/react": "^2.9.0",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
@@ -47,9 +51,11 @@
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.3.0",
     "input-otp": "^1.2.4",
+    "lowlight": "^3.1.0",
     "lucide-react": "^0.445.0",
     "next": "14.2.13",
     "next-themes": "^0.3.0",
+    "novel": "^0.5.0",
     "react": "^18.3.1",
     "react-day-picker": "8.10.1",
     "react-dom": "^18.3.1",
@@ -64,6 +70,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@slicemachine/adapter-next": "^0.3.51",
     "@types/node": "^22.5.5",
     "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
@@ -73,6 +80,7 @@
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
+    "slice-machine-ui": "^2.8.1",
     "tailwindcss": "^3.4.12",
     "typescript": "^5.6.2"
   }

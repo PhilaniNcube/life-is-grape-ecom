@@ -36,13 +36,6 @@ export const createWinery = mutation({
     image: v.id('_storage'),
   },
   handler: async (ctx, { name, location, description, image }) => {
-    const user = await getCurrentUser(ctx)
-
-    // if user is not an admin, throw an error
-
-    // if (user === null || user.role !== 'admin') {
-    //   throw new Error('You do not have permission to perform this operation')
-    // }
 
     return await ctx.db.insert('wineries', {
       name,
