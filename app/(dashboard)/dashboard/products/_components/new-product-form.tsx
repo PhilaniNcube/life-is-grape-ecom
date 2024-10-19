@@ -33,12 +33,16 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { FormEvent, useRef, useState } from 'react'
+import { useFormState } from 'react-dom'
+import { createWineAction } from '@/actions/wines'
 
 type ProductFormValues = z.infer<typeof CreateWineSchema>
 
 const NewProductForm = () => {
   const brands = useQuery(api.brands.getBrands)
   const wineries = useQuery(api.wineries.getWineries)
+
+  const [state, formAction] = useFormState(createWineAction, null)
 
   const varieties = [
     'red',
@@ -65,10 +69,10 @@ const NewProductForm = () => {
     'Vermouth',
   ]
 
-    const generateUploadUrl = useMutation(api.wines.generateUploadUrl)
-    const imageInput = useRef<HTMLInputElement>(null)
-    const [imageId, setImageId] = useState<string | null>(null)
-    const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const generateUploadUrl = useMutation(api.wines.generateUploadUrl)
+  const imageInput = useRef<HTMLInputElement>(null)
+  const [imageId, setImageId] = useState<string | null>(null)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(CreateWineSchema),
@@ -89,8 +93,6 @@ const NewProductForm = () => {
     },
     mode: 'onBlur',
   })
-
-
 
   async function handleSendImage(event: FormEvent) {
     event.preventDefault()
@@ -130,8 +132,7 @@ const NewProductForm = () => {
               onChange={e => setSelectedImage(e.target.files![0])}
               type='file'
             />
-            <SubmitButton
-            >
+            <SubmitButton>
               <PlusIcon size={16} />
               Save Image
             </SubmitButton>
@@ -142,7 +143,7 @@ const NewProductForm = () => {
         <h2 className='text-xl font-semibold'>New Product</h2>
 
         <Form {...form}>
-          <form className='h-full space-y-8'>
+          <form action={formAction} className='h-full space-y-8'>
             <FormField
               control={form.control}
               name='name'
@@ -205,17 +206,22 @@ const NewProductForm = () => {
                   <FormItem>
                     <FormLabel>Brand</FormLabel>
                     <Select
+                      name='brand'
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger name='brand'>
                           <SelectValue placeholder='Select a brand' />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {brands?.map(brand => (
-                          <SelectItem key={brand._id} value={brand._id}>
+                          <SelectItem
+                            id='brand'
+                            key={brand._id}
+                            value={brand._id}
+                          >
                             {brand.name}
                           </SelectItem>
                         ))}
@@ -233,6 +239,7 @@ const NewProductForm = () => {
                   <FormItem>
                     <FormLabel>Winery</FormLabel>
                     <Select
+                      name='winery_id'
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -277,10 +284,9 @@ const NewProductForm = () => {
               name='main_image'
               render={({ field }) => (
                 <FormItem>
-                  {/* <FormLabel>Main Image URL</FormLabel> */}
+                  <FormLabel>Main Image URL</FormLabel>
                   <FormControl>
                     <Input
-                      type="hidden"
                       placeholder='Enter main image URL'
                       {...field}
                       value={imageId || ''}
@@ -303,6 +309,7 @@ const NewProductForm = () => {
                   </div>
                   <FormControl>
                     <Switch
+                      name="in_stock"
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
@@ -354,6 +361,7 @@ const NewProductForm = () => {
                   <FormItem>
                     <FormLabel>Variety</FormLabel>
                     <Select
+                      name='variety'
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -381,6 +389,7 @@ const NewProductForm = () => {
                   <FormItem>
                     <FormLabel>Type</FormLabel>
                     <Select
+                      name='type'
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -402,8 +411,7 @@ const NewProductForm = () => {
                 )}
               />
             </div>
-
-            <SubmitButton className='mt-3'>Submit</SubmitButton>
+            {imageId && <SubmitButton className='mt-3'>Submit</SubmitButton>}
           </form>
         </Form>
       </section>{' '}

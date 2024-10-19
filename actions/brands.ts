@@ -2,6 +2,7 @@
 
 import { api } from '@/convex/_generated/api'
 import { fetchMutation } from 'convex/nextjs'
+import { revalidatePath } from 'next/cache'
 import 'server-only'
 import { z } from 'zod'
 
@@ -27,6 +28,9 @@ export async function createBrandAction(prevState: unknown, formData: FormData) 
   const data = await fetchMutation(api.brands.createBrand, {
     name,
   })
+
+  revalidatePath('/dashboard/brands')
+  revalidatePath('/dashboard', "layout")
 
   return {
     status: 200,

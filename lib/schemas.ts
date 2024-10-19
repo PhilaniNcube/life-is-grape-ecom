@@ -30,3 +30,6 @@ export const CreatePostSchema = z.object({
   coverImageId: z.string().optional(),
   content: z.custom<JSONContent>()
 })
+
+export const WineType = z.enum(['red', 'white', 'rose', 'sparkling', 'dessert', 'fortified'])
+

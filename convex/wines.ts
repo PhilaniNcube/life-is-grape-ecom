@@ -84,7 +84,8 @@ export const createWine = mutation({
       v.literal('Sherry'),
       v.literal('Madeira'),
       v.literal('Marsala'),
-      v.literal('Vermouth')
+      v.literal('Vermouth'),
+      v.literal('Rose')
     ),
   },
   handler: async (
@@ -105,7 +106,7 @@ export const createWine = mutation({
       type,
     }
   ) => {
-    return await ctx.db.insert('wines', {
+    const data = await ctx.db.insert('wines', {
       brand,
       winery_id,
       name,
@@ -120,6 +121,12 @@ export const createWine = mutation({
       variety,
       type,
     })
+
+    if(!data) {
+      throw new Error('Failed to create wine')
+    }
+
+    return data
   },
 })
 

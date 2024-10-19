@@ -71,6 +71,7 @@ export default defineSchema({
       v.literal('Madeira'),
       v.literal('Marsala'),
       v.literal('Vermouth'),
+      v.literal('Rose'),
     ),
   }),
   tasting_experiences: defineTable({

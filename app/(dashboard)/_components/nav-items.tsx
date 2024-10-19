@@ -11,13 +11,6 @@ const NavItems = () => (
       Dashboard
     </Link>
     <Link
-      href='/dashboard/write'
-      className='flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50'
-    >
-      <PenIcon className='h-4 w-4' />
-      New Blog Post
-    </Link>
-    <Link
       href='/dashboard/orders'
       className='flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50'
     >
