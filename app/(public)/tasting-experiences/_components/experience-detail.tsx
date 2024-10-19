@@ -12,6 +12,8 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { fetchQuery } from 'convex/nextjs'
 import Image from 'next/image'
+import BookingConditions from './booking-conditions'
+import BookingForm from './booking-form'
 
 const ExperienceDetail = async ({ id }: { id: Id<'tasting_experiences'> }) => {
   const experience = await fetchQuery(
@@ -76,13 +78,15 @@ const ExperienceDetail = async ({ id }: { id: Id<'tasting_experiences'> }) => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className='w-full bg-red-600 text-white hover:bg-red-700'>
-                  Book This Experience
-                </Button>
+
               </CardFooter>
             </div>
           </div>
         </Card>
+        <div className='flex flex-col md:flex-row-reverse justify-between mt-8 gap-6 lg:gap-10'>
+          <BookingConditions />
+          <BookingForm />
+        </div>
       </div>
     </div>
   )

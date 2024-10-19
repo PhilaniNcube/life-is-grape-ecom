@@ -1,6 +1,7 @@
 import { Id } from '@/convex/_generated/dataModel'
 import ExperienceDetail from '../_components/experience-detail'
 
+
 const ExperiencePage = ({
   params: { id },
 }: {
@@ -9,6 +10,7 @@ const ExperiencePage = ({
   return (
     <div>
       <ExperienceDetail id={id} />
+
     </div>
   )
 }
