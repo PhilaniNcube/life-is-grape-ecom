@@ -27,22 +27,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { CreateWineSchema } from '@/lib/schemas'
+import { UpdateWineSchema } from '@/lib/schemas'
 import SubmitButton from '@/components/submit-button'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
-import { FormEvent, useRef, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { useFormState } from 'react-dom'
-import { createWineAction } from '@/actions/wines'
+import { updateWineAction } from '@/actions/wines'
+import Image from 'next/image'
+import { fetchQuery } from 'convex/nextjs'
+import { Id, Doc } from '@/convex/_generated/dataModel'
 
-type ProductFormValues = z.infer<typeof CreateWineSchema>
+type ProductFormValues = z.infer<typeof UpdateWineSchema>
 
-const NewProductForm = () => {
+
+export default function UpdateProductForm(
+  { product }: { product: Doc<'wines'> },
+) {
   const brands = useQuery(api.brands.getBrands)
   const wineries = useQuery(api.wineries.getWineries)
 
-  const [state, formAction] = useFormState(createWineAction, null)
+  const [state, formAction] = useFormState(updateWineAction, null)
 
   const varieties = [
     'red',
@@ -78,53 +84,56 @@ const NewProductForm = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
   const form = useForm<ProductFormValues>({
-    resolver: zodResolver(CreateWineSchema),
+    resolver: zodResolver(UpdateWineSchema),
     defaultValues: {
-      brand: '',
-      name: '',
-      winery_id: '',
-      description: '',
-      year: new Date().getFullYear(),
-      price: 0,
-      main_image: '',
-      images: [],
-      in_stock: true,
-      alcohol_content: 0,
-      serving_suggestion: '',
-      variety: '',
-      type: '',
+      ...product,
     },
     mode: 'onBlur',
   })
 
+  useEffect(() => {
+    form.reset(product)
+    setImageId(product.main_image)
+  }, [product, form])
+
   async function handleSendImage(event: FormEvent) {
     event.preventDefault()
 
-    console.log('selectedImage', selectedImage)
-
-    // Step 1: Get a short-lived upload URL
-    const postUrl = await generateUploadUrl()
-    // Step 2: POST the file to the URL
-    const result = await fetch(postUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': selectedImage!.type },
-      body: selectedImage,
-    })
-    const { storageId } = await result.json()
-    // Step 3: Save the newly allocated storage id to the database
-    console.log('storageId', storageId)
-    setImageId(storageId)
+    if (selectedImage) {
+      const postUrl = await generateUploadUrl()
+      const result = await fetch(postUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': selectedImage.type },
+        body: selectedImage,
+      })
+      const { storageId } = await result.json()
+      setImageId(storageId)
+      form.setValue('main_image', storageId)
+    }
 
     setSelectedImage(null)
-    imageInput.current!.value = ''
+    if (imageInput.current) imageInput.current.value = ''
   }
+
+  const mainImage = useQuery(api.wines.getImageUrl, {
+    image_id: product.main_image as Id<'_storage'>,
+  })
 
   return (
     <div className='flex flex-row-reverse gap-x-5'>
       <Card className='h-fit w-[400px] py-4'>
         <CardContent>
-          <h2 className='text-xl font-semibold'>Upload Image</h2>
+          <h2 className='text-xl font-semibold'>Update Image</h2>
           <form onSubmit={handleSendImage} className='space-y-2'>
+            {mainImage && (
+              <Image
+                src={mainImage}
+                alt='Product Image'
+                width={400}
+                height={400}
+                className='p-3 border object-contain h-[200px]'
+              />
+            )}
             <Label htmlFor='file' className=''>
               File input
             </Label>
@@ -132,21 +141,36 @@ const NewProductForm = () => {
               ref={imageInput}
               id='file'
               name='file'
-              onChange={e => setSelectedImage(e.target.files![0])}
+              onChange={e =>
+                setSelectedImage(e.target.files ? e.target.files[0] : null)
+              }
               type='file'
             />
             <SubmitButton>
               <PlusIcon size={16} />
-              Save Image
+              Update Image
             </SubmitButton>
           </form>
         </CardContent>
       </Card>
       <section className='flex-1'>
-        <h2 className='text-xl font-semibold'>New Product</h2>
+        <h2 className='text-xl font-semibold'>Update Product</h2>
 
         <Form {...form}>
           <form action={formAction} className='h-full space-y-8'>
+            <FormField
+              control={form.control}
+              name='id'
+              render={({ field }) => (
+                <FormItem>
+
+                  <FormControl>
+                    <Input type="hidden" defaultValue={product._id}  {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name='name'
@@ -295,7 +319,7 @@ const NewProductForm = () => {
                       value={imageId || ''}
                     />
                   </FormControl>
-                  {/* <FormMessage /> */}
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -312,7 +336,7 @@ const NewProductForm = () => {
                   </div>
                   <FormControl>
                     <Switch
-                      name="in_stock"
+                      name='in_stock'
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
@@ -414,11 +438,10 @@ const NewProductForm = () => {
                 )}
               />
             </div>
-            {imageId && <SubmitButton className='mt-3'>Submit</SubmitButton>}
+            <SubmitButton className='mt-3'>Update Product</SubmitButton>
           </form>
         </Form>
-      </section>{' '}
+      </section>
     </div>
   )
 }
-export default NewProductForm
