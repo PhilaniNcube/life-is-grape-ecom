@@ -38,54 +38,11 @@ import {
 } from '@/components/ui/table'
 import { Doc } from '@/convex/_generated/dataModel'
 
-// Define the structure of our wine data
-interface Wine {
-  _id: string
-  brand: string
-  name: string
-  year: number
-  alcohol_content: number
-  in_stock: boolean
-  variety: string
-  type: string
-}
 
-// Sample data (replace this with your actual data fetching logic)
-const data: Wine[] = [
-  {
-    _id: '1',
-    brand: 'Château Margaux',
-    name: 'Grand Vin',
-    year: 2015,
-    alcohol_content: 13.5,
-    in_stock: true,
-    variety: 'Cabernet Sauvignon',
-    type: 'Red',
-  },
-  {
-    _id: '2',
-    brand: 'Cloudy Bay',
-    name: 'Sauvignon Blanc',
-    year: 2020,
-    alcohol_content: 13.0,
-    in_stock: true,
-    variety: 'Sauvignon Blanc',
-    type: 'White',
-  },
-  {
-    _id: '3',
-    brand: 'Dom Pérignon',
-    name: 'Vintage',
-    year: 2010,
-    alcohol_content: 12.5,
-    in_stock: false,
-    variety: 'Chardonnay',
-    type: 'Sparkling',
-  },
-  // Add more wine entries as needed
-]
 
-export const columns: ColumnDef<Wine>[] = [
+
+
+export const columns: ColumnDef<Doc<"wines">>[] = [
   {
     id: 'select',
     header: ({ table }) => (
