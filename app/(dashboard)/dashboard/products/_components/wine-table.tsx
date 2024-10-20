@@ -37,45 +37,11 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Doc, Id } from '@/convex/_generated/dataModel'
+import { Wine } from '@/lib/types'
 
-type WineType = {
-  _id: string
-  name: string
-  year: number
-  alcohol_content: number
-  in_stock: boolean
-  type:'Sauvignon Blanc'
-    | 'Chardonnay'
-    | 'Merlot'
-    | 'Cabernet Sauvignon'
-    | 'Pinot Noir'
-    | 'Pinot Grigio'
-    | 'Pinotage'
-    | 'Syrah'
-    | 'Zinfandel'
-    | 'Riesling'
-    | 'Port'
-    | 'Sherry'
-    | 'Madeira'
-    | 'Marsala'
-    | 'Vermouth'
-    | 'Rose'
-  main_image: Id<'_storage'>
-  images: Id<'_storage'>[]
-  serving_suggestion: string
-  variety: 'red' | 'white' | 'rose' | 'sparkling' | 'dessert' | 'fortified'
-  brand: { _id: Id<'brands'>; _creationTime: number; name: string } | null
-  winery: {
-    _id: Id<'wineries'>
-    _creationTime: number
-    name: string
-    location: string
-    description: string
-    image: Id<'_storage'>
-  } | null
-}
 
-export const columns: ColumnDef<WineType>[] = [
+
+export const columns: ColumnDef<Wine>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -180,7 +146,7 @@ export const columns: ColumnDef<WineType>[] = [
   },
 ]
 
-export default function WineTable({ wines }: { wines: WineType[] }) {
+export default function WineTable({ wines }: { wines: Wine[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
