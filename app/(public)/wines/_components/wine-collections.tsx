@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import WineFilter from './wine-filter'
 import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
+import Link from 'next/link'
 
 type WineType =
   | 'Sauvignon Blanc'
@@ -92,57 +93,59 @@ export default async function WineCollection({
     <div className='px-4'>
       <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3'>
         {filteredWines.map(wine => (
-          <Card key={wine._id} className='flex flex-col'>
-            <CardHeader>
-              <div className='relative mb-4 aspect-square'>
-                <img
-                  src={wine.main_image}
-                  alt={wine.name}
-                  className='mx-auto h-[220px] w-[220px] rounded-md object-contain'
-                  width={300}
-                  height={300}
-                />
-              </div>
-              <CardTitle className='text-lg font-semibold'>
-                {wine.name}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className='flex-grow'>
-              <p className='mb-2 text-sm text-gray-600'>{wine.type}</p>
-              <p className='mb-2 text-sm'>Year: {wine.year}</p>
-              <p className='mb-2 text-sm'>
-                Alcohol Content: {wine.alcohol_content}%
-              </p>
-              <div className='mb-3 flex items-center justify-between'>
-                <Badge
-                  variant={wine.in_stock ? 'default' : 'secondary'}
-                  className=''
-                >
-                  {wine.in_stock ? (
-                    <Check className='mr-1 h-4 w-4' />
-                  ) : (
-                    <X className='mr-1 h-4 w-4' />
-                  )}
-                  {wine.in_stock ? 'In Stock' : 'Out of Stock'}
-                </Badge>
-                <Badge className='bg-gray-300 capitalize' variant='outline'>
-                  {wine.variety}
-                </Badge>
-              </div>
+          <Link key={wine._id} href={`/wines/${wine._id}`}>
+            <Card className='flex flex-col'>
+              <CardHeader>
+                <div className='relative mb-4 aspect-square'>
+                  <img
+                    src={wine.main_image}
+                    alt={wine.name}
+                    className='mx-auto h-[220px] w-[220px] rounded-md object-contain'
+                    width={300}
+                    height={300}
+                  />
+                </div>
+                <CardTitle className='text-lg font-semibold'>
+                  {wine.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className='flex-grow'>
+                <p className='mb-2 text-sm text-gray-600'>{wine.type}</p>
+                <p className='mb-2 text-sm'>Year: {wine.year}</p>
+                <p className='mb-2 text-sm'>
+                  Alcohol Content: {wine.alcohol_content}%
+                </p>
+                <div className='mb-3 flex items-center justify-between'>
+                  <Badge
+                    variant={wine.in_stock ? 'default' : 'secondary'}
+                    className=''
+                  >
+                    {wine.in_stock ? (
+                      <Check className='mr-1 h-4 w-4' />
+                    ) : (
+                      <X className='mr-1 h-4 w-4' />
+                    )}
+                    {wine.in_stock ? 'In Stock' : 'Out of Stock'}
+                  </Badge>
+                  <Badge className='bg-gray-300 capitalize' variant='outline'>
+                    {wine.variety}
+                  </Badge>
+                </div>
 
-              {wine.brand && (
-                <p className='mb-2 text-sm'>Brand: {wine.brand.name}</p>
-              )}
-              {wine.winery && (
-                <p className='mb-2 text-sm'>Winery: {wine.winery.name}</p>
-              )}
-            </CardContent>
-            <CardFooter>
-              <p className='line-clamp-1 text-xs text-gray-500'>
-                {wine.serving_suggestion}
-              </p>
-            </CardFooter>
-          </Card>
+                {wine.brand && (
+                  <p className='mb-2 text-sm'>Brand: {wine.brand.name}</p>
+                )}
+                {wine.winery && (
+                  <p className='mb-2 text-sm'>Winery: {wine.winery.name}</p>
+                )}
+              </CardContent>
+              <CardFooter>
+                <p className='line-clamp-1 text-xs text-gray-500'>
+                  {wine.serving_suggestion}
+                </p>
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
       </div>
     </div>

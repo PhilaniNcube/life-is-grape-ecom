@@ -54,6 +54,7 @@ export type Wine = {
   in_stock: boolean
   type: WineType
   main_image: string;
+  price: number;
   images: Id<'_storage'>[]
   serving_suggestion: string
   variety: 'red' | 'white' | 'rose' | 'sparkling' | 'dessert' | 'fortified'

@@ -32,10 +32,53 @@ export const getWines = query({
 export const getWine = query({
   args: { wine_id: v.id('wines') },
   handler: async (ctx, { wine_id }) => {
-    return await ctx.db
+    const wineData =  await ctx.db
       .query('wines')
       .filter(q => q.eq(q.field('_id'), wine_id))
       .first()
+
+      if(!wineData) {
+        throw new Error('Wine not found')
+      }
+
+        const mainImageUrl = wineData?.main_image
+          ? await ctx.storage.getUrl(wineData.main_image)
+          : ''
+
+     return {
+       ...wineData,
+       brand: await ctx.db
+         .query('brands')
+         .filter(q => q.eq(q.field('_id'), wineData?.brand))
+         .first(),
+       winery: await ctx.db
+         .query('wineries')
+         .filter(q => q.eq(q.field('_id'), wineData?.winery_id))
+         .first(),
+       main_image: (await ctx.storage.getUrl(wineData?.main_image)) || '',
+     }
+  },
+})
+
+export const getSimpleWineObject = query({
+  args: { wine_id: v.id('wines') },
+  handler: async (ctx, { wine_id }) => {
+    const wineData =  await ctx.db
+      .query('wines')
+      .filter(q => q.eq(q.field('_id'), wine_id))
+      .first()
+
+      if(!wineData) {
+        throw new Error('Wine not found')
+      }
+
+        const mainImageUrl = wineData?.main_image
+          ? await ctx.storage.getUrl(wineData.main_image)
+          : ''
+
+     return {
+       ...wineData,
+     }
   },
 })
 
