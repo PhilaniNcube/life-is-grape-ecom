@@ -72,8 +72,7 @@ export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
       <CardContent>
         <form
           action={formData => {
-            console.log('formData', formData)
-            console.log('state', date)
+
             formAction(formData)
           }}
         >

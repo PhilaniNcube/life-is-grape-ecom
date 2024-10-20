@@ -42,7 +42,7 @@ const NewSupplierDialog = () => {
     })
     const { storageId } = await result.json()
     // Step 3: Save the newly allocated storage id to the database
-    console.log('storageId', storageId)
+
     setWineryImageId(storageId)
 
     setSelectedImage(null)

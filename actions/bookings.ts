@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 // an action to create a booking for a wine experience
 export async function createBookingAction(prevState:unknown, formData:FormData) {
 
-  console.log('formData', formData);
+
 
   const validatedFields = CreateBookingSchema.safeParse({
     experience_id: formData.get('experience_id'),
@@ -24,7 +24,7 @@ export async function createBookingAction(prevState:unknown, formData:FormData) 
 
 
   if (!validatedFields.success) {
-    console.log('errors', validatedFields.error.flatten().fieldErrors);
+
     return {status: 400, errors: validatedFields.error.flatten().fieldErrors };
   }
 

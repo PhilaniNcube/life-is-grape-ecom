@@ -7,7 +7,7 @@ const BlogPage = async () => {
 
   const blogList = await prismicClient.getAllByType('blog')
 
-  console.log(blogList)
+
 
   return (
     <div>

@@ -21,7 +21,6 @@ const ExperienceDetail = async ({ id }: { id: Id<'tasting_experiences'> }) => {
     { tasting_experience_id: id }
   )
 
-  console.log(experience)
 
   if (!experience) {
     return <div>Experience not found</div>

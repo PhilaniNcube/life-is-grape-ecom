@@ -35,10 +35,10 @@ export type WineVariety =
 
 export async function createWineAction(prevState: unknown, formData: FormData) {
 
-  console.log('formData', formData)
+
 
   const inStock = formData.get('in_stock')
-  console.log('inStock', inStock)
+
 
   const validatedFields = CreateWineSchema.safeParse({
     name: formData.get('name'),
@@ -56,7 +56,7 @@ export async function createWineAction(prevState: unknown, formData: FormData) {
   })
 
   if (!validatedFields.success) {
-    console.log(validatedFields.error.flatten().fieldErrors)
+
     return {
       status: 400,
       message: 'Invalid input',
@@ -104,7 +104,7 @@ export async function createWineAction(prevState: unknown, formData: FormData) {
 
     revalidatePath('/dashboard/wines')
     revalidatePath('/dashboard', 'layout')
-    console.log(data)
+
     return {
       status: 200,
       message: 'Wine created successfully',
@@ -121,10 +121,10 @@ export async function createWineAction(prevState: unknown, formData: FormData) {
 
 
 export async function updateWineAction(prevState: unknown, formData: FormData) {
-  console.log('formData', formData)
+
 
   const inStock = formData.get('in_stock')
-  console.log('inStock', inStock)
+
 
   const validatedFields = UpdateWineSchema.safeParse({
     id: formData.get('id'),
@@ -143,7 +143,7 @@ export async function updateWineAction(prevState: unknown, formData: FormData) {
   })
 
   if (!validatedFields.success) {
-    console.log(validatedFields.error.flatten().fieldErrors)
+
     return {
       status: 400,
       message: 'Invalid input',
@@ -194,7 +194,7 @@ export async function updateWineAction(prevState: unknown, formData: FormData) {
 
     revalidatePath('/dashboard/wines')
     revalidatePath('/dashboard', 'layout')
-    console.log(data)
+
     return {
       status: 200,
       message: 'Wine created successfully',

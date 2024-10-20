@@ -7,7 +7,7 @@ const SuppliersPage = async () => {
 
   const suppliers = await fetchQuery(api.wineries.getWineries)
 
-  console.log(suppliers)
+
 
 
   return <div>
