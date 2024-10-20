@@ -3,18 +3,29 @@ import { mutation, query } from './_generated/server'
 import { getCurrentUser } from './users'
 
 export const getWines = query({
-  args: {},
-  handler: async ctx => {
-    const wines =  await ctx.db.query('wines').collect()
 
-    return await Promise.all(wines.map(async wine => {
-      return {
-        ...wine,
-        brand: await ctx.db.query('brands').filter(q => q.eq(q.field('_id'), wine.brand)).first(),
-        winery: await ctx.db.query('wineries').filter(q => q.eq(q.field('_id'), wine.winery_id)).first(),
-        main_image: await ctx.storage.getUrl(wine.main_image) || '',
-      }
-    }))
+  handler: async (ctx) => {
+    //  filter the wines by the optional search types array
+    let wines = await ctx.db.query('wines').collect()
+
+
+
+    return await Promise.all(
+      wines.map(async wine => {
+        return {
+          ...wine,
+          brand: await ctx.db
+            .query('brands')
+            .filter(q => q.eq(q.field('_id'), wine.brand))
+            .first(),
+          winery: await ctx.db
+            .query('wineries')
+            .filter(q => q.eq(q.field('_id'), wine.winery_id))
+            .first(),
+          main_image: (await ctx.storage.getUrl(wine.main_image)) || '',
+        }
+      })
+    )
   },
 })
 
