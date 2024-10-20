@@ -53,7 +53,7 @@ export type Wine = {
   alcohol_content: number
   in_stock: boolean
   type: WineType
-  main_image: Id<'_storage'>
+  main_image: string;
   images: Id<'_storage'>[]
   serving_suggestion: string
   variety: 'red' | 'white' | 'rose' | 'sparkling' | 'dessert' | 'fortified'
