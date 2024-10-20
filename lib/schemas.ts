@@ -50,3 +50,12 @@ export const CreatePostSchema = z.object({
 
 export const WineType = z.enum(['red', 'white', 'rose', 'sparkling', 'dessert', 'fortified'])
 
+export const CreateBookingSchema = z.object({
+  experience_id: z.string(),
+  name: z.string().min(2, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+  date: z.string(),
+  time: z.string(),
+  guests: z.number().int().min(1, 'At least one guest is required'),
+  paid: z.boolean(),
+})

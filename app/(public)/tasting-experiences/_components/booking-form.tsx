@@ -29,21 +29,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Id } from '@/convex/_generated/dataModel'
+import { useFormState } from 'react-dom'
+import { createBookingAction } from '@/actions/bookings'
+import SubmitButton from '@/components/submit-button'
 
-export default function BookingForm() {
+export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
   const [date, setDate] = useState<Date>()
   const [time, setTime] = useState<string>('')
   const [guests, setGuests] = useState<string>('1')
   const [isBooked, setIsBooked] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (date && time && guests) {
-      // Here you would typically send the booking data to your backend
-      console.log('Booking submitted:', { date, time, guests })
-      setIsBooked(true)
-    }
-  }
+  const [state, formAction] = useFormState(createBookingAction, null)
 
   const generateTimeSlots = () => {
     const slots = []
@@ -51,6 +48,16 @@ export default function BookingForm() {
       slots.push(`${hour.toString().padStart(2, '0')}:00`)
     }
     return slots
+  }
+
+  // write a function using datefns library to get the date 5 days from now
+  // and set it as the initial date for the calendar
+  const getInitialDate = () => {
+    const today = new Date()
+    // add 5 days to today's date
+    const nextWeek = new Date(today.setDate(today.getDate() + 5))
+
+    return nextWeek
   }
 
   return (
@@ -63,11 +70,18 @@ export default function BookingForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit}>
+        <form
+          action={formData => {
+            console.log('formData', formData)
+            console.log('state', date)
+            formAction(formData)
+          }}
+        >
           <div className='grid w-full items-center gap-4'>
             <div className='flex flex-col space-y-1.5'>
               <Label htmlFor='name'>Name</Label>
               <Input id='name' placeholder='Enter your name' name='name' />
+              <Input name='experience_id' type='hidden' value={id} />
             </div>
 
             <div className='flex flex-col space-y-1.5'>
@@ -87,6 +101,7 @@ export default function BookingForm() {
                   >
                     <CalendarIcon className='mr-2 h-4 w-4' />
                     {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                    <Input name='date' type='hidden' value={date?.toISOString()} />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className='w-auto p-0'>
@@ -94,6 +109,8 @@ export default function BookingForm() {
                     mode='single'
                     selected={date}
                     onSelect={setDate}
+                    today={new Date()}
+                    fromDate={getInitialDate()}
                     initialFocus
                   />
                 </PopoverContent>
@@ -101,7 +118,7 @@ export default function BookingForm() {
             </div>
             <div className='flex flex-col space-y-1.5'>
               <Label htmlFor='time'>Time</Label>
-              <Select value={time} onValueChange={setTime}>
+              <Select name="time" value={time} onValueChange={setTime}>
                 <SelectTrigger id='time'>
                   <SelectValue placeholder='Select time' />
                 </SelectTrigger>
@@ -116,7 +133,7 @@ export default function BookingForm() {
             </div>
             <div className='flex flex-col space-y-1.5'>
               <Label htmlFor='guests'>Number of Guests</Label>
-              <Select value={guests} onValueChange={setGuests}>
+              <Select name='guests' value={guests} onValueChange={setGuests}>
                 <SelectTrigger id='guests'>
                   <SelectValue placeholder='Select guests' />
                 </SelectTrigger>
@@ -130,20 +147,10 @@ export default function BookingForm() {
               </Select>
             </div>
           </div>
+
+          <SubmitButton className="mt-3">Book Now</SubmitButton>
         </form>
       </CardContent>
-      <CardFooter className='flex justify-between'>
-        <Button variant='outline'>Cancel</Button>
-        <Button onClick={handleSubmit}>Book Now</Button>
-      </CardFooter>
-      {isBooked && (
-        <div className='mt-4 rounded-md bg-green-100 p-4 text-green-700'>
-          Booking confirmed for {guests} guest(s) on{' '}
-          {date ? format(date, 'PPP') : ''} at {time}. Duration: 2 hours.
-        </div>
-      )}
     </Card>
   )
 }
-
-
