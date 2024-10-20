@@ -7,9 +7,15 @@ const DashboardProductsPage = async () => {
 
   const wines = await fetchQuery(api.wines.getWines);
 
-  return <div>
-    <DashboardProductsHeader />
-    <WineTable wines={wines} />
-  </div>;
+  return (
+    <div>
+      <DashboardProductsHeader />
+      {wines.length === 0 || wines === null ? (
+        <div>No wines found</div>
+      ) : (
+        <WineTable wines={wines} />
+      )}
+    </div>
+  )
 };
 export default DashboardProductsPage;

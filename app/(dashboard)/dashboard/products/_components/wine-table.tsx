@@ -36,13 +36,46 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Doc } from '@/convex/_generated/dataModel'
+import { Doc, Id } from '@/convex/_generated/dataModel'
 
+type WineType = {
+  _id: string
+  name: string
+  year: number
+  alcohol_content: number
+  in_stock: boolean
+  type:'Sauvignon Blanc'
+    | 'Chardonnay'
+    | 'Merlot'
+    | 'Cabernet Sauvignon'
+    | 'Pinot Noir'
+    | 'Pinot Grigio'
+    | 'Pinotage'
+    | 'Syrah'
+    | 'Zinfandel'
+    | 'Riesling'
+    | 'Port'
+    | 'Sherry'
+    | 'Madeira'
+    | 'Marsala'
+    | 'Vermouth'
+    | 'Rose'
+  main_image: Id<'_storage'>
+  images: Id<'_storage'>[]
+  serving_suggestion: string
+  variety: 'red' | 'white' | 'rose' | 'sparkling' | 'dessert' | 'fortified'
+  brand: { _id: Id<'brands'>; _creationTime: number; name: string } | null
+  winery: {
+    _id: Id<'wineries'>
+    _creationTime: number
+    name: string
+    location: string
+    description: string
+    image: Id<'_storage'>
+  } | null
+}
 
-
-
-
-export const columns: ColumnDef<Doc<"wines">>[] = [
+export const columns: ColumnDef<WineType>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -137,9 +170,7 @@ export const columns: ColumnDef<Doc<"wines">>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`/dashboard/products/${wine._id}`}>
-               View Details
-              </Link>
+              <Link href={`/dashboard/products/${wine._id}`}>View Details</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>Update stock</DropdownMenuItem>
           </DropdownMenuContent>
@@ -149,7 +180,7 @@ export const columns: ColumnDef<Doc<"wines">>[] = [
   },
 ]
 
-export default function WineTable({ wines }: { wines: Doc<'wines'>[] }) {
+export default function WineTable({ wines }: { wines: WineType[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
