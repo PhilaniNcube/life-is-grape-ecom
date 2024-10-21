@@ -1,4 +1,4 @@
-import { Layout, PenIcon, Ribbon, ShoppingBag, ShoppingCart, Users, Wine } from "lucide-react"
+import { BookA, Layout, PenIcon, Ribbon, ShoppingBag, ShoppingCart, Users, Wine } from "lucide-react"
 import Link from "next/link"
 
 const NavItems = () => (
@@ -18,11 +18,11 @@ const NavItems = () => (
       Orders
     </Link>
     <Link
-      href='/dashboard/events'
+      href='/dashboard/bookings'
       className='flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50'
     >
-      <Wine className='h-4 w-4' />
-      Events
+      <BookA className='h-4 w-4' />
+      Bookings
     </Link>
     <Link
       href='/dashboard/brands'

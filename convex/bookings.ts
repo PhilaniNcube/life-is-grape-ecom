@@ -1,6 +1,18 @@
 import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
 
+export const getBookings = query({
+  handler: async ctx => {
+    const bookings = await ctx.db.query('bookings').collect()
+
+    const booking_with_experience_name = await Promise.all(bookings.map(async booking => {
+      const experience = await ctx.db.get(booking.tasting_experience_id)
+      return { ...booking, experience_name: experience?.name }
+    }))
+
+    return booking_with_experience_name
+  },
+})
 
 export const getBookingsByDate = query({
   args: {
@@ -31,7 +43,7 @@ export const getBookingById = query({
     booking_id: v.id('bookings'),
   },
   handler: async (ctx, { booking_id }) => {
-   return await ctx.db.get(booking_id)
+    return await ctx.db.get(booking_id)
   },
 })
 

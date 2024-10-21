@@ -68,3 +68,23 @@ export type Wine = {
     image: Id<'_storage'>
   } | null
 }
+
+
+export type ExpandedBooking = {
+  _id: Id<'bookings'>
+  name: string
+  email: string
+  date: string
+  time: string
+  guests: number
+  tasting_experience: {
+    _id: Id<'tasting_experiences'>
+    _creationTime: number
+    name: string
+    description: string
+    price: number
+    image: Id<'_storage'>
+  }
+  tasting_experience_id: Id<'tasting_experiences'>
+  paid: boolean
+}
