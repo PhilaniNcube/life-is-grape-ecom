@@ -74,8 +74,11 @@ function MainNav() {
 }
 
 function MobileNav() {
+
+  const [isOpen, setIsOpen] = React.useState(false)
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button
           variant='ghost'
@@ -86,12 +89,17 @@ function MobileNav() {
         </Button>
       </SheetTrigger>
       <SheetContent side='left' className='pr-0'>
-        <Link href='/' className='flex items-center'>
-          <span className='font-bold'>Wine Store</span>
+        <Link
+          href='/'
+          className='flex items-center'
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span className='font-bold'>Life Is Grape</span>
         </Link>
         <nav className='mt-6 flex flex-col space-y-3'>
           {routes.map(route => (
             <Link
+              onClick={() => setIsOpen(!isOpen)}
               key={route.href}
               href={route.href}
               className='text-muted-foreground transition-colors hover:text-foreground'

@@ -29,7 +29,7 @@ export default function TastingExperiencesHero() {
             our customers at our dedicated venue, showcasing the best of South
             African viticulture and distillation.
           </p>
-          <Button className='transform rounded-full bg-white px-8 py-3 text-lg text-amber-900 transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-100'>
+          <Button className='transform rounded-full bg-white px-8 py-3 text-sm md:text-lg text-amber-900 transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-100'>
             Book Your Tasting Experience
           </Button>
         </div>
