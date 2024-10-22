@@ -102,7 +102,10 @@ export default function Component({
   ]
 
   return (
-    <div className='flex min-w-[200px] flex-col space-y-4'>
+    <div
+      data-pending={isPending ? '' : undefined}
+      className='flex min-w-[200px] flex-col space-y-4'
+    >
       <h2 className='text-lg font-semibold'>Filter</h2>
       <Collapsible open={isOpen} onOpenChange={setIsOpen} className='space-y-2'>
         <CollapsibleTrigger asChild>
@@ -117,10 +120,7 @@ export default function Component({
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className='space-y-2'>
-          <div
-            data-pending={isPending ? '' : undefined}
-            className='flex flex-col space-y-2'
-          >
+          <div className='flex flex-col space-y-2'>
             {wineTypes.map(type => (
               <div
                 key={type}
@@ -143,9 +143,8 @@ export default function Component({
                       ])
                     )
 
-                    setIsOpen(true)
-
                     startTransition(() => {
+                      setIsOpen(true)
                       setOptimisticSearchTypes(newSearchTypes)
                       router.push(`/wines?${newParams}`)
                     })

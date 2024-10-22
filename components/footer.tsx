@@ -11,9 +11,9 @@ export default function Footer() {
             target='_blank'
             rel='noopener noreferrer'
             className='text-primary transition-colors hover:text-accent-foreground'
-            href='https://www.athenamedia.co.za/'
+            href='https://www.yellowlizard.co.za'
           >
-            Athena Media
+            Yellow Lizard
           </Link>
         </p>
       </div>

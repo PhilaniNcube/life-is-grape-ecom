@@ -17,17 +17,12 @@ const WinesPage = async ({
       : []
 
   return (
-    <div className='group container'>
+    <div className='group container has-[[data-pending]]:animate-pulse'>
       <div className='flex flex-col gap-5 md:flex-row'>
         <div className='relative h-full max-w-[200px] flex-1'>
           <WineFilter search_types={search_types} />
         </div>
-        <Suspense
-          key={JSON.stringify(searchParams)}
-          fallback={<LoadingSkeleton />}
-        >
-          <WineCollection searchParams={searchParams}/>
-        </Suspense>
+          <WineCollection searchParams={searchParams} />
       </div>
     </div>
   )

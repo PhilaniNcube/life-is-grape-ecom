@@ -68,9 +68,9 @@ export default async function WineCollection({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
+
+
   const wines = await fetchQuery(api.wines.getWines)
-
-
   const searchTypes = searchParams?.search_types as string[]
   // filter the wines based an array for the searchTyypes
   // if searchTypes is empty, return all wines
@@ -90,7 +90,7 @@ export default async function WineCollection({
 
   return (
     <div className='px-4'>
-      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3'>
+      <div className='grid grid-cols-1 gap-6 group-has-[[data-pending]]:animate-pulse sm:grid-cols-2 md:grid-cols-3'>
         {filteredWines.map(wine => (
           <Link key={wine._id} href={`/wines/${wine._id}`}>
             <Card className='flex flex-col'>
