@@ -49,16 +49,22 @@ export const isAdmin = query({
 })
 
 export const upsertFromClerk = internalMutation({
+  // @ts-ignore
   args: { data: v.any() as PropTypes.Validator<UserJSON> },
   handler: async (ctx, { data }) => {
     const userAttributes = {
+      // @ts-ignore
       email: data.email_addresses[0].email_address,
+      // @ts-ignore
       clerkUserId: data.id,
+      // @ts-ignore
       first_name: data.first_name ?? undefined,
+      // @ts-ignore
       last_name: data.last_name ?? undefined,
+      // @ts-ignore
       image_url: data.image_url ?? undefined,
     }
-
+    // @ts-ignore
     const user = await userByClerkUserId(ctx, data.id)
 
     if (user === null) {

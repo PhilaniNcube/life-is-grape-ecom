@@ -21,15 +21,6 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@19.0.0-rc-69d4b800-20241021))
-      '@prismicio/client':
-        specifier: ^7.11.0
-        version: 7.11.0
-      '@prismicio/next':
-        specifier: ^1.7.0
-        version: 1.7.0(@prismicio/client@7.11.0)(next@15.0.1(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
-      '@prismicio/react':
-        specifier: ^2.9.0
-        version: 2.9.0(@prismicio/client@7.11.0)(react@19.0.0-rc-69d4b800-20241021)
       '@radix-ui/react-accordion':
         specifier: ^1.2.1
         version: 1.2.1(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(types-react-dom@19.0.0-rc.1)(types-react@19.0.0-rc.1)
@@ -153,6 +144,9 @@ importers:
       novel:
         specifier: ^0.5.0
         version: 0.5.0(@tiptap/extension-code-block@2.8.0(@tiptap/core@2.8.0(@tiptap/pm@2.8.0))(@tiptap/pm@2.8.0))(highlight.js@11.10.0)(lowlight@3.1.0)(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(types-react@19.0.0-rc.1)
+      prop-types:
+        specifier: ^15.8.1
+        version: 15.8.1
       react:
         specifier: 19.0.0-rc-69d4b800-20241021
         version: 19.0.0-rc-69d4b800-20241021
@@ -190,12 +184,12 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@slicemachine/adapter-next':
-        specifier: ^0.3.51
-        version: 0.3.51(@prismicio/types@0.2.9)(@types/uuid@9.0.8)(next@15.0.1(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(uuid@9.0.1)
       '@types/node':
         specifier: ^22.5.5
         version: 22.5.5
+      '@types/prop-types':
+        specifier: ^15.7.13
+        version: 15.7.13
       '@types/react':
         specifier: npm:types-react@19.0.0-rc.1
         version: types-react@19.0.0-rc.1
@@ -211,6 +205,9 @@ importers:
       eslint-config-next:
         specifier: 15.0.1
         version: 15.0.1(eslint@9.11.0(jiti@1.21.6))(typescript@5.6.2)
+      eslint-plugin-react-hooks:
+        specifier: ^5.0.0
+        version: 5.0.0(eslint@9.11.0(jiti@1.21.6))
       postcss:
         specifier: ^8.4.47
         version: 8.4.47
@@ -509,9 +506,6 @@ packages:
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
 
-  '@formatjs/intl-localematcher@0.5.5':
-    resolution: {integrity: sha512-t5tOGMgZ/i5+ALl2/offNqAQq/lfUnKLEw0mXQI4N4bqpedhrSE+fyKLpwnd22sK0dif6AV+ufQcTsKShB9J1g==}
-
   '@hapi/hoek@9.3.0':
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
 
@@ -774,29 +768,6 @@ packages:
   '@prismicio/mocks@2.4.0':
     resolution: {integrity: sha512-9rvrzifcmx1/DCsnJKdyVt914L9DFX+DFO8XbS/oGJI+K3DtQeZ5NanJ6SmpsEucrTLO5NiPOTQ5eAYWtT3gLQ==}
     engines: {node: '>=12.7.0'}
-
-  '@prismicio/next@1.7.0':
-    resolution: {integrity: sha512-kHAYNWvBOmyo1iwli04fZb5wK9q6hXRxuKLvKaz3ZRogAttVdiyj3yGVjQn5Krr1J0xN8RipBArTJIMnXBAqeQ==}
-    engines: {node: '>=14.15.0'}
-    peerDependencies:
-      '@prismicio/client': ^6 || ^7
-      next: ^13.4.5 || ^14 || ^15.0.0-rc.0
-      react: ^18 || ^19.0.0-rc.0
-
-  '@prismicio/react@2.9.0':
-    resolution: {integrity: sha512-gkZJYzSpi58NWikzitebZY/ra8fBRaoPosQ8ZaianDy5/A+7F9xYyk674n/SNC37TS6UEswp5r+eRkdkFFiyrw==}
-    engines: {node: '>=12.7.0'}
-    peerDependencies:
-      '@prismicio/client': ^6 || ^7
-      react: ^18 || ^19.0.0-rc.0
-
-  '@prismicio/richtext@2.1.5':
-    resolution: {integrity: sha512-Sf6iCsciPmfK3uQeFmeY9RTRSuhrCVzyU39OkiJ1VJn8O0531pKapGoWS+5WGxouJtE5+jGqV8L+L2mKP7NkXQ==}
-    engines: {node: '>=12.7.0'}
-
-  '@prismicio/simulator@0.1.4':
-    resolution: {integrity: sha512-aBDwGghM8LqXOvdbJWJScBTpY8wuVl3CyCWFqiFwqC8l5SPrQtD2CwEVX0UCB0azPlisb7l7al5Wcg2nxQ6xrQ==}
-    engines: {node: '>=14.15.0'}
 
   '@prismicio/types-internal@2.8.0':
     resolution: {integrity: sha512-CkqBaKy0UcEgTJC37rqQlQUpbnEENcPR4XLlBQAdxOGLtFdgejE0cuZWea2DDrg0HUPxB+WQ+NmwhQYwTDhrkA==}
@@ -1793,13 +1764,6 @@ packages:
   '@sideway/pinpoint@2.0.0':
     resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
 
-  '@slicemachine/adapter-next@0.3.51':
-    resolution: {integrity: sha512-nNLZvltFJiOQj4pGhC6b9E/BSD04WGjVSv1yoSudkQbfECxOfCVyUMDFqxYSYX0CgLl6LHCMmv3iyStsceRVoQ==}
-    engines: {node: '>=14.15.0'}
-    peerDependencies:
-      next: ^11 || ^12 || ^13 || ^14 || ^15.0.0-rc.0
-      react: ^17 || ^18 || ^19.0.0-rc.0
-
   '@slicemachine/manager@0.20.7':
     resolution: {integrity: sha512-z6aIgbjQIJeolmX8PCxJlxjQj0aORCjA+QX+f/BSRXBamO1h1ZWeAsXJuOvXb1RJsdQZp86hICXeS1bVWJddGA==}
     engines: {node: '>=14.15.0'}
@@ -2118,9 +2082,6 @@ packages:
 
   '@types/prop-types@15.7.13':
     resolution: {integrity: sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==}
-
-  '@types/statuses@2.0.5':
-    resolution: {integrity: sha512-jmIUGWrAiwu3dZpxntxieC+1n/5c3mjrImkmOSQ2NC5uP6cYO4aAZDdSmRcI5C1oiTmqlZGHC+/NmJrKogbP5A==}
 
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
@@ -3179,10 +3140,6 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
-  imgix-url-builder@0.0.4:
-    resolution: {integrity: sha512-JRLydfxGTTbSSOG82ewuCgnmw/CzIPzoDqpP3UYD7RE+QWS8ZZbpF87ZuRqtcbEKdxahRsExinuKRxPZVvukWA==}
-    engines: {node: '>=12.7.0'}
-
   imgix-url-builder@0.0.5:
     resolution: {integrity: sha512-dCx3UlXghtsjySoqVCcHQHRikqDummwQEfKlxBUK/wrMzd+1ox/XX+zhqVuXKMVuZvCc84pVLEJyntQB0OOi/w==}
     engines: {node: '>=12.7.0'}
@@ -3534,10 +3491,6 @@ packages:
     resolution: {integrity: sha512-YrLf3aAHvmd4dZ8ot+mMdNFrFpJD7YRwQ2pUcBhgqbmxtrMP4xDzIorcj+8y+6kpuXBF4JB0NOCTUWIYetJjgA==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
-
-  lz-string@1.5.0:
-    resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
-    hasBin: true
 
   map-obj@4.3.0:
     resolution: {integrity: sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==}
@@ -5139,10 +5092,6 @@ snapshots:
 
   '@floating-ui/utils@0.2.8': {}
 
-  '@formatjs/intl-localematcher@0.5.5':
-    dependencies:
-      tslib: 2.7.0
-
   '@hapi/hoek@9.3.0': {}
 
   '@hapi/topo@5.1.0':
@@ -5353,31 +5302,6 @@ snapshots:
     transitivePeerDependencies:
       - '@types/uuid'
 
-  '@prismicio/next@1.7.0(@prismicio/client@7.11.0)(next@15.0.1(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)':
-    dependencies:
-      '@formatjs/intl-localematcher': 0.5.5
-      '@prismicio/client': 7.11.0
-      imgix-url-builder: 0.0.4
-      negotiator: 0.6.3
-      next: 15.0.1(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
-      react: 19.0.0-rc-69d4b800-20241021
-
-  '@prismicio/react@2.9.0(@prismicio/client@7.11.0)(react@19.0.0-rc-69d4b800-20241021)':
-    dependencies:
-      '@prismicio/client': 7.11.0
-      '@prismicio/richtext': 2.1.5
-      react: 19.0.0-rc-69d4b800-20241021
-
-  '@prismicio/richtext@2.1.5':
-    dependencies:
-      '@prismicio/types': 0.2.9
-
-  '@prismicio/simulator@0.1.4':
-    dependencies:
-      '@prismicio/client': 7.11.0
-      '@types/statuses': 2.0.5
-      statuses: 2.0.1
-
   '@prismicio/types-internal@2.8.0(@types/uuid@9.0.8)(fp-ts@2.16.9)(io-ts-types@0.5.19(fp-ts@2.16.9)(io-ts@2.2.21(fp-ts@2.16.9))(monocle-ts@2.3.13(fp-ts@2.16.9))(newtype-ts@0.3.5(fp-ts@2.16.9)(monocle-ts@2.3.13(fp-ts@2.16.9))))(io-ts@2.2.21(fp-ts@2.16.9))(uuid@9.0.1)':
     dependencies:
       '@types/uuid': 9.0.8
@@ -5389,7 +5313,8 @@ snapshots:
       tslib: 2.7.0
       uuid: 9.0.1
 
-  '@prismicio/types@0.2.9': {}
+  '@prismicio/types@0.2.9':
+    optional: true
 
   '@radix-ui/number@1.1.0': {}
 
@@ -6453,26 +6378,6 @@ snapshots:
 
   '@sideway/pinpoint@2.0.0': {}
 
-  '@slicemachine/adapter-next@0.3.51(@prismicio/types@0.2.9)(@types/uuid@9.0.8)(next@15.0.1(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(uuid@9.0.1)':
-    dependencies:
-      '@prismicio/simulator': 0.1.4
-      '@prismicio/types-internal': 2.8.0(@types/uuid@9.0.8)(fp-ts@2.16.9)(io-ts-types@0.5.19(fp-ts@2.16.9)(io-ts@2.2.21(fp-ts@2.16.9))(monocle-ts@2.3.13(fp-ts@2.16.9))(newtype-ts@0.3.5(fp-ts@2.16.9)(monocle-ts@2.3.13(fp-ts@2.16.9))))(io-ts@2.2.21(fp-ts@2.16.9))(uuid@9.0.1)
-      '@slicemachine/plugin-kit': 0.4.51(@prismicio/types@0.2.9)
-      common-tags: 1.8.2
-      fp-ts: 2.16.9
-      io-ts: 2.2.21(fp-ts@2.16.9)
-      io-ts-types: 0.5.19(fp-ts@2.16.9)(io-ts@2.2.21(fp-ts@2.16.9))(monocle-ts@2.3.13(fp-ts@2.16.9))(newtype-ts@0.3.5(fp-ts@2.16.9)(monocle-ts@2.3.13(fp-ts@2.16.9)))
-      lz-string: 1.5.0
-      monocle-ts: 2.3.13(fp-ts@2.16.9)
-      newtype-ts: 0.3.5(fp-ts@2.16.9)(monocle-ts@2.3.13(fp-ts@2.16.9))
-      next: 15.0.1(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
-      pascal-case: 3.1.2
-      react: 19.0.0-rc-69d4b800-20241021
-    transitivePeerDependencies:
-      - '@prismicio/types'
-      - '@types/uuid'
-      - uuid
-
   '@slicemachine/manager@0.20.7(@prismicio/types@0.2.9)(@types/uuid@9.0.8)(uuid@9.0.1)':
     dependencies:
       '@antfu/ni': 0.20.0
@@ -6837,8 +6742,6 @@ snapshots:
       undici-types: 6.19.8
 
   '@types/prop-types@15.7.13': {}
-
-  '@types/statuses@2.0.5': {}
 
   '@types/unist@2.0.11': {}
 
@@ -8124,8 +8027,6 @@ snapshots:
 
   ignore@5.3.2: {}
 
-  imgix-url-builder@0.0.4: {}
-
   imgix-url-builder@0.0.5: {}
 
   import-fresh@3.3.0:
@@ -8442,8 +8343,6 @@ snapshots:
   lucide-react@0.445.0(react@19.0.0-rc-69d4b800-20241021):
     dependencies:
       react: 19.0.0-rc-69d4b800-20241021
-
-  lz-string@1.5.0: {}
 
   map-obj@4.3.0: {}
 
