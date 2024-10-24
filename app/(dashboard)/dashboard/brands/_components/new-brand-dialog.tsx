@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { PlusIcon } from 'lucide-react'
-import { startTransition, useState } from 'react'
+import { startTransition, useActionState, useState } from 'react'
 
 const NewBrandDialog = () => {
   const [state, formAction] = useActionState(createBrandAction, null)

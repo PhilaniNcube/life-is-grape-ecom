@@ -31,7 +31,7 @@ import { CreateItemSchema } from '@/lib/schemas'
 import SubmitButton from '@/components/submit-button'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
-import { FormEvent, useRef, useState } from 'react'
+import { FormEvent, useActionState, useRef, useState } from 'react'
 import { createItemAction } from '@/actions/products'
 import NewBrandDialog from '../../brands/_components/new-brand-dialog'
 
