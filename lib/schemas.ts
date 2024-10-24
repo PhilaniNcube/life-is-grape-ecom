@@ -56,6 +56,24 @@ export const CreateBookingSchema = z.object({
   email: z.string().email('Invalid email address'),
   date: z.string(),
   time: z.string(),
-  guests: z.number().int().min(1, 'At least one guest is required'),
+  guests: z.coerce.number().int().min(1, 'At least one guest is required'),
   paid: z.boolean(),
+})
+
+
+export const CreateItemSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  type: z.enum(['Brandy', 'Whiskey', 'Gin', 'Vodka', 'Rum', 'Tequila']),
+  brand_id: z.string(),
+  tasting_notes: z.string(),
+  price: z.coerce.number(),
+  pairing_suggestions: z.string(),
+  volume: z.coerce.number(),
+  main_image: z.string(),
+  images: z.optional(z.array(z.string())),
+  cocktail_name: z.string(),
+  ingredients: z.string(),
+  cocktail_description: z.string(),
+  by: z.optional(z.string()),
 })

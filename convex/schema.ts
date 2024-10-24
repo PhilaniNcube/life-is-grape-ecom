@@ -8,10 +8,7 @@ export default defineSchema({
     first_name: v.optional(v.string()),
     last_name: v.optional(v.string()),
     image_url: v.optional(v.string()),
-    role: v.union(
-      v.literal('admin'),
-      v.literal('user'),
-    ),
+    role: v.union(v.literal('admin'), v.literal('user')),
     posts: v.optional(v.array(v.id('posts'))),
   }).index('byClerkUserId', ['clerkUserId']),
   posts: defineTable({
@@ -72,7 +69,7 @@ export default defineSchema({
       v.literal('Madeira'),
       v.literal('Marsala'),
       v.literal('Vermouth'),
-      v.literal('Rose'),
+      v.literal('Rose')
     ),
   }),
   tasting_experiences: defineTable({
@@ -92,5 +89,30 @@ export default defineSchema({
     guests: v.number(),
     paid: v.boolean(),
     notes: v.optional(v.string()),
+  }),
+  products: defineTable({
+    name: v.string(),
+    description: v.string(),
+    type: v.union(
+      v.literal('Brandy'),
+      v.literal('Gin'),
+      v.literal('Whiskey'),
+      v.literal('Vodka'),
+      v.literal('Rum'),
+      v.literal('Tequila')
+    ),
+    brand: v.id('brands'),
+    tasting_notes: v.string(),
+    price: v.number(),
+    pairing_suggestions: v.string(),
+    volume: v.number(),
+    main_image: v.id('_storage'),
+    images: v.optional(v.array(v.id('_storage'))),
+    suggested_cocktail: v.object({
+      name: v.string(),
+      ingredients: v.string(),
+      description: v.string(),
+      by: v.optional(v.string()),
+    }),
   }),
 })
