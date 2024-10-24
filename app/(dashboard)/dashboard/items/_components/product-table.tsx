@@ -92,7 +92,7 @@ export const columns: ColumnDef<Product>[] = [
       const product = row.original
       return (
         <Button variant='ghost' asChild>
-          <Link href={`/products/${product._id}`}>
+          <Link href={`/dashboard/items/${product._id}`}>
             <ExternalLink className='mr-2 h-4 w-4' />
             <span>View</span>
           </Link>
