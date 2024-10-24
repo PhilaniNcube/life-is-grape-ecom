@@ -11,11 +11,11 @@ export default function GiftingContent() {
           Life is Grape: Uncork a Memorable Gift
         </h1>
         <p className='mx-auto max-w-2xl text-lg text-muted-foreground'>
-          Looking for a unique and thoughtfully presented gift that's guaranteed
-          to please? At Life is Grape, we believe the perfect present should be
-          as special as the occasion. That's why we offer personalised wine
-          labels to elevate your wedding favors, corporate gifts, or any special
-          celebration.
+          Looking for a unique and thoughtfully presented gift that&apos;s
+          guaranteed to please? At Life is Grape, we believe the perfect present
+          should be as special as the occasion. That&apos;s why we offer
+          personalised wine labels to elevate your wedding favors, corporate
+          gifts, or any special celebration.
         </p>
       </section>
 
@@ -66,8 +66,8 @@ export default function GiftingContent() {
             <TicketIcon className='mx-auto h-12 w-12 text-primary' />
             <h2 className='text-center text-xl font-semibold'>Gift Vouchers</h2>
             <p>
-              Not sure what wine they'd prefer? No problem! Give the gift of
-              choice with a Life is Grape gift voucher. They can browse our
+              Not sure what wine they&apos;d prefer? No problem! Give the gift
+              of choice with a Life is Grape gift voucher. They can browse our
               curated selection of high-quality wines and create their own
               perfect present.
             </p>

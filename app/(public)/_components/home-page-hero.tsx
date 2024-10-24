@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const HomePageHero = () => {
   return (
-    <section className='relative flex h-[50vh] lg:h-[60vh] items-center justify-center overflow-hidden'>
+    <section className='relative flex h-[50vh] items-center justify-center overflow-hidden lg:h-[60vh]'>
       <Image
         src='https://quiet-caterpillar-834.convex.cloud/api/storage/16e92e8e-7dea-446b-b756-ab38a5ee1774'
         alt='Elegant wine glass in a vineyard setting'
@@ -18,7 +18,8 @@ const HomePageHero = () => {
           Discover the Art of Wine Tasting
         </h1>
         <p className='mx-auto mb-8 max-w-3xl text-lg text-gray-200 sm:text-xl'>
-          Embark on a sensory journey through the South Africa's finest vineyards.
+          Embark on a sensory journey through the South Africa&apos;s finest
+          vineyards.
         </p>
         <Button className='transform rounded-full bg-red-700 px-8 py-3 text-lg text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-red-800'>
           Book Your Experience

@@ -16,7 +16,7 @@ export default function TastingExperiencesHero() {
       <div className='absolute inset-0 z-10 bg-gradient-to-r from-amber-900/90 to-purple-900/90'></div>
       <div className='container relative z-20 mx-auto px-4 text-center sm:px-6 lg:px-8'>
         <h1 className='mb-6 text-2xl font-bold text-white sm:text-4xl lg:text-5xl'>
-          Discover South Africa's Finest Beverages
+          Discover South Africa&apos;s Finest Beverages
         </h1>
         <div className='mx-auto max-w-3xl rounded-xl bg-white/10 p-6 backdrop-blur-md sm:p-8'>
           <p className='mb-6 text-lg text-gray-100 sm:text-xl'>
@@ -29,7 +29,7 @@ export default function TastingExperiencesHero() {
             our customers at our dedicated venue, showcasing the best of South
             African viticulture and distillation.
           </p>
-          <Button className='transform rounded-full bg-white px-8 py-3 text-sm md:text-lg text-amber-900 transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-100'>
+          <Button className='transform rounded-full bg-white px-8 py-3 text-sm text-amber-900 transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-100 md:text-lg'>
             Book Your Tasting Experience
           </Button>
         </div>
