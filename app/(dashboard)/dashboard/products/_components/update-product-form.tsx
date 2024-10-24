@@ -33,7 +33,6 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { FormEvent, useEffect, useRef, useState } from 'react'
-import { useFormState } from 'react-dom'
 import { updateWineAction } from '@/actions/wines'
 import Image from 'next/image'
 import { fetchQuery } from 'convex/nextjs'
@@ -48,7 +47,7 @@ export default function UpdateProductForm(
   const brands = useQuery(api.brands.getBrands)
   const wineries = useQuery(api.wineries.getWineries)
 
-  const [state, formAction] = useFormState(updateWineAction, null)
+  const [state, formAction] = useActionState(updateWineAction, null)
 
   const varieties = [
     'red',

@@ -1,3 +1,4 @@
+import type * as PropTypes from "prop-types";
 import { v, Validator } from 'convex/values'
 import { internalMutation, query, QueryCtx } from './_generated/server'
 import { UserJSON } from '@clerk/backend'
@@ -48,7 +49,7 @@ export const isAdmin = query({
 })
 
 export const upsertFromClerk = internalMutation({
-  args: { data: v.any() as Validator<UserJSON> },
+  args: { data: v.any() as PropTypes.Validator<UserJSON> },
   handler: async (ctx, { data }) => {
     const userAttributes = {
       email: data.email_addresses[0].email_address,

@@ -2,11 +2,17 @@ import { Id } from '@/convex/_generated/dataModel'
 import ExperienceDetail from '../_components/experience-detail'
 
 
-const ExperiencePage = ({
-  params: { id },
-}: {
-  params: { id: Id<'tasting_experiences'> }
-}) => {
+const ExperiencePage = async (
+  props: {
+    params: Promise<{ id: Id<'tasting_experiences'> }>
+  }
+) => {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   return (
     <div>
       <ExperienceDetail id={id} />

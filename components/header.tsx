@@ -10,7 +10,7 @@ import Image from 'next/image'
 import Navigation from './navigation'
 
 export default async function Header() {
-  const clerkUser = auth()
+  const clerkUser = await auth()
 
   const clerKUserId = clerkUser?.userId || ''
 

@@ -33,7 +33,6 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { FormEvent, useRef, useState } from 'react'
-import { useFormState } from 'react-dom'
 import { createWineAction } from '@/actions/wines'
 
 type ProductFormValues = z.infer<typeof CreateWineSchema>
@@ -42,7 +41,7 @@ const NewProductForm = () => {
   const brands = useQuery(api.brands.getBrands)
   const wineries = useQuery(api.wineries.getWineries)
 
-  const [state, formAction] = useFormState(createWineAction, null)
+  const [state, formAction] = useActionState(createWineAction, null)
 
   const varieties = [
     'red',

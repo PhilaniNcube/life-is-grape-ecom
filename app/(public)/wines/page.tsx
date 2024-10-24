@@ -4,11 +4,12 @@ import WineFilter from './_components/wine-filter'
 import { Suspense } from 'react'
 
 
-const WinesPage = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}) => {
+const WinesPage = async (
+  props: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  }
+) => {
+  const searchParams = await props.searchParams;
 
   let search_types = Array.isArray(searchParams.search_types)
     ? searchParams.search_types

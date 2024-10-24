@@ -7,18 +7,20 @@ import { components } from '@/slices'
 
 type Params = { uid: string }
 
-export default async function Page({ params }: { params: Params }) {
+export default async function Page(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const client = createClient()
   const page = await client.getByUID('blog', params.uid).catch(() => notFound())
 
   return <SliceZone slices={page.data.slices} components={components} />
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<Params>
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const client = createClient()
   const page = await client.getByUID('blog', params.uid).catch(() => notFound())
 

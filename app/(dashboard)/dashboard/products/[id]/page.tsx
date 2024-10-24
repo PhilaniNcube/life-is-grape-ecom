@@ -3,7 +3,12 @@ import { Doc, Id } from "@/convex/_generated/dataModel";
 import { fetchQuery } from "convex/nextjs";
 import UpdateProductForm from "../_components/update-product-form";
 
-const Product = async ({params:{id}}:{params:{id:Id<"wines">}}) => {
+const Product = async (props:{params: Promise<{id:Id<"wines">}>}) => {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
 
   const wine:Doc<"wines"> = await fetchQuery(api.wines.getSimpleWineObject, { wine_id: id });
 

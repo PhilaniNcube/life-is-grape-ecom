@@ -10,8 +10,8 @@ export const getWineries = query({
     const promiseData = await Promise.all(wineries.map(async (winery) => {
       return {
         ...winery,
-        image: await ctx.storage.getUrl(winery.image) || ''
-      }
+        image: (await ctx.storage.getUrl(winery.image)) || ''
+      };
     }))
 
     return promiseData

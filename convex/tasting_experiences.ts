@@ -10,8 +10,8 @@ export const getTastingExperiences = query({
     const promiseData = await Promise.all(experiences.map(async (experience) => {
       return {
         ...experience,
-        image: await ctx.storage.getUrl(experience.image) || ''
-      }
+        image: (await ctx.storage.getUrl(experience.image)) || ''
+      };
     }))
 
     return promiseData;
@@ -31,7 +31,7 @@ export const getTastingExperience = query({
 
     return {
       ...experience,
-      image: await ctx.storage.getUrl(experience.image) || ''
+      image: (await ctx.storage.getUrl(experience.image)) || ''
     };
   }
 })

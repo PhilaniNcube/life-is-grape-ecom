@@ -32,7 +32,6 @@ import SubmitButton from '@/components/submit-button'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { FormEvent, useRef, useState } from 'react'
-import { useFormState } from 'react-dom'
 import { createItemAction } from '@/actions/products'
 import NewBrandDialog from '../../brands/_components/new-brand-dialog'
 
@@ -41,7 +40,7 @@ type ProductFormValues = z.infer<typeof CreateItemSchema>
 const NewItemForm = () => {
   const brands = useQuery(api.brands.getBrands)
 
-  const [state, formAction] = useFormState(createItemAction, null)
+  const [state, formAction] = useActionState(createItemAction, null)
 
   const types = ['Brandy', 'Whiskey', 'Gin', 'Vodka', 'Rum', 'Tequila']
 

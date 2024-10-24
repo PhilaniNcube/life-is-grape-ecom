@@ -4,13 +4,18 @@ import { fetchQuery } from "convex/nextjs";
 import WineDetail from "../_components/wine-detail";
 import { Wine, WineType } from "@/lib/types";
 
-const WinePage = async ({params:{id}}:{params:{id: Id<"wines">}}) => {
+const WinePage = async (props:{params: Promise<{id: Id<"wines">}>}) => {
+  const params = await props.params;
 
- const wine:Wine|null  = await fetchQuery(api.wines.getWine, { wine_id: id });
+  const {
+    id
+  } = params;
 
- if (!wine) {
-   return <div>Wine not found</div>;
-  }
+  const wine:Wine|null  = await fetchQuery(api.wines.getWine, { wine_id: id });
+
+  if (!wine) {
+    return <div>Wine not found</div>;
+   }
 
   return <div>
     <WineDetail wine={wine} />

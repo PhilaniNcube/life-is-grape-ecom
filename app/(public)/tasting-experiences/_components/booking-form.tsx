@@ -30,7 +30,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Id } from '@/convex/_generated/dataModel'
-import { useFormState } from 'react-dom'
 import { createBookingAction } from '@/actions/bookings'
 import SubmitButton from '@/components/submit-button'
 
@@ -40,7 +39,7 @@ export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
   const [guests, setGuests] = useState<string>('1')
   const [isBooked, setIsBooked] = useState(false)
 
-  const [state, formAction] = useFormState(createBookingAction, null)
+  const [state, formAction] = useActionState(createBookingAction, null)
 
   const generateTimeSlots = () => {
     const slots = []

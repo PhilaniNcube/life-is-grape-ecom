@@ -15,7 +15,6 @@ import { FormEvent, startTransition, useRef, useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import SubmitButton from '@/components/submit-button'
-import { useFormState } from 'react-dom'
 import { createWineryAction } from '@/actions/wineries'
 import { useRouter } from 'next/navigation'
 
@@ -49,7 +48,7 @@ const NewSupplierDialog = () => {
     imageInput.current!.value = ''
   }
 
-  const [state, formAction] = useFormState(createWineryAction, null)
+  const [state, formAction] = useActionState(createWineryAction, null)
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

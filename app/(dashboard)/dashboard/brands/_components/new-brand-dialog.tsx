@@ -8,10 +8,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { PlusIcon } from 'lucide-react'
 import { startTransition, useState } from 'react'
-import { useFormState } from 'react-dom'
 
 const NewBrandDialog = () => {
-  const [state, formAction] = useFormState(createBrandAction, null)
+  const [state, formAction] = useActionState(createBrandAction, null)
   const [isOpen, setIsOpen] = useState(false)
 
   return (

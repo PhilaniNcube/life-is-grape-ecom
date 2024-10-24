@@ -2,6 +2,8 @@ import { type Content, isFilled } from '@prismicio/client'
 import { PrismicNextLink, PrismicNextImage } from '@prismicio/next'
 import { SliceComponentProps, PrismicRichText } from '@prismicio/react'
 
+import type { JSX } from "react";
+
 export type HeroProps = SliceComponentProps<Content.HeroSlice>
 
 const Hero = ({ slice }: HeroProps): JSX.Element => {
