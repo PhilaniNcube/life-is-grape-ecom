@@ -57,7 +57,8 @@ export default async function BlogList({ blogList }: { blogList: AllDocumentType
                   src={post.data.meta_image.url!}
                   alt={`Cover image for`}
                   fill
-                  style={{ objectFit: 'cover' }}
+                  width={968}
+                  height={504}
                   sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                 />
               </div>

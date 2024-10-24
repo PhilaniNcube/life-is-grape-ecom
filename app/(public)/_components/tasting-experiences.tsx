@@ -1,4 +1,4 @@
-'use client'
+
 
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -11,12 +11,12 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Clock, Users } from 'lucide-react'
-import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import Link from 'next/link'
+import { fetchQuery } from 'convex/nextjs'
 
-export default function TastingExperiences() {
-  const tastingExperiences = useQuery(
+export default async function TastingExperiences() {
+  const tastingExperiences = await fetchQuery(
     api.tasting_experiences.getTastingExperiences
   )
 
@@ -32,8 +32,9 @@ export default function TastingExperiences() {
               <Image
                 src={experience.image}
                 alt={experience.name}
-                layout='fill'
-                objectFit='cover'
+
+                width={600}
+                height={400}
               />
             </div>
             <CardHeader>

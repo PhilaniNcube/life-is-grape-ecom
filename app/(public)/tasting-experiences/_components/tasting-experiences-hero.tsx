@@ -8,8 +8,8 @@ export default function TastingExperiencesHero() {
       <Image
         src='https://quiet-caterpillar-834.convex.cloud/api/storage/1f6285ed-a0b4-405b-825b-b0dc1e96c742'
         alt='Elegant tasting setup with various glasses and bottles'
-        layout='fill'
-        objectFit='cover'
+        width={1920}
+        height={1080}
         className='absolute inset-0 z-0'
         priority
       />

@@ -29,8 +29,9 @@ export default function AboutUs() {
             <Image
               src='https://quiet-caterpillar-834.convex.cloud/api/storage/831668b5-06ec-4159-b603-91587dd3dec7'
               alt='South African vineyard landscape'
-              layout='fill'
-              objectFit='cover'
+
+              width={1027}
+              height={684}
               className='rounded-lg shadow-lg'
             />
             <div className='absolute inset-0 rounded-lg bg-red-900 bg-opacity-20'></div>
