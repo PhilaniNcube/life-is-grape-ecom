@@ -179,13 +179,14 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
                       name='brand_id'
                       onValueChange={field.onChange}
                       defaultValue={field.value}
+
                     >
                       <FormControl>
                         <SelectTrigger name='brand'>
                           <SelectValue placeholder='Select a brand' />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent defaultValue={item.brand}>
                         {brands?.map(brand => (
                           <SelectItem
                             id='brand'

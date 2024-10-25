@@ -90,10 +90,7 @@ export default function UpdateProductForm(
     mode: 'onBlur',
   })
 
-  useEffect(() => {
-    form.reset(product)
-    setImageId(product.main_image)
-  }, [product, form])
+
 
   async function handleSendImage(event: FormEvent) {
     event.preventDefault()

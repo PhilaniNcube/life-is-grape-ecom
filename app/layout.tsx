@@ -37,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider dynamic>
       <html lang='en' className='scroll-smooth' suppressHydrationWarning>
         <body
           className={cn(
@@ -48,11 +48,7 @@ export default function RootLayout({
             playfair.variable
           )}
         >
-          <Providers>
-
-              {children}
-
-          </Providers>
+          <Providers>{children}</Providers>
         </body>
       </html>
     </ClerkProvider>
