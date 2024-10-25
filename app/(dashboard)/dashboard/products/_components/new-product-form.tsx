@@ -41,7 +41,7 @@ const NewProductForm = () => {
   const brands = useQuery(api.brands.getBrands)
   const wineries = useQuery(api.wineries.getWineries)
 
-  const [state, formAction] = useActionState(createWineAction, null)
+  const [state, formAction, isPending] = useActionState(createWineAction, null)
 
   const varieties = [
     'red',
@@ -411,9 +411,16 @@ const NewProductForm = () => {
                 )}
               />
             </div>
-            {imageId && <SubmitButton className='mt-3'>Submit</SubmitButton>}
+            {imageId && (
+              <Button disabled={isPending} className='mt-3 w-full'>
+                {isPending ? 'Saving...' : 'Save'}
+              </Button>
+            )}
           </form>
         </Form>
+        {state?.status === 200 && (
+          <p className='text-green-500'>{state.message}</p>
+        )}
       </section>{' '}
     </div>
   )

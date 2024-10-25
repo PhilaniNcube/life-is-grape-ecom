@@ -80,6 +80,7 @@ export const CreateItemSchema = z.object({
 
 
 export const UpdateItemSchema = z.object({
+  id: z.string(),
   name: z.string(),
   description: z.string(),
   type: z.enum(['Brandy', 'Whiskey', 'Gin', 'Vodka', 'Rum', 'Tequila']),

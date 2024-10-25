@@ -31,16 +31,23 @@ import { CreateItemSchema } from '@/lib/schemas'
 import SubmitButton from '@/components/submit-button'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
-import { FormEvent, useActionState, useRef, useState } from 'react'
+import {
+  FormEvent,
+  startTransition,
+  useActionState,
+  useRef,
+  useState,
+} from 'react'
 import { createItemAction } from '@/actions/products'
 import NewBrandDialog from '../../brands/_components/new-brand-dialog'
+import { redirect } from 'next/navigation'
 
 type ProductFormValues = z.infer<typeof CreateItemSchema>
 
 const NewItemForm = () => {
   const brands = useQuery(api.brands.getBrands)
 
-  const [state, formAction] = useActionState(createItemAction, null)
+  const [state, formAction, isPending] = useActionState(createItemAction, null)
 
   const types = ['Brandy', 'Whiskey', 'Gin', 'Vodka', 'Rum', 'Tequila']
 
@@ -76,7 +83,6 @@ const NewItemForm = () => {
   //      name: 'ingredients', // unique name for your Field Array
   //    })
 
-
   async function handleSendImage(event: FormEvent) {
     event.preventDefault()
 
@@ -101,7 +107,7 @@ const NewItemForm = () => {
     <div className='flex flex-row-reverse gap-x-5'>
       <div>
         <NewBrandDialog />
-        <Card className='h-fit w-[400px] py-4 mt-4'>
+        <Card className='mt-4 h-fit w-[400px] py-4'>
           <CardContent>
             <h2 className='text-xl font-semibold'>Upload Image</h2>
             <form onSubmit={handleSendImage} className='space-y-2'>
@@ -127,7 +133,15 @@ const NewItemForm = () => {
         <h2 className='text-xl font-semibold'>New Product</h2>
 
         <Form {...form}>
-          <form action={formAction} className='h-full space-y-8'>
+          <form
+            action={formData => {
+              startTransition(() => {
+                formAction(formData)
+                redirect('/dashboard/items')
+              })
+            }}
+            className='h-full space-y-8'
+          >
             <FormField
               control={form.control}
               name='name'
@@ -248,10 +262,7 @@ const NewItemForm = () => {
                   <FormItem>
                     <FormLabel>Tasting Notes</FormLabel>
                     <FormControl>
-                      <Textarea
-                        className='col-span-2'
-                        {...field}
-                      />
+                      <Textarea className='col-span-2' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -374,8 +385,16 @@ const NewItemForm = () => {
                 )}
               />
             </div>
-            {imageId && <SubmitButton className='mt-3'>Submit</SubmitButton>}
+
+            {imageId && (
+              <Button disabled={isPending} className='mt-3 w-full'>
+                {isPending ? 'Saving...' : 'Save'}
+              </Button>
+            )}
           </form>
+          {state?.status === 200 && (
+            <p className='text-green-500'>{state.message}</p>
+          )}
         </Form>
       </section>{' '}
     </div>

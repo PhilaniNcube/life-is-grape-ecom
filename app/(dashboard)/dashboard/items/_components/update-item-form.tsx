@@ -30,10 +30,18 @@ import { CreateItemSchema, UpdateItemSchema } from '@/lib/schemas'
 import SubmitButton from '@/components/submit-button'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
-import { FormEvent, useActionState, useRef, useState } from 'react'
-import {  updateItemAction } from '@/actions/products'
+import {
+  FormEvent,
+  startTransition,
+  useActionState,
+  useRef,
+  useState,
+} from 'react'
+import { updateItemAction } from '@/actions/products'
 import NewBrandDialog from '../../brands/_components/new-brand-dialog'
 import { Doc } from '@/convex/_generated/dataModel'
+import Image from 'next/image'
+import { redirect } from 'next/navigation'
 
 type ProductFormValues = z.infer<typeof UpdateItemSchema>
 
@@ -44,21 +52,24 @@ type UpdateItemFormProps = {
 const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
   const brands = useQuery(api.brands.getBrands)
 
-
-
-  const [state, formAction] = useActionState(updateItemAction, null)
+  const [state, formAction, isPending] = useActionState(updateItemAction, null)
 
   const types = ['Brandy', 'Whiskey', 'Gin', 'Vodka', 'Rum', 'Tequila']
 
   const generateUploadUrl = useMutation(api.products.generateUploadUrl)
+  const mainImage = useQuery(api.products.getImageUrl, {
+    image_id: item.main_image,
+  })
 
   const imageInput = useRef<HTMLInputElement>(null)
+  const [image, setImage] = useState<string | null>(item.main_image)
   const [imageId, setImageId] = useState<string | null>(null)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(UpdateItemSchema),
     defaultValues: {
+      id: item._id,
       type: item.type || undefined,
       name: item.name,
       description: item.description,
@@ -74,7 +85,6 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
       cocktail_description: item.suggested_cocktail.description,
       by: item.suggested_cocktail.by,
     },
-    mode: 'onBlur',
   })
 
   //  const { fields, append, prepend, remove, swap, move, insert } =
@@ -83,8 +93,11 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
   //      name: 'ingredients', // unique name for your Field Array
   //    })
 
+  const [uploading, setUploading] = useState(false)
+
   async function handleSendImage(event: FormEvent) {
     event.preventDefault()
+    setUploading(true)
 
     // Step 1: Get a short-lived upload URL
     const postUrl = await generateUploadUrl()
@@ -100,6 +113,7 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
     setImageId(storageId)
 
     setSelectedImage(null)
+    setUploading(false)
     imageInput.current!.value = ''
   }
 
@@ -121,11 +135,24 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
                 onChange={e => setSelectedImage(e.target.files![0])}
                 type='file'
               />
-              <SubmitButton>
-                <PlusIcon size={16} />
-                Save Image
-              </SubmitButton>
+              <Button>
+                {uploading ? (
+                  'Uploading...'
+                ) : (
+                  <>
+                    <PlusIcon size={16} />
+                    Save Image
+                  </>
+                )}
+              </Button>
             </form>
+            <Image
+              src={mainImage!}
+              width={1000}
+              height={1000}
+              alt={item.name}
+              className='aspect-square w-full'
+            />
           </CardContent>
         </Card>
       </div>
@@ -133,7 +160,31 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
         <h2 className='text-xl font-semibold'>New Product</h2>
 
         <Form {...form}>
-          <form action={formAction} className='h-full space-y-8'>
+          <form
+            action={formData => {
+              startTransition(() => {
+                formAction(formData)
+                form.reset()
+              })
+
+              redirect('/dashboard/items')
+            }}
+            className='h-full space-y-8'
+          >
+
+            <FormField
+              control={form.control}
+              name='id'
+              render={({ field }) => (
+                <FormItem>
+
+                  <FormControl>
+                    <Input type="hidden" placeholder='Enter product name' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name='name'
@@ -179,7 +230,6 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
                       name='brand_id'
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-
                     >
                       <FormControl>
                         <SelectTrigger name='brand'>
@@ -370,7 +420,7 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
                       <Input
                         placeholder='Enter main image URL'
                         {...field}
-                        value={imageId || ''}
+                        defaultValue={item.main_image}
                       />
                     </FormControl>
                     {/* <FormMessage /> */}
@@ -378,7 +428,9 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
                 )}
               />
             </div>
-            {imageId && <SubmitButton className='mt-3'>Submit</SubmitButton>}
+            <Button disabled={isPending} className='mt-3 w-full'>
+              {isPending ? 'Saving...' : 'Save'}
+            </Button>
           </form>
         </Form>
       </section>{' '}

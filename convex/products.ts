@@ -22,8 +22,8 @@ export const getProductsByBrand = query({
 
 export const getProductById = query({
   args:{product_id: v.id('products')},
-  handler: async (ctx, {product_id}) => {
-    return await ctx.db.query('products').filter(q => q.eq(q.field('_id'), product_id)).first()
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.product_id)
   }
 })
 
@@ -118,6 +118,7 @@ export const createProduct = mutation({
 
 export const updateProduct = mutation({
   args: {
+    productId: v.id('products'),
     name: v.string(),
     description: v.string(),
     type: v.union(
@@ -142,7 +143,7 @@ export const updateProduct = mutation({
   },
   handler: async (ctx, args) => {
     try {
-      const product = await ctx.db.insert('products', {
+      const product = await ctx.db.patch(args.productId, {
         name: args.name,
         description: args.description,
         type: args.type,

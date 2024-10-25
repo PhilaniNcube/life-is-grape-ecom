@@ -47,7 +47,7 @@ export default function UpdateProductForm(
   const brands = useQuery(api.brands.getBrands)
   const wineries = useQuery(api.wineries.getWineries)
 
-  const [state, formAction] = useActionState(updateWineAction, null)
+  const [state, formAction, isPending] = useActionState(updateWineAction, null)
 
   const varieties = [
     'red',
@@ -127,7 +127,7 @@ export default function UpdateProductForm(
                 alt='Product Image'
                 width={400}
                 height={400}
-                className='p-3 border object-contain h-[200px]'
+                className='h-[200px] border object-contain p-3'
               />
             )}
             <Label htmlFor='file' className=''>
@@ -159,9 +159,12 @@ export default function UpdateProductForm(
               name='id'
               render={({ field }) => (
                 <FormItem>
-
                   <FormControl>
-                    <Input type="hidden" defaultValue={product._id}  {...field} />
+                    <Input
+                      type='hidden'
+                      defaultValue={product._id}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -434,7 +437,9 @@ export default function UpdateProductForm(
                 )}
               />
             </div>
-            <SubmitButton className='mt-3'>Update Product</SubmitButton>
+            <Button disabled={isPending} className='mt-3 w-full'>
+              {isPending ? 'Saving...' : 'Save'}
+            </Button>
           </form>
         </Form>
       </section>

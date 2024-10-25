@@ -80,6 +80,7 @@ export async function createItemAction(prevState: unknown, formData: FormData) {
 export async function updateItemAction(prevState: unknown, formData: FormData) {
 
   const validatedFields = UpdateItemSchema.safeParse({
+    id: formData.get('id'),
     name: formData.get('name'),
     description: formData.get('description'),
     price: formData.get('price'),
@@ -101,6 +102,8 @@ export async function updateItemAction(prevState: unknown, formData: FormData) {
     return { status: 400, error: validatedFields.error.flatten().fieldErrors }
   }
 
+
+  const product_id = validatedFields.data.id as Id<"products">
   const brandId = validatedFields.data.brand_id as Id<"brands">
   const mainImage = validatedFields.data.main_image as Id<'_storage'>
 
@@ -108,20 +111,21 @@ export async function updateItemAction(prevState: unknown, formData: FormData) {
   try {
 
     const result = await fetchMutation(api.products.updateProduct, {
-    name: validatedFields.data.name,
-    description: validatedFields.data.description,
-    price: validatedFields.data.price,
-    main_image: mainImage,
-    brand: brandId,
-    volume: validatedFields.data.volume,
-    tasting_notes: validatedFields.data.tasting_notes,
-    pairing_suggestions: validatedFields.data.pairing_suggestions,
-    type: validatedFields.data.type,
-    cocktail_name: validatedFields.data.cocktail_name,
-    ingredients: validatedFields.data.ingredients,
-    cocktail_description: validatedFields.data.cocktail_description,
-    by: validatedFields.data.by,
-  })
+      productId: product_id,
+      name: validatedFields.data.name,
+      description: validatedFields.data.description,
+      price: validatedFields.data.price,
+      main_image: mainImage,
+      brand: brandId,
+      volume: validatedFields.data.volume,
+      tasting_notes: validatedFields.data.tasting_notes,
+      pairing_suggestions: validatedFields.data.pairing_suggestions,
+      type: validatedFields.data.type,
+      cocktail_name: validatedFields.data.cocktail_name,
+      ingredients: validatedFields.data.ingredients,
+      cocktail_description: validatedFields.data.cocktail_description,
+      by: validatedFields.data.by,
+    })
 
   console.log(result)
 
@@ -133,7 +137,7 @@ export async function updateItemAction(prevState: unknown, formData: FormData) {
   return {
     status: 200,
     data: result,
-    message: 'Item created successfully'
+    message: 'Product created successfully'
   }
 
   } catch (error) {
