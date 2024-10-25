@@ -1,15 +1,15 @@
 
-import Header from '@/components/header'
+import PublicHeader from '@/components/header'
 import Footer from '@/components/footer'
 
-export default function PublicLayout({
+export default async function PublicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <div className='h-[100dvh] flex flex-col'>
-      <Header />
+    <div className='flex h-[100dvh] flex-col'>
+      <PublicHeader />
       <main className='grow'>{children}</main>
       <Footer />
     </div>

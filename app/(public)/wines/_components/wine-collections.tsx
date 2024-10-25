@@ -71,7 +71,7 @@ export default async function WineCollection({
 
 
   const wines = await fetchQuery(api.wines.getWines)
-  const searchTypes = searchParams?.search_types as string[]
+  const searchTypes = searchParams.search_types as string[]
   // filter the wines based an array for the searchTyypes
   // if searchTypes is empty, return all wines
   const filteredWines = searchTypes?.length

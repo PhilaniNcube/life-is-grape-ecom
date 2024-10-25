@@ -108,6 +108,60 @@ export const createProduct = mutation({
   },
 })
 
+
+export const updateProduct = mutation({
+  args: {
+    name: v.string(),
+    description: v.string(),
+    type: v.union(
+      v.literal('Brandy'),
+      v.literal('Gin'),
+      v.literal('Whiskey'),
+      v.literal('Vodka'),
+      v.literal('Rum'),
+      v.literal('Tequila')
+    ),
+    brand: v.id('brands'),
+    tasting_notes: v.string(),
+    price: v.number(),
+    pairing_suggestions: v.string(),
+    volume: v.number(),
+    main_image: v.id('_storage'),
+    images: v.optional(v.array(v.id('_storage'))),
+    cocktail_name: v.string(),
+    ingredients: v.string(),
+    cocktail_description: v.string(),
+    by: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    try {
+      const product = await ctx.db.insert('products', {
+        name: args.name,
+        description: args.description,
+        type: args.type,
+        brand: args.brand,
+        tasting_notes: args.tasting_notes,
+        price: args.price,
+        pairing_suggestions: args.pairing_suggestions,
+        volume: args.volume,
+        main_image: args.main_image,
+        suggested_cocktail: {
+          name: args.cocktail_name,
+          ingredients: args.ingredients,
+          description: args.cocktail_description,
+          by: args.by,
+        },
+      })
+
+      console.log(product)
+
+      return product
+    } catch (error) {
+      throw new Error('Failed to update product')
+    }
+  },
+})
+
 export const generateUploadUrl = mutation(async ctx => {
   const storageItem = await ctx.storage.generateUploadUrl()
 

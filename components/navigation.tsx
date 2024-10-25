@@ -2,9 +2,8 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Menu, User, ShoppingCart } from 'lucide-react'
+import { Menu, User } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -27,7 +26,7 @@ const routes = [
 ]
 
 export default function Navigation({user}:{user:Doc<"users">}) {
-  const [isOpen, setIsOpen] = React.useState(false)
+
 
   return (
     <header className='sticky top-0 z-50 w-full lg:px-0'>
