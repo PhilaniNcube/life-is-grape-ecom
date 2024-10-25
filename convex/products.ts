@@ -20,6 +20,13 @@ export const getProductsByBrand = query({
   },
 })
 
+export const getProductById = query({
+  args:{product_id: v.id('products')},
+  handler: async (ctx, {product_id}) => {
+    return await ctx.db.query('products').filter(q => q.eq(q.field('_id'), product_id)).first()
+  }
+})
+
 export const getProduct = query({
   args: { product_id: v.id('products') },
   handler: async (ctx, { product_id }) => {
