@@ -132,10 +132,12 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
                 ref={imageInput}
                 id='file'
                 name='file'
+                required
+                accept='image/*'
                 onChange={e => setSelectedImage(e.target.files![0])}
                 type='file'
               />
-              <Button>
+              <Button className='w-full rounded-none'>
                 {uploading ? (
                   'Uploading...'
                 ) : (
@@ -171,15 +173,17 @@ const UpdateItemForm = ({ item }: UpdateItemFormProps) => {
             }}
             className='h-full space-y-8'
           >
-
             <FormField
               control={form.control}
               name='id'
               render={({ field }) => (
                 <FormItem>
-
                   <FormControl>
-                    <Input type="hidden" placeholder='Enter product name' {...field} />
+                    <Input
+                      type='hidden'
+                      placeholder='Enter product name'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

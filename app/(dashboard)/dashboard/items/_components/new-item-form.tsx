@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { api } from '@/convex/_generated/api'
 import { useMutation, useQuery } from 'convex/react'
-import { PlusIcon } from 'lucide-react'
+import { CircleDashed, PlusIcon } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -41,6 +41,7 @@ import {
 import { createItemAction } from '@/actions/products'
 import NewBrandDialog from '../../brands/_components/new-brand-dialog'
 import { redirect } from 'next/navigation'
+import { fetchQuery } from 'convex/nextjs'
 
 type ProductFormValues = z.infer<typeof CreateItemSchema>
 
@@ -52,10 +53,14 @@ const NewItemForm = () => {
   const types = ['Brandy', 'Whiskey', 'Gin', 'Vodka', 'Rum', 'Tequila']
 
   const generateUploadUrl = useMutation(api.products.generateUploadUrl)
+  const [isLoading, setIsLoading] = useState(false)
 
   const imageInput = useRef<HTMLInputElement>(null)
   const [imageId, setImageId] = useState<string | null>(null)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  // const [imageUrl, setImageUrl] = useState<string | null>(null)
+
+  let mainImage
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(CreateItemSchema),
@@ -74,8 +79,9 @@ const NewItemForm = () => {
       cocktail_description: '',
       by: '',
     },
-    mode: 'onBlur',
   })
+
+
 
   //  const { fields, append, prepend, remove, swap, move, insert } =
   //    useFieldArray({
@@ -85,6 +91,7 @@ const NewItemForm = () => {
 
   async function handleSendImage(event: FormEvent) {
     event.preventDefault()
+    setIsLoading(true)
 
     // Step 1: Get a short-lived upload URL
     const postUrl = await generateUploadUrl()
@@ -97,8 +104,10 @@ const NewItemForm = () => {
     const { storageId } = await result.json()
     // Step 3: Save the newly allocated storage id to the database
 
+    mainImage = fetchQuery(api.products.getImageUrl, {image_id: storageId})
     setImageId(storageId)
 
+    setIsLoading(false)
     setSelectedImage(null)
     imageInput.current!.value = ''
   }
@@ -118,14 +127,33 @@ const NewItemForm = () => {
                 ref={imageInput}
                 id='file'
                 name='file'
+                required
+                accept='image/*'
                 onChange={e => setSelectedImage(e.target.files![0])}
                 type='file'
               />
-              <SubmitButton>
-                <PlusIcon size={16} />
-                Save Image
-              </SubmitButton>
+              <Button
+                disabled={isLoading}
+                type='submit'
+                className='w-full rounded-none'
+              >
+                {isLoading ? (
+                  <CircleDashed size={16} className='animate-sping' />
+                ) : (
+                  <span className="flex flex-row items-center">
+                    <PlusIcon size={16} className='mr-1' />
+                    Save Image
+                  </span>
+                )}
+              </Button>
             </form>
+            {mainImage && (
+              <img
+                src={mainImage}
+                alt='main image'
+                className='aspect-square w-full'
+              />
+            )}
           </CardContent>
         </Card>
       </div>
@@ -387,7 +415,7 @@ const NewItemForm = () => {
             </div>
 
             {imageId && (
-              <Button disabled={isPending} className='mt-3 w-full'>
+              <Button disabled={isPending} className='mt-3 w-full rounded-none'>
                 {isPending ? 'Saving...' : 'Save'}
               </Button>
             )}

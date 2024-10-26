@@ -21,6 +21,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 const routes = [
   { name: 'Tasting Experiences', href: '/tasting-experiences' },
   { name: 'Wines', href: '/wines' },
+  { name: 'Liquor', href: '/items' },
   { name: 'Gifting', href: '/gifting' },
   { name: 'Blog', href: '/blog' },
 ]

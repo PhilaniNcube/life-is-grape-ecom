@@ -16,7 +16,7 @@ const NewBrandDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="rounded-none">
           <PlusIcon className='mr-3' />
           New Brand
         </Button>
