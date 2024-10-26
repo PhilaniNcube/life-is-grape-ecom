@@ -4,7 +4,7 @@ import ItemCard from "./item-card";
 
 const ItemsList = async () => {
 
-  const products = await fetchQuery(api.products.getProducts)
+  const products = await fetchQuery(api.products.getProductList)
 
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>

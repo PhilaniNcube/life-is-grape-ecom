@@ -1,5 +1,6 @@
 import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
+import { api } from './_generated/api'
 
 export const getProducts = query({
   args: {},
@@ -17,6 +18,38 @@ export const getProductsByBrand = query({
       .query('products')
       .filter(q => q.eq(q.field('brand'), brand_id))
       .collect()
+  },
+})
+
+export const getProductList = query({
+
+  handler: async ctx => {
+    const products = await ctx.db.query('products').collect()
+
+    // get the main image url and brand for each product
+    return await Promise.all(
+      products.map(async product => {
+        const mainImageUrl = product.main_image
+          ? await ctx.storage.getUrl(product.main_image)
+          : ''
+
+        const brand = await ctx.db.query('brands').filter(q => q.eq(q.field('_id'), product.brand)).first()
+
+
+
+        return {
+          name: product.name,
+          _id: product._id,
+          description: product.description,
+          type: product.type,
+          price: product.price,
+          volume: product.volume,
+          brand: brand?.name || '',
+          main_image: mainImageUrl,
+        }
+      })
+    )
+
   },
 })
 

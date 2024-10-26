@@ -11,23 +11,22 @@ import { fetchQuery } from 'convex/nextjs'
 import ItemImage from './item-image'
 import { Suspense } from 'react'
 import Link from 'next/link'
+import { LiqourListItem } from '@/lib/types'
 
-const ItemCard = async ({ product }: { product: Doc<'products'> }) => {
-  const brand = (await fetchQuery(api.brands.getBrand, {
-    brand_id: product.brand,
-  })) as Doc<'brands'>
+const ItemCard = async ({ product }: { product: LiqourListItem }) => {
+
 
   return (
-    <Link href={`/items/${product._id}`} className="cursor-pointer" prefetch={false}>
+    <Link
+      href={`/items/${product._id}`}
+      className='cursor-pointer'
+      prefetch={false}
+    >
       <Card className='cursor-pointer transition-shadow hover:shadow-lg'>
-        <Suspense
-          fallback={<div className='aspect-square w-full animate-pulse' />}
-        >
-          <ItemImage imageId={product.main_image} />
-        </Suspense>
+          <ItemImage image={product.main_image} />
         <CardHeader>
           <CardTitle>{product.name}</CardTitle>
-          <CardDescription>{brand.name}</CardDescription>
+          <CardDescription>{product.brand}</CardDescription>
         </CardHeader>
         <CardContent>
           <p className='line-clamp-3 text-sm text-muted-foreground'>

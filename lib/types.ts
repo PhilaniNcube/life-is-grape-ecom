@@ -88,3 +88,15 @@ export type ExpandedBooking = {
   tasting_experience_id: Id<'tasting_experiences'>
   paid: boolean
 }
+
+
+export type LiqourListItem = {
+  name: string
+  _id: Id<'products'>
+  description: string
+  type: 'Brandy' | 'Gin' | 'Whiskey' | 'Vodka' | 'Rum' | 'Tequila'
+  price: number
+  volume: number
+  brand: string
+  main_image: string | null
+}

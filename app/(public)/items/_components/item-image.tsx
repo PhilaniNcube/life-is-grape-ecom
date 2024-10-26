@@ -4,9 +4,7 @@ import { cn } from "@/lib/utils";
 import { fetchQuery } from "convex/nextjs";
 import Image from "next/image";
 
-const ItemImage = async ({ imageId }: { imageId: Id<'_storage'> }) => {
-
-  const image = await fetchQuery(api.products.getImageUrl, { image_id: imageId});
+const ItemImage = async ({ image }: { image:string|null }) => {
 
   return (
     <div className={cn('aspect-square w-full', image === null && 'animate-pulse')}>
