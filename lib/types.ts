@@ -1,4 +1,4 @@
-import { Id } from '@/convex/_generated/dataModel'
+import { Doc, Id } from '@/convex/_generated/dataModel'
 
 export type Post = {
   _id: Id<'posts'>
@@ -99,4 +99,27 @@ export type LiqourListItem = {
   volume: number
   brand: string
   main_image: string | null
+}
+
+export type LiqourDetail =  {
+  name: string
+  _id: Id<'products'>
+  description: string
+  type: 'Brandy' | 'Gin' | 'Whiskey' | 'Vodka' | 'Rum' | 'Tequila'
+  price: number
+  volume: number
+  main_image: string
+  imagesUrls: (string | undefined)[]
+  brand: {
+    _id: Id<"brands">;
+    _creationTime: number;
+    name: string;
+} | null
+  tasting_notes: string
+  pairing_suggestions: string
+  suggested_cocktail: {
+    name: string
+    ingredients: string
+    description: string
+  }
 }

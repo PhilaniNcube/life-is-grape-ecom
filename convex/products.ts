@@ -60,6 +60,46 @@ export const getProductById = query({
   }
 })
 
+export const getProductDetails = query({
+  args: { product_id: v.id('products') },
+  handler: async (ctx, args) => {
+
+    const product = await ctx.db.get(args.product_id)
+
+    if(!product) {
+      throw new Error('Product not found')
+    }
+
+    const mainImageUrl = await ctx.storage.getUrl(product.main_image) || ''
+    const brand = await ctx.db.query('brands').filter(q => q.eq(q.field('_id'), product.brand)).first()
+
+     const images = product.images
+       ? await Promise.all(
+           product.images.map(async item => {
+             const imageUrl =  await ctx.storage.getUrl(item)
+             if(!imageUrl || imageUrl === undefined) return
+              return imageUrl
+           })
+         )
+       : []
+
+    return {
+      name: product.name,
+      _id: product._id,
+      description: product.description,
+      type: product.type,
+      price: product.price,
+      volume: product.volume,
+      tasting_notes: product.tasting_notes,
+      pairing_suggestions: product.pairing_suggestions,
+      suggested_cocktail: product.suggested_cocktail,
+      main_image: mainImageUrl,
+      imagesUrls: images,
+      brand: brand
+    }
+  }
+})
+
 export const getProduct = query({
   args: { product_id: v.id('products') },
   handler: async (ctx, { product_id }) => {
