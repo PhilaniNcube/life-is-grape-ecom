@@ -9,6 +9,25 @@ export const getProducts = query({
   },
 })
 
+export const getProductsByType = query({
+  args: {
+    type: v.union(
+      v.literal('Brandy'),
+      v.literal('Gin'),
+      v.literal('Whiskey'),
+      v.literal('Vodka'),
+      v.literal('Rum'),
+      v.literal('Tequila'),
+    ),
+  },
+  handler: async (ctx, { type }) => {
+    return await ctx.db
+      .query('products')
+      .filter(q => q.eq(q.field('type'), type))
+      .collect()
+  },
+})
+
 export const getProductsByBrand = query({
   args: {
     brand_id: v.id('brands'),
@@ -248,3 +267,18 @@ export const generateUploadUrl = mutation(async ctx => {
 
   return storageItem
 })
+
+
+export const getProductCount = query({
+  handler: async ctx => {
+    const data= await ctx.db.query('products').collect()
+
+    if(!data) {
+      return 0
+    }
+
+    return data.length
+  }
+})
+
+
