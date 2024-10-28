@@ -75,6 +75,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^22.5.5",
     "@types/prop-types": "^15.7.13",
     "@types/react": "npm:types-react@19.0.0-rc.1",

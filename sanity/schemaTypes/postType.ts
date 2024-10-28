@@ -14,6 +14,7 @@ export const postType = defineType({
     defineField({
       name: 'slug',
       type: 'slug',
+      validation: Rule => Rule.required(),
       options: {
         source: 'title',
       },
@@ -21,10 +22,12 @@ export const postType = defineType({
     defineField({
       name: 'author',
       type: 'reference',
-      to: {type: 'author'},
+      to: { type: 'author' },
     }),
     defineField({
       name: 'mainImage',
+      title: 'Main image',
+      validation: Rule => Rule.required(),
       type: 'image',
       options: {
         hotspot: true,
@@ -34,13 +37,13 @@ export const postType = defineType({
           name: 'alt',
           type: 'string',
           title: 'Alternative text',
-        }
-      ]
+        },
+      ],
     }),
     defineField({
       name: 'categories',
       type: 'array',
-      of: [defineArrayMember({type: 'reference', to: {type: 'category'}})],
+      of: [defineArrayMember({ type: 'reference', to: { type: 'category' } })],
     }),
     defineField({
       name: 'publishedAt',
@@ -58,8 +61,8 @@ export const postType = defineType({
       media: 'mainImage',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const { author } = selection
+      return { ...selection, subtitle: author && `by ${author}` }
     },
   },
 })
