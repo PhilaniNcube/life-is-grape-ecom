@@ -28,15 +28,13 @@ export default function GiftDetails({gift}:{gift: Doc<'gifts'>}) {
   return (
     <div className='container mx-auto py-10'>
       <Card className='w-full'>
-        <CardHeader>
-          <CardTitle className='text-3xl font-bold'>{gift.name}</CardTitle>
-          <CardDescription>{gift.description}</CardDescription>
-        </CardHeader>
         <CardContent>
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
             <div className='space-y-4'>
               {image === '' || image === undefined ? (
-                <div className="w-full aspect-square bg-slate-200 animate-pulse flex items-center justify-center">Loading Image...</div>
+                <div className='flex aspect-square w-full animate-pulse items-center justify-center bg-slate-200'>
+                  Loading Image...
+                </div>
               ) : (
                 <Image
                   width={900}
@@ -46,23 +44,19 @@ export default function GiftDetails({gift}:{gift: Doc<'gifts'>}) {
                   className='h-auto w-full rounded-lg'
                 />
               )}
-
-              {/* <div className='flex space-x-2'>
-                {[gift.main_image, ...(gift.images || [])].map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt={`${gift.name} thumbnail ${index + 1}`}
-                    className='h-16 w-16 cursor-pointer rounded-md border-2 border-transparent hover:border-primary'
-                    onClick={() => setMainImage(img)}
-                  />
-                ))}
-              </div> */}
             </div>
             <div className='space-y-4'>
+              <h1 className='text-3xl font-bold'>{gift.name}</h1>
+              <p className='text-md'>{gift.description}</p>
               <div>
                 <h3 className='text-lg font-semibold'>Price</h3>
                 <p className='text-2xl font-bold'>${gift.price.toFixed(2)}</p>
+                <Badge
+                  // variant={gift.in_stock ? 'success' : 'destructive'}
+                  className='text-sm'
+                >
+                  {gift.in_stock ? 'In Stock' : 'Out of Stock'}
+                </Badge>
               </div>
               <div>
                 <h3 className='text-lg font-semibold'>Type</h3>
@@ -127,21 +121,14 @@ export default function GiftDetails({gift}:{gift: Doc<'gifts'>}) {
                   </div>
                 )}
               </div>
+              <Button disabled={!gift.in_stock} size="lg" className='rounded-none'>
+                {gift.in_stock ? 'Add to Cart' : 'Out of Stock'}
+              </Button>
             </div>
           </div>
         </CardContent>
         <Separator className='my-4' />
-        <CardFooter className='flex justify-between'>
-          <Badge
-            // variant={gift.in_stock ? 'success' : 'destructive'}
-            className='text-sm'
-          >
-            {gift.in_stock ? 'In Stock' : 'Out of Stock'}
-          </Badge>
-          <Button disabled={!gift.in_stock}>
-            {gift.in_stock ? 'Add to Cart' : 'Out of Stock'}
-          </Button>
-        </CardFooter>
+        <CardFooter className='flex justify-between'></CardFooter>
       </Card>
     </div>
   )
