@@ -100,3 +100,16 @@ export const updateGift = mutation({
     return gift_id
   },
 })
+
+
+// fetch the main image url
+export const fetchGiftImage = query({
+  args: { image: v.id('_storage') },
+  handler: async (ctx, args) => {
+    const image = await ctx.storage.getUrl(args.image)
+    if (!image || image === null) {
+      throw new Error('Image not found')
+    }
+    return image
+  },
+})

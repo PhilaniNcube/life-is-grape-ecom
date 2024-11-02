@@ -13,37 +13,25 @@ import {
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Package, Tag, Wine, Check, X } from 'lucide-react'
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import { Doc } from '@/convex/_generated/dataModel';
+import Image from 'next/image';
 
-// Sample gift data based on the previous schema
-const gift = {
-  id: 1,
-  name: 'Elegant Wine Box',
-  description:
-    'A beautiful wooden box for wine gifts, perfect for any occasion. This box features a sleek design with a hinged lid and a luxurious finish that will impress any recipient.',
-  price: 29.99,
-  type: 'box',
-  customization_options: {
-    allows_message: true,
-    message_max_length: 100,
-    allows_design_choice: true,
-    available_designs: ['Classic', 'Modern', 'Rustic'],
-  },
-  compatible_wine_types: ['red', 'white'],
-  main_image: '/placeholder.svg?height=400&width=400',
-  images: [
-    '/placeholder.svg?height=100&width=100&text=Image1',
-    '/placeholder.svg?height=100&width=100&text=Image2',
-    '/placeholder.svg?height=100&width=100&text=Image3',
-  ],
-  in_stock: true,
-}
 
-export default function GiftDetails() {
-  const [mainImage, setMainImage] = useState(gift.main_image)
+
+export default function GiftDetails({gift}:{gift: Doc<'gifts'>}) {
+
+
+  const image = useQuery(api.gifts.fetchGiftImage, {image:gift.main_image})
+
+  const [mainImage, setMainImage] = useState(image)
+
+  console.log(mainImage, image)
 
   return (
     <div className='container mx-auto py-10'>
-      <Card className='mx-auto max-w-3xl'>
+      <Card className='w-full'>
         <CardHeader>
           <CardTitle className='text-3xl font-bold'>{gift.name}</CardTitle>
           <CardDescription>{gift.description}</CardDescription>
@@ -51,12 +39,19 @@ export default function GiftDetails() {
         <CardContent>
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
             <div className='space-y-4'>
-              <img
-                src={mainImage}
-                alt={gift.name}
-                className='h-auto w-full rounded-lg'
-              />
-              <div className='flex space-x-2'>
+              {image === '' || image === undefined ? (
+                <div className="w-full aspect-square bg-slate-200 animate-pulse flex items-center justify-center">Loading Image...</div>
+              ) : (
+                <Image
+                  width={900}
+                  height={900}
+                  src={image}
+                  alt={gift.name}
+                  className='h-auto w-full rounded-lg'
+                />
+              )}
+
+              {/* <div className='flex space-x-2'>
                 {[gift.main_image, ...(gift.images || [])].map((img, index) => (
                   <img
                     key={index}
@@ -66,7 +61,7 @@ export default function GiftDetails() {
                     onClick={() => setMainImage(img)}
                   />
                 ))}
-              </div>
+              </div> */}
             </div>
             <div className='space-y-4'>
               <div>

@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { GrapeIcon, GiftIcon, PaintbrushIcon, TicketIcon } from 'lucide-react'
+import { Suspense } from 'react'
+import GiftsGrid from './gifts-grid'
 
 export default function GiftingContent() {
   return (
@@ -123,9 +125,9 @@ export default function GiftingContent() {
           Life is too short for ordinary gifts. Uncork something extraordinary
           with Life is Grape.
         </h2>
-        <Button size='lg' className='px-8 text-lg'>
-          Browse Our Designs
-        </Button>
+       <Suspense fallback={<div>Loading...</div>}>
+        <GiftsGrid />
+       </Suspense>
       </section>
     </div>
   )
