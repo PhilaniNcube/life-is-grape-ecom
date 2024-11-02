@@ -25,10 +25,6 @@ export default function GiftDetails({gift}:{gift: Doc<'gifts'>}) {
 
   const image = useQuery(api.gifts.fetchGiftImage, {image:gift.main_image})
 
-  const [mainImage, setMainImage] = useState(image)
-
-  console.log(mainImage, image)
-
   return (
     <div className='container mx-auto py-10'>
       <Card className='w-full'>
