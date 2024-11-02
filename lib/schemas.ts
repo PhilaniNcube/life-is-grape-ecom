@@ -96,3 +96,63 @@ export const UpdateItemSchema = z.object({
   cocktail_description: z.string(),
   by: z.optional(z.string()),
 })
+
+
+// Base Gift Schema
+export const giftSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().min(1, "Description is required"),
+  price: z.coerce.number().min(0, "Price must be positive"),
+  type: z.enum(["box", "label", "bag"]),
+  customization_options: z.object({
+    allows_message: z.boolean(),
+    message_max_length: z.number().optional(),
+    allows_design_choice: z.boolean(),
+    available_designs: z.array(z.string()).optional()
+  }),
+  compatible_wine_types: z.array(
+    z.enum(["red", "white"])
+  ),
+  main_image: z.string(),
+  images: z.array(z.string()).optional(),
+  in_stock: z.boolean()
+})
+
+// Create Gift Schema
+export const createGiftSchema = giftSchema
+
+// Update Gift Schema
+export const updateGiftSchema = z.object({
+  gift_id: z.string(),
+  name: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
+  price: z.coerce.number().min(0).optional(),
+  in_stock: z.boolean().optional(),
+  main_image: z.string().optional(),
+  images: z.array(z.string()).optional()
+})
+
+// Gift Customization Schema
+export const giftCustomizationSchema = z.object({
+  gift_id: z.string(),
+  customer_message: z.string().optional(),
+  selected_design: z.string().optional(),
+  selected_wine_type: z.enum(["red", "white", "none"]),
+  selected_wine_id: z.string().optional(),
+  order_id: z.string()
+})
+
+// Delete Gift Schema
+export const deleteGiftSchema = z.object({
+  gift_id: z.string()
+})
+
+// Delete Gift Customization Schema
+export const deleteGiftCustomizationSchema = z.object({
+  customization_id: z.string()
+})
+
+export type Gift = z.infer<typeof giftSchema>
+export type CreateGift = z.infer<typeof createGiftSchema>
+export type UpdateGift = z.infer<typeof updateGiftSchema>
+export type GiftCustomization = z.infer<typeof giftCustomizationSchema>

@@ -20,10 +20,10 @@ const geistMono = localFont({
   weight: '100 900',
 })
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-serif',
-})
+// const playfair = Playfair_Display({
+//   subsets: ['latin'],
+//   variable: '--font-serif',
+// })
 
 export const metadata: Metadata = {
   title: 'Life Is Grape',
@@ -45,7 +45,7 @@ export default function RootLayout({
             geistSans.variable,
             geistMono.variable,
             inter.variable,
-            playfair.variable
+            // playfair.variable
           )}
         >
           <Providers>{children}</Providers>

@@ -90,6 +90,37 @@ export default defineSchema({
     paid: v.boolean(),
     notes: v.optional(v.string()),
   }),
+  gifts: defineTable({
+    name: v.string(),
+    description: v.string(),
+    price: v.number(),
+    type: v.union(v.literal('box'), v.literal('label'), v.literal('bag')),
+    customization_options: v.object({
+      allows_message: v.boolean(),
+      message_max_length: v.optional(v.number()),
+      allows_design_choice: v.boolean(),
+      available_designs: v.optional(v.array(v.string())),
+    }),
+    compatible_wine_types: v.array(
+      v.union(v.literal('red'), v.literal('white'))
+    ),
+    main_image: v.id('_storage'),
+    images: v.optional(v.array(v.id('_storage'))),
+    in_stock: v.boolean(),
+  }),
+  gift_customizations: defineTable({
+  gift_id: v.id('gifts'),
+  customer_message: v.optional(v.string()),
+  selected_design: v.optional(v.string()),
+  selected_wine_type: v.union(
+    v.literal('red'),
+    v.literal('white'),
+    v.literal('none')
+  ),
+  selected_wine_id: v.optional(v.id('products')),
+  order_id: v.string(), // Reference to order system
+  created_at: v.number()
+}),
   products: defineTable({
     name: v.string(),
     description: v.string(),

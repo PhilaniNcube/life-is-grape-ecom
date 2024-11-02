@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as bookings from "../bookings.js";
 import type * as brands from "../brands.js";
+import type * as gifts from "../gifts.js";
 import type * as http from "../http.js";
 import type * as products from "../products.js";
 import type * as tasting_experiences from "../tasting_experiences.js";
@@ -33,6 +34,7 @@ import type * as wines from "../wines.js";
 declare const fullApi: ApiFromModules<{
   bookings: typeof bookings;
   brands: typeof brands;
+  gifts: typeof gifts;
   http: typeof http;
   products: typeof products;
   tasting_experiences: typeof tasting_experiences;
