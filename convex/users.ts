@@ -68,15 +68,26 @@ export const upsertFromClerk = internalMutation({
     const user = await userByClerkUserId(ctx, data.id)
 
     if (user === null) {
-      await ctx.db.insert('users', {
+      const userId = await ctx.db.insert('users', {
         role: 'user',
         ...userAttributes,
       })
+
+      // Create initial cart
+      const cartId = await ctx.db.insert('cart', {
+        userId,
+        created_at: Date.now(),
+        updated_at: Date.now(),
+        status: 'active',
+      })
+
+      return { userId, cartId }
     } else {
-      await ctx.db.patch(user._id, {
-        ...userAttributes,
-        role: 'user',
-      })
+       await ctx.db.patch(user._id, {
+         ...userAttributes,
+         role: 'user',
+       })
+       return { userId: user._id }
     }
   },
 })

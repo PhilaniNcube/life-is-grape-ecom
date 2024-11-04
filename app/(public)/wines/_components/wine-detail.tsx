@@ -118,6 +118,11 @@ export default function WineDetail({ wine }: WineDetailsProps) {
               {wine.in_stock ? 'In Stock' : 'Out of Stock'}
             </Badge>
           </div>
+          {wine.in_stock && (
+            <Button  className='my-4 rounded-none' size="lg">
+              Add to Cart
+            </Button>
+          )}
           <p className='mb-4'>Alcohol Content: {wine.alcohol_content}%</p>
           <h3 className='mb-2 text-2xl font-bold'>R{wine.price}</h3>
           <Card className='mb-6'>
