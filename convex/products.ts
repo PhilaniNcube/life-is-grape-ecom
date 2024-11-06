@@ -1,284 +1,296 @@
-import { v } from 'convex/values'
 import { mutation, query } from './_generated/server'
-import { api } from './_generated/api'
+import { v } from 'convex/values'
 
-export const getProducts = query({
-  args: {},
-  handler: async ctx => {
-    return await ctx.db.query('products').collect()
-  },
-})
-
-export const getProductsByType = query({
-  args: {
-    type: v.union(
-      v.literal('Brandy'),
-      v.literal('Gin'),
-      v.literal('Whiskey'),
-      v.literal('Vodka'),
-      v.literal('Rum'),
-      v.literal('Tequila'),
-    ),
-  },
-  handler: async (ctx, { type }) => {
-    return await ctx.db
-      .query('products')
-      .filter(q => q.eq(q.field('type'), type))
-      .collect()
-  },
-})
-
-export const getProductsByBrand = query({
-  args: {
-    brand_id: v.id('brands'),
-  },
-  handler: async (ctx, { brand_id }) => {
-    return await ctx.db
-      .query('products')
-      .filter(q => q.eq(q.field('brand'), brand_id))
-      .collect()
-  },
-})
-
-export const getProductList = query({
-
-  handler: async ctx => {
-    const products = await ctx.db.query('products').collect()
-
-    // get the main image url and brand for each product
-    return await Promise.all(
-      products.map(async product => {
-        const mainImageUrl = product.main_image
-          ? await ctx.storage.getUrl(product.main_image)
-          : ''
-
-        const brand = await ctx.db.query('brands').filter(q => q.eq(q.field('_id'), product.brand)).first()
-
-
-
-        return {
-          name: product.name,
-          _id: product._id,
-          description: product.description,
-          type: product.type,
-          price: product.price,
-          volume: product.volume,
-          brand: brand?.name || '',
-          main_image: mainImageUrl,
-        }
-      })
-    )
-
-  },
-})
-
-export const getProductById = query({
-  args:{product_id: v.id('products')},
+// Get product by slug
+export const getProductBySlug = query({
+  args: { slug: v.string() },
   handler: async (ctx, args) => {
-    return await ctx.db.get(args.product_id)
-  }
-})
-
-export const getProductDetails = query({
-  args: { product_id: v.id('products') },
-  handler: async (ctx, args) => {
-
-    const product = await ctx.db.get(args.product_id)
-
-    if(!product) {
-      throw new Error('Product not found')
-    }
-
-    const mainImageUrl = await ctx.storage.getUrl(product.main_image) || ''
-    const brand = await ctx.db.query('brands').filter(q => q.eq(q.field('_id'), product.brand)).first()
-
-     const images = product.images
-       ? await Promise.all(
-           product.images.map(async item => {
-             const imageUrl =  await ctx.storage.getUrl(item)
-             if(!imageUrl || imageUrl === undefined) return
-              return imageUrl
-           })
-         )
-       : []
-
-    return {
-      name: product.name,
-      _id: product._id,
-      description: product.description,
-      type: product.type,
-      price: product.price,
-      volume: product.volume,
-      tasting_notes: product.tasting_notes,
-      pairing_suggestions: product.pairing_suggestions,
-      suggested_cocktail: product.suggested_cocktail,
-      main_image: mainImageUrl,
-      imagesUrls: images,
-      brand: brand
-    }
-  }
-})
-
-export const getProduct = query({
-  args: { product_id: v.id('products') },
-  handler: async (ctx, { product_id }) => {
     const product = await ctx.db
       .query('products')
-      .filter(q => q.eq(q.field('_id'), product_id))
+      .withIndex('bySlug', q => q.eq('slug', args.slug))
       .first()
 
-    const mainImageUrl = product?.main_image
-      ? await ctx.storage.getUrl(product.main_image)
-      : ''
+    if (!product) return null
 
-    const images = product?.images
-      ? await Promise.all(
-          product.images.map(async image_id => {
-            return await ctx.storage.getUrl(image_id)
-          })
-        )
-      : []
+    // Get product attributes
+    const attributes = await ctx.db
+      .query('product_attributes')
+      .withIndex('byProduct', q => q.eq('product_id', product._id))
+      .first()
 
-    return {
-      ...product,
-      main_image: mainImageUrl,
-      images,
-    }
+    // Get product variants
+    const variants = await ctx.db
+      .query('product_variants')
+      .withIndex('byProduct', q => q.eq('product_id', product._id))
+      .collect()
+
+    return { product, attributes, variants }
   },
 })
 
-export const getImageUrl = query({
-  args: { image_id: v.id('_storage') },
-  handler: async (ctx, { image_id }) => {
-    return await ctx.storage.getUrl(image_id)
+// Get product by ID
+export const getProductById = query({
+  args: { id: v.id('products') },
+  handler: async (ctx, args) => {
+    const product = await ctx.db.get(args.id)
+    if (!product) return null
+
+    const attributes = await ctx.db
+      .query('product_attributes')
+      .withIndex('byProduct', q => q.eq('product_id', args.id))
+      .first()
+
+    const variants = await ctx.db
+      .query('product_variants')
+      .withIndex('byProduct', q => q.eq('product_id', args.id))
+      .collect()
+
+    return { product, attributes, variants }
   },
 })
 
-export const createProduct = mutation({
+// Get products by type
+export const getProductsByType = query({
+  args: {
+    type: v.union(v.literal('wine'), v.literal('spirit')),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    // Create a single query chain
+    const products = await ctx.db
+      .query('products')
+      .filter(q => q.eq(q.field('product_type'), args.type))
+      .take(args.limit ?? 1000) // Use nullish coalescing for default limit
+
+    return products
+  },
+})
+
+// Add new product
+export const addProduct = mutation({
   args: {
     name: v.string(),
     description: v.string(),
-    type: v.union(
-      v.literal('Brandy'),
-      v.literal('Gin'),
-      v.literal('Whiskey'),
-      v.literal('Vodka'),
-      v.literal('Rum'),
-      v.literal('Tequila'),
-    ),
-    brand: v.id('brands'),
-    tasting_notes: v.string(),
+    producer_id: v.id('producers'),
+    categories: v.array(v.id('categories')), // Changed from single category_id
     price: v.number(),
-    pairing_suggestions: v.string(),
-    volume: v.number(),
     main_image: v.id('_storage'),
-    images: v.optional(v.array(v.id('_storage'))),
-    cocktail_name: v.string(),
-    ingredients: v.string(),
-    cocktail_description: v.string(),
-    by: v.optional(v.string()),
+    images: v.array(v.id('_storage')),
+    in_stock: v.boolean(),
+    product_type: v.union(v.literal('wine'), v.literal('spirit')),
+    slug: v.string(),
+    meta_description: v.optional(v.string()),
+    featured: v.boolean(),
   },
   handler: async (ctx, args) => {
-    try {
-      const product = await ctx.db.insert('products', {
-        name: args.name,
-        description: args.description,
-        type: args.type,
-        brand: args.brand,
-        tasting_notes: args.tasting_notes,
-        price: args.price,
-        pairing_suggestions: args.pairing_suggestions,
-        volume: args.volume,
-        main_image: args.main_image,
-        suggested_cocktail: {
-          name: args.cocktail_name,
-          ingredients: args.ingredients,
-          description: args.cocktail_description,
-          by: args.by,
-        },
-      })
-
-      console.log(product)
-
-      return product
-    } catch (error) {
-      throw new Error('Failed to create product')
+    // Verify all categories exist
+    for (const categoryId of args.categories) {
+      const category = await ctx.db.get(categoryId)
+      if (!category) {
+        throw new Error(`Category ${categoryId} not found`)
+      }
     }
+
+    const productId = await ctx.db.insert('products', {
+      ...args,
+    })
+    return productId
   },
 })
 
-
+// Update existing product
 export const updateProduct = mutation({
   args: {
-    productId: v.id('products'),
-    name: v.string(),
-    description: v.string(),
-    type: v.union(
-      v.literal('Brandy'),
-      v.literal('Gin'),
-      v.literal('Whiskey'),
-      v.literal('Vodka'),
-      v.literal('Rum'),
-      v.literal('Tequila')
-    ),
-    brand: v.id('brands'),
-    tasting_notes: v.string(),
-    price: v.number(),
-    pairing_suggestions: v.string(),
-    volume: v.number(),
-    main_image: v.id('_storage'),
+    id: v.id('products'),
+    name: v.optional(v.string()),
+    description: v.optional(v.string()),
+    producer_id: v.optional(v.id('producers')),
+    categories: v.optional(v.array(v.id('categories'))),
+    price: v.optional(v.number()),
+    main_image: v.optional(v.id('_storage')),
     images: v.optional(v.array(v.id('_storage'))),
-    cocktail_name: v.string(),
-    ingredients: v.string(),
-    cocktail_description: v.string(),
-    by: v.optional(v.string()),
+    in_stock: v.optional(v.boolean()),
+    product_type: v.optional(v.union(v.literal('wine'), v.literal('spirit'))),
+    slug: v.optional(v.string()),
+    meta_description: v.optional(v.string()),
+    featured: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
-    try {
-      const product = await ctx.db.patch(args.productId, {
-        name: args.name,
-        description: args.description,
-        type: args.type,
-        brand: args.brand,
-        tasting_notes: args.tasting_notes,
-        price: args.price,
-        pairing_suggestions: args.pairing_suggestions,
-        volume: args.volume,
-        main_image: args.main_image,
-        suggested_cocktail: {
-          name: args.cocktail_name,
-          ingredients: args.ingredients,
-          description: args.cocktail_description,
-          by: args.by,
-        },
-      })
+    const { id, categories, ...updates } = args
 
-      console.log(product)
-
-      return product
-    } catch (error) {
-      throw new Error('Failed to update product')
+    // Verify all new categories exist if updating categories
+    if (categories) {
+      for (const categoryId of categories) {
+        const category = await ctx.db.get(categoryId)
+        if (!category) {
+          throw new Error(`Category ${categoryId} not found`)
+        }
+      }
     }
+
+    const product = await ctx.db.get(id)
+
+    if (!product) throw new Error('Product not found')
+
+    await ctx.db.patch(id, { ...updates, categories })
+    return id
+  },
+})
+
+// Delete product
+export const deleteProduct = mutation({
+  args: { id: v.id('products') },
+  handler: async (ctx, args) => {
+    const product = await ctx.db.get(args.id)
+
+    if (!product) throw new Error('Product not found')
+
+    await ctx.db.delete(args.id)
+    return args.id
+  },
+})
+
+// Create product attributes
+export const addProductAttributes = mutation({
+  args: {
+    product_id: v.id('products'),
+    variety: v.optional(v.string()),
+    vintage: v.optional(v.number()),
+    alcohol_content: v.optional(v.number()),
+    region: v.optional(v.string()),
+    aging: v.optional(v.string()),
+    distillation_method: v.optional(v.string()),
+    tasting_notes: v.optional(v.string()),
+    serving_suggestion: v.optional(v.string()),
+    awards: v.optional(v.array(v.string())),
+    pairing_suggestions: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    // Verify product exists
+    const product = await ctx.db.get(args.product_id)
+    if (!product) throw new Error('Product not found')
+
+    // Create attributes
+    return await ctx.db.insert('product_attributes', args)
+  },
+})
+
+// Update product attributes
+export const updateProductAttributes = mutation({
+  args: {
+    id: v.id('product_attributes'),
+    variety: v.optional(v.string()),
+    vintage: v.optional(v.number()),
+    alcohol_content: v.optional(v.number()),
+    region: v.optional(v.string()),
+    aging: v.optional(v.string()),
+    distillation_method: v.optional(v.string()),
+    tasting_notes: v.optional(v.string()),
+    serving_suggestion: v.optional(v.string()),
+    awards: v.optional(v.array(v.string())),
+    pairing_suggestions: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const { id, ...updates } = args
+    const attributes = await ctx.db.get(id)
+
+    if (!attributes) throw new Error('Product attributes not found')
+
+    await ctx.db.patch(id, updates)
+    return id
+  },
+})
+
+// Delete product attributes
+export const deleteProductAttributes = mutation({
+  args: {
+    id: v.id('product_attributes'),
+  },
+  handler: async (ctx, args) => {
+    const attributes = await ctx.db.get(args.id)
+
+    if (!attributes) throw new Error('Product attributes not found')
+
+    await ctx.db.delete(args.id)
+    return args.id
+  },
+})
+
+// Add product variant
+export const addProductVariant = mutation({
+  args: {
+    product_id: v.id('products'),
+    sku: v.string(),
+    volume: v.number(),
+    price: v.number(),
+    stock_level: v.number(),
+    barcode: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    // Verify product exists
+    const product = await ctx.db.get(args.product_id)
+    if (!product) throw new Error('Product not found')
+
+    // Check if SKU already exists
+    const existingVariant = await ctx.db
+      .query('product_variants')
+      .filter(q => q.eq(q.field('sku'), args.sku))
+      .first()
+    if (existingVariant) throw new Error('SKU already exists')
+
+    return await ctx.db.insert('product_variants', args)
+  },
+})
+
+// Update product variant
+export const updateProductVariant = mutation({
+  args: {
+    id: v.id('product_variants'),
+    sku: v.optional(v.string()),
+    volume: v.optional(v.number()),
+    price: v.optional(v.number()),
+    stock_level: v.optional(v.number()),
+    barcode: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const { id, ...updates } = args
+    const variant = await ctx.db.get(id)
+
+    if (!variant) throw new Error('Product variant not found')
+
+    // If SKU is being updated, check for uniqueness
+    if (updates.sku) {
+      const existingVariant = await ctx.db
+        .query('product_variants')
+        .filter(q => q.eq(q.field('sku'), updates.sku))
+        .first()
+      if (existingVariant && existingVariant._id !== id) {
+        throw new Error('SKU already exists')
+      }
+    }
+
+    await ctx.db.patch(id, updates)
+    return id
+  },
+})
+
+// Delete product variant
+export const deleteProductVariant = mutation({
+  args: {
+    id: v.id('product_variants'),
+  },
+  handler: async (ctx, args) => {
+    const variant = await ctx.db.get(args.id)
+
+    if (!variant) throw new Error('Product variant not found')
+
+    await ctx.db.delete(args.id)
+    return args.id
   },
 })
 
 export const generateUploadUrl = mutation(async ctx => {
-  const storageItem = await ctx.storage.generateUploadUrl()
-
-  return storageItem
-})
-
-
-export const getProductCount = query({
-  handler: async ctx => {
-    const data= await ctx.db.query('products').collect()
-
-    if(!data) {
-      return 0
-    }
-
-    return data.length
-  }
+  return await ctx.storage.generateUploadUrl()
 })
 
 

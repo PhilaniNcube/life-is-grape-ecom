@@ -23,51 +23,6 @@ export type Post = {
   } | null
 }
 
-export type WineType =
-  | 'Sauvignon Blanc'
-  | 'Chardonnay'
-  | 'Merlot'
-  | 'Cabernet Sauvignon'
-  | 'Pinot Noir'
-  | 'Pinot Grigio'
-  | 'Pinotage'
-  | 'Syrah'
-  | 'Zinfandel'
-  | 'Riesling'
-  | 'Port'
-  | 'Sherry'
-  | 'Madeira'
-  | 'Marsala'
-  | 'Vermouth'
-  | 'Rose'
-  | 'Malbec'
-  | 'Champagne'
-  | 'Prosecco'
-  | 'Sangiovese'
-  | 'Moscato'
-
-export type Wine = {
-  _id: string
-  name: string
-  year: number
-  alcohol_content: number
-  in_stock: boolean
-  type: WineType
-  main_image: string;
-  price: number;
-  images: Id<'_storage'>[]
-  serving_suggestion: string
-  variety: 'red' | 'white' | 'rose' | 'sparkling' | 'dessert' | 'fortified'
-  brand: { _id: Id<'brands'>; _creationTime: number; name: string } | null
-  winery: {
-    _id: Id<'wineries'>
-    _creationTime: number
-    name: string
-    location: string
-    description: string
-    image: Id<'_storage'>
-  } | null
-}
 
 
 export type ExpandedBooking = {
@@ -101,25 +56,4 @@ export type LiqourListItem = {
   main_image: string | null
 }
 
-export type LiqourDetail =  {
-  name: string
-  _id: Id<'products'>
-  description: string
-  type: 'Brandy' | 'Gin' | 'Whiskey' | 'Vodka' | 'Rum' | 'Tequila'
-  price: number
-  volume: number
-  main_image: string
-  imagesUrls: (string | undefined)[]
-  brand: {
-    _id: Id<"brands">;
-    _creationTime: number;
-    name: string;
-} | null
-  tasting_notes: string
-  pairing_suggestions: string
-  suggested_cocktail: {
-    name: string
-    ingredients: string
-    description: string
-  }
-}
+

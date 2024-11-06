@@ -14,15 +14,14 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as bookings from "../bookings.js";
-import type * as brands from "../brands.js";
 import type * as cart from "../cart.js";
+import type * as categories from "../categories.js";
 import type * as gifts from "../gifts.js";
 import type * as http from "../http.js";
+import type * as producers from "../producers.js";
 import type * as products from "../products.js";
 import type * as tasting_experiences from "../tasting_experiences.js";
 import type * as users from "../users.js";
-import type * as wineries from "../wineries.js";
-import type * as wines from "../wines.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -34,15 +33,14 @@ import type * as wines from "../wines.js";
  */
 declare const fullApi: ApiFromModules<{
   bookings: typeof bookings;
-  brands: typeof brands;
   cart: typeof cart;
+  categories: typeof categories;
   gifts: typeof gifts;
   http: typeof http;
+  producers: typeof producers;
   products: typeof products;
   tasting_experiences: typeof tasting_experiences;
   users: typeof users;
-  wineries: typeof wineries;
-  wines: typeof wines;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

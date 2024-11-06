@@ -6,8 +6,9 @@ import { cn } from '@/lib/utils'
 
 import Providers from '@/components/providers'
 
-
 import './globals.css'
+
+import { Toaster } from 'sonner'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -27,8 +28,27 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
   title: 'Life Is Grape',
-  description: 'Established on 1 April 2016, our purpose is to introduce proudly South African brands of hand-crafted wines and spirits to those operating in the trade, and to consumers. These products are produced in South Africa with quality and passion. South Africa is recognised worldwide as producing premium quality, interesting and distinctive wines and spirits in an environmentally sensitive and ethically responsible manner.',
-  keywords: ['wine', 'wine tasting', 'brandy', 'whiskey', 'gin', 'vodka', 'rum', 'tequila', 'liqueur', 'south african', 'hand-crafted', 'artisanal', 'premium', 'quality', 'passion', 'environmentally sensitive', 'ethically responsible'],
+  description:
+    'Established on 1 April 2016, our purpose is to introduce proudly South African brands of hand-crafted wines and spirits to those operating in the trade, and to consumers. These products are produced in South Africa with quality and passion. South Africa is recognised worldwide as producing premium quality, interesting and distinctive wines and spirits in an environmentally sensitive and ethically responsible manner.',
+  keywords: [
+    'wine',
+    'wine tasting',
+    'brandy',
+    'whiskey',
+    'gin',
+    'vodka',
+    'rum',
+    'tequila',
+    'liqueur',
+    'south african',
+    'hand-crafted',
+    'artisanal',
+    'premium',
+    'quality',
+    'passion',
+    'environmentally sensitive',
+    'ethically responsible',
+  ],
 }
 
 export default function RootLayout({
@@ -44,11 +64,14 @@ export default function RootLayout({
             'flex min-h-screen flex-col',
             geistSans.variable,
             geistMono.variable,
-            inter.variable,
+            inter.variable
             // playfair.variable
           )}
         >
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <Toaster />
+          </Providers>
         </body>
       </html>
     </ClerkProvider>

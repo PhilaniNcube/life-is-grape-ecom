@@ -1,6 +1,18 @@
-import { BottleIcon } from "@sanity/icons"
-import { BookA, GiftIcon, Layout, PenIcon, Ribbon, ShoppingBag, ShoppingCart, Users, Wine } from "lucide-react"
-import Link from "next/link"
+import { BottleIcon } from '@sanity/icons'
+import {
+  BookA,
+  Boxes,
+  CogIcon,
+  GiftIcon,
+  Layout,
+  PenIcon,
+  Ribbon,
+  ShoppingBag,
+  ShoppingCart,
+  Users,
+  Wine,
+} from 'lucide-react'
+import Link from 'next/link'
 
 const NavItems = () => (
   <>
@@ -26,18 +38,18 @@ const NavItems = () => (
       Bookings
     </Link>
     <Link
-      href='/dashboard/brands'
+      href='/dashboard/categories'
       className='flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50'
     >
-      <Ribbon className='h-4 w-4' />
-      Brands
+      <Boxes className='h-4 w-4' />
+      Categories
     </Link>
     <Link
       href='/dashboard/products'
       className='flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50'
     >
       <ShoppingBag className='h-4 w-4' />
-      Wines
+      Products
     </Link>{' '}
     <Link
       href='/dashboard/gifts'
@@ -47,18 +59,11 @@ const NavItems = () => (
       Gifts
     </Link>
     <Link
-      href='/dashboard/items'
+      href='/dashboard/producers'
       className='flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50'
     >
-      <BottleIcon className='h-4 w-4' />
-      Brandy/Whiskey/Gin
-    </Link>
-    <Link
-      href='/dashboard/suppliers'
-      className='flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50'
-    >
-      <ShoppingBag className='h-4 w-4' />
-      Wineries/Suppliers
+      <CogIcon className='h-4 w-4' />
+      Producers
     </Link>
     <Link
       href='/dashboard/customers'
@@ -69,6 +74,5 @@ const NavItems = () => (
     </Link>
   </>
 )
-
 
 export default NavItems

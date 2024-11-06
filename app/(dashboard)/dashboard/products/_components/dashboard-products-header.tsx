@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import NewProductDialog from './new-product-dialog'
 import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 

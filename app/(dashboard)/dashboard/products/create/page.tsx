@@ -1,15 +1,20 @@
-import NewBrandDialog from "../../brands/_components/new-brand-dialog";
-import NewSupplierDialog from "../../suppliers/_components/new-supplier-dialog";
+import { fetchQuery } from "convex/nextjs";
 import NewProductForm from "../_components/new-product-form";
+import { api } from "@/convex/_generated/api";
 
-const CreateProductPage = () => {
+const CreateProductPage = async () => {
+
+  const categoriesData = fetchQuery(api.categories.getCategories)
+  const producersData = fetchQuery(api.producers.getProducers)
+
+  const [categories, producers] = await Promise.all([categoriesData, producersData])
+
   return (
     <div>
       <div className='flex gap-5 mb-4'>
-        <NewBrandDialog />
-        <NewSupplierDialog />
+
       </div>
-      <NewProductForm />
+      <NewProductForm categories={categories} producers={producers} />
     </div>
   )
 };

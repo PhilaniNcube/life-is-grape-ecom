@@ -1,0 +1,144 @@
+import { mutation, query } from './_generated/server'
+import { v } from 'convex/values'
+
+// Get all categories
+export const getCategories = query({
+  handler: async ctx => {
+    return await ctx.db.query('categories').collect()
+  },
+})
+
+// Get categories by type
+export const getCategoriesByType = query({
+  args: {
+    type: v.union(v.literal('wine'), v.literal('spirit')),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('categories')
+      .filter(q => q.eq(q.field('type'), args.type))
+      .collect()
+  },
+})
+
+// Get category by ID with children
+export const getCategoryWithChildren = query({
+  args: {
+    categoryId: v.id('categories'),
+  },
+  handler: async (ctx, args) => {
+    const category = await ctx.db.get(args.categoryId)
+    if (!category) return null
+
+    const children = await ctx.db
+      .query('categories')
+      .withIndex('byParent', q => q.eq('parent_id', args.categoryId))
+      .collect()
+
+    return {
+      category,
+      children,
+    }
+  },
+})
+
+// Get parent categories only
+export const getParentCategories = query({
+  args: {
+    type: v.optional(v.union(v.literal('wine'), v.literal('spirit'))),
+  },
+  handler: async (ctx, args) => {
+    let query = ctx.db
+      .query('categories')
+      .filter(q => q.eq(q.field('parent_id'), null))
+
+    if (args.type) {
+      query = query.filter(q => q.eq(q.field('type'), args.type))
+    }
+
+    return await query.collect()
+  },
+})
+
+
+// Add new category
+export const addCategory = mutation({
+  args: {
+    name: v.string(),
+    parent_id: v.optional(v.id('categories')),
+    type: v.union(v.literal('wine'), v.literal('spirit')),
+    attributes: v.array(v.string()),
+  },
+  handler: async (ctx, args) => {
+    // If parent_id provided, verify it exists
+    if (args.parent_id) {
+      const parent = await ctx.db.get(args.parent_id);
+      if (!parent) throw new Error('Parent category not found');
+    }
+
+    return await ctx.db.insert('categories', args);
+  },
+});
+
+// Update category
+export const updateCategory = mutation({
+  args: {
+    id: v.id('categories'),
+    name: v.optional(v.string()),
+    parent_id: v.optional(v.id('categories')),
+    type: v.optional(v.union(v.literal('wine'), v.literal('spirit'))),
+    attributes: v.optional(v.array(v.string())),
+  },
+  handler: async (ctx, args) => {
+    const { id, ...updates } = args;
+
+    // Verify category exists
+    const category = await ctx.db.get(id);
+    if (!category) throw new Error('Category not found');
+
+    // If changing parent, verify new parent exists
+    if (updates.parent_id) {
+      const parent = await ctx.db.get(updates.parent_id);
+      if (!parent) throw new Error('Parent category not found');
+
+      // Prevent circular reference
+      if (updates.parent_id === id) {
+        throw new Error('Category cannot be its own parent');
+      }
+    }
+
+    await ctx.db.patch(id, updates);
+    return id;
+  },
+});
+
+// Delete category
+export const deleteCategory = mutation({
+  args: { id: v.id('categories') },
+  handler: async (ctx, args) => {
+    // Check if category exists
+    const category = await ctx.db.get(args.id)
+    if (!category) throw new Error('Category not found')
+
+    // Check for child categories
+    const children = await ctx.db
+      .query('categories')
+      .withIndex('byParent', q => q.eq('parent_id', args.id))
+      .collect()
+
+    if (children.length > 0) {
+      throw new Error('Cannot delete category with child categories')
+    }
+
+
+
+    // if (products.length > 0) {
+    //   throw new Error('Cannot delete category while it is assigned to products')
+    // }
+
+    await ctx.db.delete(args.id)
+    return args.id
+  },
+});
+
+

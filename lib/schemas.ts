@@ -2,53 +2,85 @@ import {z} from 'zod';
 import {JSONContent} from 'novel';
 // define zod schemas for form actions
 
-export const CreateWineSchema = z.object({
-  brand: z.string(),
+// Base product schema
+const BaseProductSchema = z.object({
   name: z.string().min(2, 'Name is required'),
-  winery_id: z.string(),
   description: z.string().min(10, 'Description must be at least 10 characters'),
-  year: z.coerce.number().int().min(1900).max(new Date().getFullYear()),
+  producer_id: z.string(),
+  categories: z.array(z.string()),
   price: z.coerce.number().positive('Price must be positive'),
   main_image: z.string(),
-  images: z.array(z.string()).optional(),
+  images: z.array(z.string()),
   in_stock: z.boolean(),
-  alcohol_content: z.coerce.number(),
-  serving_suggestion: z.string(),
-  variety: z.string().min(1, 'Variety is required'),
-  type: z.string().min(1, 'Type is required'),
+  product_type: z.enum(['wine', 'spirit']),
+  slug: z.string(),
+  meta_description: z.string().optional(),
+  featured: z.boolean(),
+});
+
+// Product attributes schema
+const WineAttributesSchema = z.object({
+  variety: z.string(),
+  vintage: z.number().int().min(1900).max(new Date().getFullYear()),
+  alcohol_content: z.number().min(0).max(100),
+  region: z.string(),
+  tasting_notes: z.string().optional(),
+  serving_suggestion: z.string().optional(),
+  awards: z.array(z.string()).optional(),
+  pairing_suggestions: z.string().optional(),
+});
+
+const SpiritAttributesSchema = z.object({
+  aging: z.string().optional(),
+  distillation_method: z.string().optional(),
+  alcohol_content: z.number().min(0).max(100),
+  region: z.string(),
+  tasting_notes: z.string().optional(),
+  serving_suggestion: z.string().optional(),
+  awards: z.array(z.string()).optional(),
 })
 
-export const UpdateWineSchema = z.object({
+// Product variant schema
+const ProductVariantSchema = z.object({
+  product_id: z.string(),
+  sku: z.string(),
+  volume: z.number().positive(),
+  price: z.number().positive(),
+  stock_level: z.number().min(0),
+  barcode: z.string().optional(),
+})
+
+
+
+// Create schemas
+export const CreateProductSchema = BaseProductSchema;
+
+export const CreateWineAttributesSchema = WineAttributesSchema.extend({
+  product_id: z.string(),
+});
+
+export const CreateSpiritAttributesSchema = SpiritAttributesSchema.extend({
+  product_id: z.string(),
+});
+
+export const CreateProductVariantSchema = ProductVariantSchema;
+
+// Update schemas
+export const UpdateProductSchema = BaseProductSchema.partial().extend({
   id: z.string(),
-  brand: z.string(),
-  name: z.string().min(2, 'Name is required'),
-  winery_id: z.string(),
-  description: z.string().min(10, 'Description must be at least 10 characters'),
-  year: z.coerce.number().int().min(1900).max(new Date().getFullYear()),
-  price: z.coerce.number().positive('Price must be positive'),
-  main_image: z.string(),
-  images: z.array(z.string()).optional(),
-  in_stock: z.boolean(),
-  alcohol_content: z.coerce.number(),
-  serving_suggestion: z.string(),
-  variety: z.string().min(1, 'Variety is required'),
-  type: z.string().min(1, 'Type is required'),
-})
+});
 
+export const UpdateWineAttributesSchema = WineAttributesSchema.partial().extend({
+  id: z.string(),
+});
 
-export const CreateBrandSchema = z.object({
-  name: z.string()
-})
+export const UpdateSpiritAttributesSchema = SpiritAttributesSchema.partial().extend({
+  id: z.string(),
+});
 
-export const CreatePostSchema = z.object({
-  title: z.string().min(2, 'Title is required'),
-  slug: z.string().min(2, 'Slug is required'),
-  excerpt: z.string().min(10, 'Excerpt must be at least 10 characters'),
-  coverImageId: z.string().optional(),
-  content: z.custom<JSONContent>()
-})
-
-export const WineType = z.enum(['red', 'white', 'rose', 'sparkling', 'dessert', 'fortified'])
+export const UpdateProductVariantSchema = ProductVariantSchema.partial().extend({
+  id: z.string(),
+});
 
 export const CreateBookingSchema = z.object({
   experience_id: z.string(),
@@ -60,42 +92,6 @@ export const CreateBookingSchema = z.object({
   paid: z.boolean(),
 })
 
-
-export const CreateItemSchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  type: z.enum(['Brandy', 'Whiskey', 'Gin', 'Vodka', 'Rum', 'Tequila']),
-  brand_id: z.string(),
-  tasting_notes: z.string(),
-  price: z.coerce.number(),
-  pairing_suggestions: z.string(),
-  volume: z.coerce.number(),
-  main_image: z.string(),
-  images: z.optional(z.array(z.string())),
-  cocktail_name: z.string(),
-  ingredients: z.string(),
-  cocktail_description: z.string(),
-  by: z.optional(z.string()),
-})
-
-
-export const UpdateItemSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  type: z.enum(['Brandy', 'Whiskey', 'Gin', 'Vodka', 'Rum', 'Tequila']),
-  brand_id: z.string(),
-  tasting_notes: z.string(),
-  price: z.coerce.number(),
-  pairing_suggestions: z.string(),
-  volume: z.coerce.number(),
-  main_image: z.string(),
-  // images: z.optional(z.array(z.string())),
-  cocktail_name: z.string(),
-  ingredients: z.string(),
-  cocktail_description: z.string(),
-  by: z.optional(z.string()),
-})
 
 
 // Base Gift Schema
@@ -152,7 +148,67 @@ export const deleteGiftCustomizationSchema = z.object({
   customization_id: z.string()
 })
 
+
+// Base category schema
+export const CategoryFormSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  type: z.enum(['wine', 'spirit'], {
+    required_error: 'Category type is required',
+    invalid_type_error: 'Category type must be either wine or spirit',
+  }),
+  parent_id: z.string().optional(),
+  attributes: z.array(z.string()).default([]),
+});
+
+// Create category schema
+export const CreateCategorySchema = CategoryFormSchema;
+
+// Update category schema - all fields optional
+export const UpdateCategorySchema = CategoryFormSchema.partial().extend({
+  id: z.string({
+    required_error: 'Category ID is required',
+  }),
+});
+
+// Schema for deleting category
+export const DeleteCategorySchema = z.object({
+  id: z.string({
+    required_error: 'Category ID is required',
+  }),
+});
+
 export type Gift = z.infer<typeof giftSchema>
 export type CreateGift = z.infer<typeof createGiftSchema>
 export type UpdateGift = z.infer<typeof updateGiftSchema>
 export type GiftCustomization = z.infer<typeof giftCustomizationSchema>
+
+
+// Base producer schema
+export const ProducerFormSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  type: z.enum(['winery', 'distillery', 'brand'], {
+    required_error: 'Producer type is required',
+    invalid_type_error: 'Type must be winery, distillery or brand'
+  }),
+  location: z.string().optional(),
+  description: z.string().min(10, 'Description must be at least 10 characters').optional(),
+  logo: z.string().optional(), // For storage ID
+  website: z.string().url('Must be a valid URL').optional(),
+});
+
+// Create producer schema
+export const CreateProducerSchema = ProducerFormSchema;
+
+// Update producer schema - all fields optional
+export const UpdateProducerSchema = ProducerFormSchema.partial().extend({
+  id: z.string({
+    required_error: 'Producer ID is required',
+  }),
+});
+
+// Schema for deleting producer
+export const DeleteProducerSchema = z.object({
+  id: z.string({
+    required_error: 'Producer ID is required',
+  }),
+});

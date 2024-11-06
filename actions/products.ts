@@ -1,150 +1,159 @@
 'use server'
+import "server-only"
 
+import { revalidatePath } from 'next/cache'
+
+import { CreateProductSchema, UpdateProductSchema } from '@/lib/schemas'
+import { fetchMutation } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
-import { CreateItemSchema, UpdateItemSchema, UpdateWineSchema } from '@/lib/schemas'
-import { fetchMutation } from 'convex/nextjs'
-import { revalidatePath } from 'next/cache'
-import 'server-only'
-
-
-export async function createItemAction(prevState: unknown, formData: FormData) {
-
-  const validatedFields = CreateItemSchema.safeParse({
-    name: formData.get('name'),
-    description: formData.get('description'),
-    price: formData.get('price'),
-    main_image: formData.get('main_image'),
-    brand_id: formData.get('brand_id'),
-    volume: formData.get('volume'),
-    tasting_notes: formData.get('tasting_notes'),
-    pairing_suggestions: formData.get('pairing_suggestions'),
-    type: formData.get('type'),
-    images: formData.getAll('images'),
-    cocktail_name: formData.get('cocktail_name'),
-    ingredients: formData.get('ingredients'),
-    by: formData.get('by'),
-    cocktail_description: formData.get('cocktail_description'),
-  })
-
-  if (!validatedFields.success) {
-    console.log(validatedFields.error.flatten().fieldErrors)
-    return { status: 400, error: validatedFields.error.flatten().fieldErrors }
-  }
-
-  const brandId = validatedFields.data.brand_id as Id<"brands">
-  const mainImage = validatedFields.data.main_image as Id<'_storage'>
-  const imageIds = validatedFields.data.images as Id<'_storage'>[]
-
-  try {
-
-    const result = await fetchMutation(api.products.createProduct, {
-    name: validatedFields.data.name,
-    description: validatedFields.data.description,
-    price: validatedFields.data.price,
-    main_image: mainImage,
-    brand: brandId,
-    volume: validatedFields.data.volume,
-    tasting_notes: validatedFields.data.tasting_notes,
-    pairing_suggestions: validatedFields.data.pairing_suggestions,
-    type: validatedFields.data.type,
-    images: imageIds ,
-    cocktail_name: validatedFields.data.cocktail_name,
-    ingredients: validatedFields.data.ingredients,
-    cocktail_description: validatedFields.data.cocktail_description,
-    by: validatedFields.data.by,
-  })
-
-  console.log(result)
-
-  revalidatePath('/products', "layout")
-  revalidatePath('/', "layout")
-  revalidatePath('/dashboard/items', "layout")
-  revalidatePath('/dashboard', "layout")
-
-  return {
-    status: 200,
-    data: result,
-    message: 'Item created successfully'
-  }
-
-  } catch (error) {
-    console.error(error)
-    return { status: 500, error: 'Internal server error'}
-  }
 
 
 
+type ActionResponse = {
+  success: boolean
+  error?: string
+  data?: any
 }
 
-export async function updateItemAction(prevState: unknown, formData: FormData) {
-
-  const validatedFields = UpdateItemSchema.safeParse({
-    id: formData.get('id'),
-    name: formData.get('name'),
-    description: formData.get('description'),
-    price: formData.get('price'),
-    main_image: formData.get('main_image'),
-    brand_id: formData.get('brand_id'),
-    volume: formData.get('volume'),
-    tasting_notes: formData.get('tasting_notes'),
-    pairing_suggestions: formData.get('pairing_suggestions'),
-    type: formData.get('type'),
-    // images: formData.getAll('images'),
-    cocktail_name: formData.get('cocktail_name'),
-    ingredients: formData.get('ingredients'),
-    by: formData.get('by'),
-    cocktail_description: formData.get('cocktail_description'),
-  })
-
-  if (!validatedFields.success) {
-    console.log(validatedFields.error.flatten().fieldErrors)
-    return { status: 400, error: validatedFields.error.flatten().fieldErrors }
-  }
 
 
-  const product_id = validatedFields.data.id as Id<"products">
-  const brandId = validatedFields.data.brand_id as Id<"brands">
-  const mainImage = validatedFields.data.main_image as Id<'_storage'>
+export async function createProductAction(
+  prevState:unknown,
+  formData: FormData
+): Promise<ActionResponse> {
 
 
   try {
+    const cats = formData.get('categories') as string
 
-    const result = await fetchMutation(api.products.updateProduct, {
-      productId: product_id,
-      name: validatedFields.data.name,
-      description: validatedFields.data.description,
-      price: validatedFields.data.price,
-      main_image: mainImage,
-      brand: brandId,
-      volume: validatedFields.data.volume,
-      tasting_notes: validatedFields.data.tasting_notes,
-      pairing_suggestions: validatedFields.data.pairing_suggestions,
-      type: validatedFields.data.type,
-      cocktail_name: validatedFields.data.cocktail_name,
-      ingredients: validatedFields.data.ingredients,
-      cocktail_description: validatedFields.data.cocktail_description,
-      by: validatedFields.data.by,
+    console.log(formData.get("in_stock"))
+
+    const validatedFields = CreateProductSchema.safeParse({
+      name: formData.get('name'),
+      description: formData.get('description'),
+      producer_id: formData.get('producer_id'),
+      categories: cats.split(','),
+      price: formData.get('price'),
+      in_stock: formData.get('in_stock') === 'on' ? true : false,
+      featured: formData.get('featured') === 'on' ? true : false,
+      main_image: formData.get('main_image'),
+      images: [],
+      slug: '',
+      product_type: formData.get('product_type'),
     })
 
-  console.log(result)
+    console.log(JSON.stringify(validatedFields, null, 2))
 
-  revalidatePath('/products', "layout")
-  revalidatePath('/', "layout")
-  revalidatePath('/dashboard/items', "layout")
-  revalidatePath('/dashboard', "layout")
+    if (!validatedFields.success) {
+      return {
+        success: false,
+        error: 'Invalid form data',
+      }
+    }
 
-  return {
-    status: 200,
-    data: result,
-    message: 'Product created successfully'
-  }
+    // convert producer_id to the type expected by the API
+    const producer_id = validatedFields.data.producer_id as Id<'producers'>
+    const categories = validatedFields.data.categories as Id<'categories'>[]
+    const main_image = validatedFields.data.main_image as Id<'_storage'>
 
+    // function to slugify a string e.g. "Hello World" => "hello-world"
+    const slugify = (str: string) =>
+      str
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^a-z0-9-]/g, '')
+
+    const product = await fetchMutation(api.products.addProduct, {
+      name: validatedFields.data.name,
+      description: validatedFields.data.description,
+      producer_id: producer_id,
+      categories: categories,
+      price: validatedFields.data.price,
+      main_image: main_image,
+      images: [],
+      in_stock: validatedFields.data.in_stock,
+      product_type: validatedFields.data.product_type,
+      slug: slugify(validatedFields.data.name),
+      featured: false,
+    })
+
+    revalidatePath('/dashboard/products')
+    return { success: true, data: product }
   } catch (error) {
-    console.error(error)
-    return { status: 500, error: 'Internal server error'}
+    return {
+      success: false,
+      error: 'Failed to create product',
+    }
   }
+}
+
+export async function updateProductAction(
+  prevState: unknown,
+  formData: FormData
+): Promise<ActionResponse> {
+  try {
+    const validatedFields = UpdateProductSchema.safeParse({
+      id: formData.get('id'),
+      name: formData.get('name'),
+      description: formData.get('description'),
+      producer_id: formData.get('producer_id'),
+      categories: formData.get('categories'),
+      price: formData.get('price'),
+      main_image: formData.get('main_image'),
+      product_type: formData.get('product_type'),
+      in_stock: formData.get('in_stock'),
+      meta_description: formData.get('meta_description'),
+      featured: formData.get('featured'),
+    })
+
+    if (!validatedFields.success) {
+      return {
+        success: false,
+        error: 'Invalid form data',
+      }
+    }
 
 
 
+    const product = await fetchMutation(
+      api.products.updateProduct,
+      {
+
+        id: validatedFields.data.id as Id<"products">,
+        name: validatedFields.data.name,
+        description: validatedFields.data.description,
+        producer_id: validatedFields.data.producer_id as Id<"producers">,
+        categories: validatedFields.data.categories as Id<"categories">[],
+        price: validatedFields.data.price,
+        main_image: validatedFields.data.main_image as Id<"_storage">,
+        product_type: validatedFields.data.product_type,
+        in_stock: validatedFields.data.in_stock,
+        meta_description: validatedFields.data.meta_description,
+        featured: validatedFields.data.featured,
+      }
+    )
+
+    revalidatePath('/dashboard/products')
+    return { success: true, data: product }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to update product',
+    }
+  }
+}
+
+export async function deleteProductAction(id: Id<"products">): Promise<ActionResponse> {
+  try {
+    await fetchMutation(api.products.deleteProduct, { id })
+
+    revalidatePath('/admin/products')
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to delete product',
+    }
+  }
 }
