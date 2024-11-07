@@ -8,7 +8,7 @@ import VariantList from '../_components/variant-list'
 import AddProductAttributeDialog from '../_components/add-product-attribute'
 import AttributeList from '../_components/attribute-list'
 
-const ProductPage = async ({ params }: { params: { id: Id<'products'> } }) => {
+const ProductPage = async ({ params }: { params: Promise<{ id: Id<'products'> }> }) => {
   const { id } = await params
 
   const product = await fetchQuery(api.products.getShallowProduct, { id })
