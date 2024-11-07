@@ -66,6 +66,7 @@ export default defineSchema({
   categories: defineTable({
     name: v.string(),
     parent_id: v.optional(v.id('categories')),
+    slug: v.optional(v.string()),
     type: v.union(v.literal('wine'), v.literal('spirit')),
     attributes: v.array(v.string()), // List of applicable attribute IDs
   }).index('byParent', ['parent_id']),

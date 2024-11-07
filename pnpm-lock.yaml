@@ -183,6 +183,9 @@ importers:
       sanity:
         specifier: '3'
         version: 3.62.2(@types/node@22.5.5)(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(styled-components@6.1.13(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021))(types-react@19.0.0-rc.1)
+      slugify:
+        specifier: ^1.6.6
+        version: 1.6.6
       sonner:
         specifier: ^1.5.0
         version: 1.5.0(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
@@ -7089,6 +7092,10 @@ packages:
     resolution: {integrity: sha512-R+rZlGR95NrrmQp2jsp9+MovFklpOkkBWOKUSQCiBq0nAz5VJq+AC2LZOiQ9KSDwGWcYUxR9mvhzgGn4J057Ew==}
     engines: {node: '>=14'}
     hasBin: true
+
+  slugify@1.6.6:
+    resolution: {integrity: sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==}
+    engines: {node: '>=8.0.0'}
 
   snake-case@3.0.4:
     resolution: {integrity: sha512-LAOh4z89bGQvl9pFfNF8V146i7o7/CqFPbqzYgP+yYzDIDeS9HaNFtXABamRW+AQzEVODcvE79ljJ+8a9YSdMg==}
@@ -15749,6 +15756,8 @@ snapshots:
       - react-dom
       - supports-color
       - uuid
+
+  slugify@1.6.6: {}
 
   snake-case@3.0.4:
     dependencies:

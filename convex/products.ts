@@ -1,6 +1,20 @@
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
 
+export const getShallowProduct = query({
+  args: { id: v.id('products') },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id)
+  },
+})
+
+export const getShallowProducts = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query('products').collect()
+  },
+})
+
 // Get product by slug
 export const getProductBySlug = query({
   args: { slug: v.string() },
@@ -289,8 +303,39 @@ export const deleteProductVariant = mutation({
   },
 })
 
+// Get product variants by product ID
+export const getProductVariants = query({
+  args: { product_id: v.id('products') },
+  handler: async (ctx, args) => {
+    const variants = await ctx.db
+      .query('product_variants')
+      .filter(q => q.eq(q.field('product_id'), args.product_id))
+      .collect()
+
+    return variants
+  },
+})
+
+// Get product attributes by product ID
+export const getProductAttributes = query({
+  args: { product_id: v.id('products') },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('product_attributes')
+      .filter(q => q.eq(q.field('product_id'), args.product_id))
+      .collect()
+
+  },
+})
+
 export const generateUploadUrl = mutation(async ctx => {
   return await ctx.storage.generateUploadUrl()
 })
 
 
+export const getMainImage = query({
+  args: { id: v.id('_storage') },
+  handler: async (ctx, args) => {
+    return await ctx.storage.getUrl(args.id)
+  },
+})

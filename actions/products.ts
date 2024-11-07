@@ -7,6 +7,7 @@ import { CreateProductSchema, UpdateProductSchema } from '@/lib/schemas'
 import { fetchMutation } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
+import { redirect } from "next/navigation"
 
 
 
@@ -77,8 +78,11 @@ export async function createProductAction(
       slug: slugify(validatedFields.data.name),
       featured: false,
     })
+    revalidatePath('/dashboard/products', "layout")
+    revalidatePath(`/dashboard/products/${product}`)
 
-    revalidatePath('/dashboard/products')
+    // redirect(`/dashboard/products/${product}`)
+
     return { success: true, data: product }
   } catch (error) {
     return {
@@ -92,19 +96,26 @@ export async function updateProductAction(
   prevState: unknown,
   formData: FormData
 ): Promise<ActionResponse> {
+
+
+
   try {
+
+     const cats = formData.get('categories') as string
+
     const validatedFields = UpdateProductSchema.safeParse({
       id: formData.get('id'),
       name: formData.get('name'),
       description: formData.get('description'),
       producer_id: formData.get('producer_id'),
-      categories: formData.get('categories'),
+      categories: cats.split(','),
       price: formData.get('price'),
+      in_stock: formData.get('in_stock') === 'on' ? true : false,
+      featured: formData.get('featured') === 'on' ? true : false,
       main_image: formData.get('main_image'),
+      // images: [],
+      slug: '',
       product_type: formData.get('product_type'),
-      in_stock: formData.get('in_stock'),
-      meta_description: formData.get('meta_description'),
-      featured: formData.get('featured'),
     })
 
     if (!validatedFields.success) {

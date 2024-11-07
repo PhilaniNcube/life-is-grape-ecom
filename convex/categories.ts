@@ -1,5 +1,6 @@
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
+import slugify from 'slugify'
 
 // Get all categories
 export const getCategories = query({
@@ -76,7 +77,16 @@ export const addCategory = mutation({
       if (!parent) throw new Error('Parent category not found');
     }
 
-    return await ctx.db.insert('categories', args);
+    // create a slug from the name
+    const slug = slugify(args.name, { lower: true, replacement: '-', strict: true });
+
+    return await ctx.db.insert('categories', {
+      name: args.name,
+      parent_id: args.parent_id,
+      type: args.type,
+      attributes: [],
+      slug,
+    });
   },
 });
 
