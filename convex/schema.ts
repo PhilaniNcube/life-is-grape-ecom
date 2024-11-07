@@ -136,16 +136,5 @@ export default defineSchema({
     order_id: v.string(), // Reference to order system
     created_at: v.number(),
   }),
-  cart_items: defineTable({
-    cartId: v.id('cart'),
-    item_type: v.union(
-      v.literal('wine'),
-      v.literal('gift'),
-      v.literal('product')
-    ),
-    item_id: v.string(), // References the ID from respective tables
-    quantity: v.number(),
-    price_at_time: v.number(), // Store price when added to cart
-    added_at: v.number(),
-  }).index('byCartId', ['cartId']),
+
 })
