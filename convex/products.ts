@@ -1,3 +1,4 @@
+import { api } from './_generated/api'
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
 
@@ -12,6 +13,16 @@ export const getShallowProducts = query({
   args: {},
   handler: async (ctx) => {
     return await ctx.db.query('products').collect()
+  },
+})
+
+export const getShallowProductsByType = query({
+  args: { type: v.union(v.literal('wine'), v.literal('spirit')) },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('products')
+      .filter(q => q.eq(q.field('product_type'), args.type))
+      .collect()
   },
 })
 
@@ -75,6 +86,28 @@ export const getProductsByType = query({
       .query('products')
       .filter(q => q.eq(q.field('product_type'), args.type))
       .take(args.limit ?? 1000) // Use nullish coalescing for default limit
+
+    return products
+  },
+})
+
+
+// get first 3 products by type
+export const getFeaturedProducts = query({
+  args: {
+    type: v.union(v.literal('wine'), v.literal('spirit')),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    // Create a single query chain
+    const products = await ctx.db
+      .query('products')
+      .filter(q => q.eq(q.field('product_type'), args.type))
+      // .filter(q => q.eq(q.field('featured'), true))
+      .take(args.limit ?? 3) // Use nullish coalescing for default limit
+
+
+
 
     return products
   },
