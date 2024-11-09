@@ -6,8 +6,12 @@ import ProductImage from "../_components/product-image"
 import { formatPrice } from "@/lib/utils"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import Filter from "./_components/filter"
 
-const ShopPage = async () => {
+const ShopPage = async ({searchParams}:{searchParams:Promise<{search: string}>}) => {
+
+  const { search = "" } = await searchParams
+  console.log(search)
 
   const products = await fetchQuery(api.products.getShallowProducts)
 
@@ -19,51 +23,55 @@ const ShopPage = async () => {
           Explore Our Diverse Collection
         </h2>
 
-        {/* 3-Column Grid */}
-        <div className='grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-          {products.map(product => (
-            <div
-              key={product._id}
-              className='overflow-hidden rounded-lg bg-white shadow-md'
-            >
-              {/* product Image */}
-              <Suspense
-                fallback={
-                  <div className='flex aspect-square w-full animate-pulse items-center justify-center'>
-                    Image Loading...
-                  </div>
-                }
+        <div className='flex w-full'>
+          <div className='w-1/4'>
+           <Filter />
+          </div>
+          {/* 3-Column Grid */}
+          <div className='grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+            {products.map(product => (
+              <div
+                key={product._id}
+                className='overflow-hidden rounded-lg bg-white shadow-md'
               >
-                <ProductImage id={product.main_image} />
-              </Suspense>
+                {/* product Image */}
+                <Suspense
+                  fallback={
+                    <div className='flex aspect-square w-full animate-pulse items-center justify-center'>
+                      Image Loading...
+                    </div>
+                  }
+                >
+                  <ProductImage id={product.main_image} />
+                </Suspense>
 
-              {/* product Details */}
-              <div className='p-6'>
-                <h3 className='text-xl font-semibold text-gray-800'>
-                  {product.name}
-                </h3>
-                <p className='mt-2 line-clamp-3 text-gray-600'>
-                  {product.description}
-                </p>
+                {/* product Details */}
+                <div className='p-6'>
+                  <h3 className='text-md line-clamp-1 lg:text-lg font-semibold text-gray-800'>
+                    {product.name}
+                  </h3>
+                  <p className='mt-2 line-clamp-3 text-sm text-gray-600'>
+                    {product.description}
+                  </p>
 
-                {/* Price and Action Button */}
-                <div className='mt-4 flex items-center justify-between'>
-                  <span className='text-lg font-bold text-gray-900'>
-                    {formatPrice(product.price)}
-                  </span>
-                  <Link href={`/products/${product.slug}`}>
-                    <Button className='text-white hover:bg-red-700'>
-                      View Details
-                    </Button>
-                  </Link>
+                  {/* Price and Action Button */}
+                  <div className='mt-4 flex items-center justify-between'>
+                    <span className='text-lg font-bold text-gray-900'>
+                      {formatPrice(product.price)}
+                    </span>
+                    <Link href={`/products/${product.slug}`}>
+                      <Button className='text-white hover:bg-red-700 rounded-none' size="sm">
+                        View Details
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Optional: Link to View All Wines */}
-
       </div>
     </section>
   )

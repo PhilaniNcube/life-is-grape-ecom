@@ -183,3 +183,28 @@ export const getProductsByCategoryId = query({
     }
   },
 })
+
+
+export const getParentCategoryiesWithChildren = query({
+  args: {},
+  handler: async (ctx, args) => {
+    try {
+      const parentCategories = await ctx.db.query('categories').filter((q) => q.neq('parent_id', null)).collect()
+
+
+      const categoriesWithChildren = await Promise.all(parentCategories.map(async parentCategory => {
+        const children = await ctx.db.query('categories').withIndex('byParent', q => q.eq('parent_id', parentCategory._id)).collect()
+        return {
+          ...parentCategory,
+          children
+        }
+      }))
+
+      return categoriesWithChildren
+
+    } catch (error) {
+      console.error(error)
+      return []
+    }
+  }
+})
