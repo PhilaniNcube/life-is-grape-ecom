@@ -61,7 +61,6 @@ export const getParentCategories = query({
   },
 })
 
-
 // Add new category
 export const addCategory = mutation({
   args: {
@@ -73,12 +72,16 @@ export const addCategory = mutation({
   handler: async (ctx, args) => {
     // If parent_id provided, verify it exists
     if (args.parent_id) {
-      const parent = await ctx.db.get(args.parent_id);
-      if (!parent) throw new Error('Parent category not found');
+      const parent = await ctx.db.get(args.parent_id)
+      if (!parent) throw new Error('Parent category not found')
     }
 
     // create a slug from the name
-    const slug = slugify(args.name, { lower: true, replacement: '-', strict: true });
+    const slug = slugify(args.name, {
+      lower: true,
+      replacement: '-',
+      strict: true,
+    })
 
     return await ctx.db.insert('categories', {
       name: args.name,
@@ -86,9 +89,17 @@ export const addCategory = mutation({
       type: args.type,
       attributes: [],
       slug,
-    });
+    })
   },
-});
+})
+
+// Get category by ID
+export const getCategory = query({
+  args: { id: v.id('categories') },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id)
+  },
+})
 
 // Update category
 export const updateCategory = mutation({
@@ -100,27 +111,27 @@ export const updateCategory = mutation({
     attributes: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
-    const { id, ...updates } = args;
+    const { id, ...updates } = args
 
     // Verify category exists
-    const category = await ctx.db.get(id);
-    if (!category) throw new Error('Category not found');
+    const category = await ctx.db.get(id)
+    if (!category) throw new Error('Category not found')
 
     // If changing parent, verify new parent exists
     if (updates.parent_id) {
-      const parent = await ctx.db.get(updates.parent_id);
-      if (!parent) throw new Error('Parent category not found');
+      const parent = await ctx.db.get(updates.parent_id)
+      if (!parent) throw new Error('Parent category not found')
 
       // Prevent circular reference
       if (updates.parent_id === id) {
-        throw new Error('Category cannot be its own parent');
+        throw new Error('Category cannot be its own parent')
       }
     }
 
-    await ctx.db.patch(id, updates);
-    return id;
+    await ctx.db.patch(id, updates)
+    return id
   },
-});
+})
 
 // Delete category
 export const deleteCategory = mutation({
@@ -140,8 +151,6 @@ export const deleteCategory = mutation({
       throw new Error('Cannot delete category with child categories')
     }
 
-
-
     // if (products.length > 0) {
     //   throw new Error('Cannot delete category while it is assigned to products')
     // }
@@ -149,6 +158,28 @@ export const deleteCategory = mutation({
     await ctx.db.delete(args.id)
     return args.id
   },
-});
+})
+
+export const getProductsByCategoryId = query({
+  args: {
+    categoryId: v.id('categories'),
+  },
+  handler: async (ctx, args) => {
+    try {
+      const { categoryId } = args
+
+      // Get all products
+      const products = await ctx.db.query('products').withIndex("byCategories").collect()
+
+      // each product has an array of category ids it belongs to so we need to filter the products that belong to the category id we are looking for
+      const filteredProducts = products.filter(product => product.categories.includes(categoryId))
+
+      return filteredProducts
 
 
+    } catch (error) {
+      console.error(error)
+      return []
+    }
+  },
+})

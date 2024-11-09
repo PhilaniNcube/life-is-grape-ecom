@@ -26,6 +26,34 @@ export const getShallowProductsByType = query({
   },
 })
 
+export const getFilteredProducts = query({
+  args: {
+    type: v.optional(v.union(v.literal('wine'), v.literal('spirit'))),
+    name: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+
+    let q = ctx.db.query('products')
+
+    // Handler logic
+    if (args.type) {
+      q = q.filter(queryBuilder =>
+        queryBuilder.eq(queryBuilder.field('product_type'), args.type)
+      )
+    }
+
+    if (args.name) {
+      q = q.filter(queryBuilder =>
+        queryBuilder.eq(queryBuilder.field('name'), args.name)
+      )
+    }
+
+
+
+    return await q.collect()
+  },
+})
+
 // Get product by slug
 export const getProductBySlug = query({
   args: { slug: v.string() },
