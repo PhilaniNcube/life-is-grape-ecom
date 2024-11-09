@@ -8,8 +8,6 @@ const Filter = async () => {
 
   const categories = await fetchQuery(api.categories.getParentCategoryiesWithChildren)
 
-  console.log(JSON.stringify(categories, null, 2))
-
   return <div className="w-full pr-3">
     <h2 className="text-lg font-semibold text-gray-800">Filter</h2>
     <ScrollArea className="mt-4 w-full h-[400px]">
@@ -25,7 +23,7 @@ const Filter = async () => {
         return (
           <div key={category.name} className="w-full flex flex-col">
             <Link
-              href={`/products?category=${category.slug}`}
+              href={`/categories/${category.slug}`}
               className='text-md font-semibold text-gray-800 w-full px-2 py-2 hover:bg-slate-300 rounded'
             >
               {category.name}
@@ -33,7 +31,7 @@ const Filter = async () => {
             <ul className='mt-2 flex flex-col px-5'>
               {category.children.map((child) => (
                 <Link
-                  href={`/products?category=${child.slug}`}
+                  href={`/categories/${child.slug}`}
                   key={child._id}
                   className='text-sm text-gray-600 mb-1'
                 >

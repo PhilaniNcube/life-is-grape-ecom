@@ -4,11 +4,8 @@
 import React, { ReactNode, useState } from 'react'
 import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
-import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import ProductImage from '../../_components/product-image'
-import { formatPrice } from '@/lib/utils'
 import ProductList from './product-list'
 
 

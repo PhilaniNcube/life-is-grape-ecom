@@ -184,6 +184,65 @@ export const getProductsByCategoryId = query({
   },
 })
 
+export const getCategoryBySlug = query({
+  args: {
+    slug: v.string(),
+  },
+  handler: async (ctx, args) => {
+    try {
+      const { slug } = args
+
+      const category = await ctx.db.query('categories').filter(q => q.eq(q.field('slug'), slug)).first()
+
+      if (!category) {
+        throw new Error('Category not found')
+      }
+
+      return category
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  },
+})
+
+
+
+export const getProductsByCategorySlug = query({
+  args: {
+    slug: v.string(),
+  },
+  handler: async (ctx, args) => {
+    try {
+      const { slug } = args
+
+      // Get category by slug
+      const category = await ctx.db.query('categories').filter(q => q.eq(q.field('slug'), slug)).first()
+
+      if (!category) {
+        throw new Error('Category not found')
+      }
+
+
+      // Get all products
+      const products = await ctx.db
+        .query('products')
+        .withIndex('byCategories')
+        .collect()
+
+      // each product has an array of category ids it belongs to so we need to filter the products that belong to the category id we are looking for
+      const filteredProducts = products.filter(product =>
+        product.categories.includes(category._id)
+      )
+
+      return filteredProducts
+    } catch (error) {
+      console.error(error)
+      return []
+    }
+  },
+})
+
 
 export const getParentCategoryiesWithChildren = query({
   args: {},
