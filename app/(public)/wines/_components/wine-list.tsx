@@ -5,17 +5,27 @@ import { Suspense } from "react";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Id } from "@/convex/_generated/dataModel";
 
-const WineList = async () => {
+const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
+
+
 
    const wines = await fetchQuery(api.products.getShallowProductsByType, {
     type: 'wine',
   })
 
+  // take the filter and filter the wines by the category by checking the array of category ids on each product
+  const filteredWines = wines.filter(wine => {
+    if (filter === '') return true
+    return wine.categories.includes(filter)
+  }
+  )
+
   // Handle the case where no wines are returned
-  if (!wines || wines.length === 0) {
+  if (!filteredWines || filteredWines.length === 0) {
     return (
-      <section className='py-12'>
+      <section className='py-12 peer'>
         <div className='mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8'>
           <h2 className='mb-6 text-3xl font-extrabold text-gray-900'>
             Our Selection of Fine Wines
@@ -29,7 +39,7 @@ const WineList = async () => {
   }
 
   return (
-    <section className='py-12'>
+    <section className='peer-has-[data-[pending=true]]:animate-pulse py-12'>
       <div className='mx-auto max-w-7xl'>
         {/* Section Heading */}
         <h2 className='mb-6 text-center text-3xl font-extrabold text-gray-900'>
@@ -38,13 +48,19 @@ const WineList = async () => {
 
         {/* 3-Column Grid */}
         <div className='grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-          {wines.map(wine => (
+          {filteredWines.map(wine => (
             <div
               key={wine._id}
               className='overflow-hidden rounded-lg bg-white shadow-md'
             >
               {/* Wine Image */}
-              <Suspense fallback={<div className="w-full aspect-square animate-pulse flex items-center justify-center">Image Loading...</div>}>
+              <Suspense
+                fallback={
+                  <div className='flex aspect-square w-full animate-pulse items-center justify-center'>
+                    Image Loading...
+                  </div>
+                }
+              >
                 <ProductImage id={wine.main_image} />
               </Suspense>
 
@@ -53,8 +69,9 @@ const WineList = async () => {
                 <h3 className='text-xl font-semibold text-gray-800'>
                   {wine.name}
                 </h3>
-                <p className='mt-2 text-gray-600 line-clamp-3'>{wine.description}</p>
-
+                <p className='mt-2 line-clamp-3 text-gray-600'>
+                  {wine.description}
+                </p>
 
                 {/* Price and Action Button */}
                 <div className='mt-4 flex items-center justify-between'>
@@ -71,8 +88,6 @@ const WineList = async () => {
             </div>
           ))}
         </div>
-
-
       </div>
     </section>
   )

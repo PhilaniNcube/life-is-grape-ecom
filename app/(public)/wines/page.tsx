@@ -9,24 +9,28 @@ import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils'
 import WineList from './_components/wine-list'
 import WineFilter from './_components/wines-filter'
+import { Id } from '@/convex/_generated/dataModel'
 
-const WinesPage = async () => {
+const WinesPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: Id<"categories"> | '' }>
+}) => {
 
-  const wineCategories = await fetchQuery(
-    api.categories.getCategoriesByType,{
-      type: 'wine'
-    }
-  )
+  const filter = (await searchParams).filter ?? ''
 
+  console.log(filter)
 
+  const wineCategories = await fetchQuery(api.categories.getCategoriesByType, {
+    type: 'wine',
+  })
 
-  console.log(wineCategories)
 
   return (
-    <div className='container flex gap-x-4'>
+    <div className='container flex gap-x-4 peer'>
       <WineFilter categories={wineCategories} />
       <Suspense fallback={<WineListLoading />}>
-        <WineList />
+        <WineList filter={filter} />
       </Suspense>
     </div>
   )
