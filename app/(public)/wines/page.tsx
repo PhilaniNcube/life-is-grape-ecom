@@ -1,3 +1,5 @@
+
+
 import { api } from '@/convex/_generated/api'
 import { fetchQuery } from 'convex/nextjs'
 import { Suspense } from 'react'
@@ -6,12 +8,27 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils'
 import WineList from './_components/wine-list'
+import WineFilter from './_components/wines-filter'
 
 const WinesPage = async () => {
+
+  const wineCategories = await fetchQuery(
+    api.categories.getCategoriesByType,{
+      type: 'wine'
+    }
+  )
+
+
+
+  console.log(wineCategories)
+
   return (
-    <Suspense fallback={<WineListLoading />}>
-      <WineList />
-    </Suspense>
+    <div className='container flex gap-x-4'>
+      <WineFilter categories={wineCategories} />
+      <Suspense fallback={<WineListLoading />}>
+        <WineList />
+      </Suspense>
+    </div>
   )
 }
 export default WinesPage

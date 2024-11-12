@@ -15,7 +15,7 @@ const WineList = async () => {
   // Handle the case where no wines are returned
   if (!wines || wines.length === 0) {
     return (
-      <section className='bg-gray-100 py-12'>
+      <section className='py-12'>
         <div className='mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8'>
           <h2 className='mb-6 text-3xl font-extrabold text-gray-900'>
             Our Selection of Fine Wines
@@ -29,8 +29,8 @@ const WineList = async () => {
   }
 
   return (
-    <section className='bg-gray-100 py-12'>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <section className='py-12'>
+      <div className='mx-auto max-w-7xl'>
         {/* Section Heading */}
         <h2 className='mb-6 text-center text-3xl font-extrabold text-gray-900'>
           Explore Our Diverse Collection of Wines
@@ -55,6 +55,7 @@ const WineList = async () => {
                 </h3>
                 <p className='mt-2 text-gray-600 line-clamp-3'>{wine.description}</p>
 
+
                 {/* Price and Action Button */}
                 <div className='mt-4 flex items-center justify-between'>
                   <span className='text-lg font-bold text-gray-900'>
@@ -71,14 +72,7 @@ const WineList = async () => {
           ))}
         </div>
 
-        {/* Optional: Link to View All Wines */}
-        <div className='mt-8 text-center'>
-          <Link href='/wines'>
-            <Button className='bg-blue-600 px-6 py-3 text-lg text-white hover:bg-blue-700'>
-              View All Wines
-            </Button>
-          </Link>
-        </div>
+
       </div>
     </section>
   )

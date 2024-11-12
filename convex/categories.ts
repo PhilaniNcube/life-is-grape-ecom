@@ -169,14 +169,17 @@ export const getProductsByCategoryId = query({
       const { categoryId } = args
 
       // Get all products
-      const products = await ctx.db.query('products').withIndex("byCategories").collect()
+      const products = await ctx.db
+        .query('products')
+        .withIndex('byCategories')
+        .collect()
 
       // each product has an array of category ids it belongs to so we need to filter the products that belong to the category id we are looking for
-      const filteredProducts = products.filter(product => product.categories.includes(categoryId))
+      const filteredProducts = products.filter(product =>
+        product.categories.includes(categoryId)
+      )
 
       return filteredProducts
-
-
     } catch (error) {
       console.error(error)
       return []
@@ -192,7 +195,10 @@ export const getCategoryBySlug = query({
     try {
       const { slug } = args
 
-      const category = await ctx.db.query('categories').filter(q => q.eq(q.field('slug'), slug)).first()
+      const category = await ctx.db
+        .query('categories')
+        .filter(q => q.eq(q.field('slug'), slug))
+        .first()
 
       if (!category) {
         throw new Error('Category not found')
@@ -206,8 +212,6 @@ export const getCategoryBySlug = query({
   },
 })
 
-
-
 export const getProductsByCategorySlug = query({
   args: {
     slug: v.string(),
@@ -217,12 +221,14 @@ export const getProductsByCategorySlug = query({
       const { slug } = args
 
       // Get category by slug
-      const category = await ctx.db.query('categories').filter(q => q.eq(q.field('slug'), slug)).first()
+      const category = await ctx.db
+        .query('categories')
+        .filter(q => q.eq(q.field('slug'), slug))
+        .first()
 
       if (!category) {
         throw new Error('Category not found')
       }
-
 
       // Get all products
       const products = await ctx.db
@@ -243,27 +249,67 @@ export const getProductsByCategorySlug = query({
   },
 })
 
-
 export const getParentCategoryiesWithChildren = query({
   args: {},
   handler: async (ctx, args) => {
     try {
-      const parentCategories = await ctx.db.query('categories').filter((q) => q.neq('parent_id', null)).collect()
+      const parentCategories = await ctx.db
+        .query('categories')
+        .filter(q => q.neq('parent_id', null))
+        .collect()
 
-
-      const categoriesWithChildren = await Promise.all(parentCategories.map(async parentCategory => {
-        const children = await ctx.db.query('categories').withIndex('byParent', q => q.eq('parent_id', parentCategory._id)).collect()
-        return {
-          ...parentCategory,
-          children
-        }
-      }))
+      const categoriesWithChildren = await Promise.all(
+        parentCategories.map(async parentCategory => {
+          const children = await ctx.db
+            .query('categories')
+            .withIndex('byParent', q => q.eq('parent_id', parentCategory._id))
+            .collect()
+          return {
+            ...parentCategory,
+            children,
+          }
+        })
+      )
 
       return categoriesWithChildren
-
     } catch (error) {
       console.error(error)
       return []
     }
-  }
+  },
+})
+
+export const getWineCategories = query({
+  handler: async ctx => {
+    return await ctx.db
+      .query('categories')
+      .filter(q => q.eq(q.field('type'), 'wine'))
+      .collect()
+  },
+})
+
+export const getWineCategoriesWithChildren = query({
+  handler: async ctx => {
+    const parentCategories = await ctx.db
+      .query('categories')
+      .filter(q => q.eq(q.field("type"), 'wine'))
+      .filter(q => q.neq(q.field('parent_id'), null))
+      .collect()
+
+      console.log({parentCategories})
+
+    const categoriesWithChildren = await Promise.all(
+      parentCategories.map(async parentCategory => {
+        const children = await ctx.db
+          .query('categories').filter(q => q.eq(q.field('parent_id'), parentCategory._id))
+        return {
+          ...parentCategory,
+          children,
+        }
+      })
+    )
+
+
+    return categoriesWithChildren
+  },
 })
