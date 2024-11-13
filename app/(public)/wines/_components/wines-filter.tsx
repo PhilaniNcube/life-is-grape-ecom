@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { CheckIcon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTransition, useOptimistic } from 'react'
-import { set } from 'sanity'
+
 
 const WinesFilter = ({ categories }: { categories: Doc<'categories'>[] }) => {
   const searchParams = useSearchParams()
@@ -17,7 +17,7 @@ const WinesFilter = ({ categories }: { categories: Doc<'categories'>[] }) => {
 
   // const filter = searchParams.get('filter') ?? '';
   const router = useRouter()
-  // optimistacally set the filter value and update the URL using the use optimistic hook
+
 
   return (
     <div className='hidden min-w-[200px] md:block mt-16 peer'>
