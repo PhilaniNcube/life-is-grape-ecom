@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select'
 import { formatPrice } from '@/lib/utils'
 import ProductImage from '../../_components/product-image'
+import AddToCart from './add-to-cart'
 
 const ProductDetail = async ({ slug }: { slug: string }) => {
   const product = await fetchQuery(api.products.getProductBySlug, { slug })
@@ -88,15 +89,10 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
 
                 <CardContent className='p-3'>
                   <h3 className='mb-2 font-semibold'>Product Variants</h3>
-                  {product.variants.map(variant => (
-                    <RadioGroup
-                      className='flex items-center gap-x-3'
-                      key={variant._id}
-                    >
-                      <RadioGroupItem value={variant._id} />
-                      <Label>{variant.volume}ml</Label>
-                    </RadioGroup>
-                  ))}
+                  <AddToCart
+                    variants={product.variants}
+                    product_id={product.product._id}
+                    />
                 </CardContent>
               </Card>
             </>
