@@ -1,5 +1,5 @@
 import { api } from '@/convex/_generated/api'
-import { fetchQuery } from 'convex/nextjs'
+import { fetchQuery, preloadQuery } from 'convex/nextjs'
 import { Suspense } from 'react'
 import ProductImage from '../_components/product-image'
 import Link from 'next/link'
@@ -17,7 +17,7 @@ const WinesPage = async ({
 
     const filter = (await searchParams).filter ?? ''
 
-      const spiritCategories = await fetchQuery(
+      const spiritCategories = await preloadQuery(
         api.categories.getCategoriesByType,
         {
           type: 'spirit',
