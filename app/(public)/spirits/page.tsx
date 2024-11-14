@@ -6,14 +6,32 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils'
 import SpiritsList from './_components/spirits-list'
+import { Id } from '@/convex/_generated/dataModel'
+import SpiritFilter from './_components/spirit-filter'
 
-const WinesPage = async () => {
+const WinesPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: Id<'categories'> | '' }>
+}) => {
 
-   return (
-     <Suspense fallback={<SpiritsListLoading />}>
-       <SpiritsList />
-     </Suspense>
-   )
+    const filter = (await searchParams).filter ?? ''
+
+      const spiritCategories = await fetchQuery(
+        api.categories.getCategoriesByType,
+        {
+          type: 'spirit',
+        }
+      )
+
+  return (
+    <div className='peer container flex gap-x-4'>
+      <SpiritFilter categories={spiritCategories} />
+      <Suspense fallback={<SpiritsListLoading />}>
+        <SpiritsList filter={filter} />
+      </Suspense>
+    </div>
+  )
 }
 export default WinesPage
 

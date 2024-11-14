@@ -18,7 +18,7 @@ const CategoryProducts = async ({slug}:{slug:string}) => {
   })
 
   return (
-    <section className='bg-gray-100 py-12'>
+    <section className='py-12'>
       <div className='mx-auto container px-4 sm:px-6 lg:px-8'>
         {/* Section Heading */}
 

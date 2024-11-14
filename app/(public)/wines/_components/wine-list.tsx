@@ -66,7 +66,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
 
               {/* Wine Details */}
               <div className='p-6'>
-                <h3 className='text-xl font-semibold text-gray-800'>
+                <h3 className='text-xl font-semibold text-gray-800 line-clamp-1'>
                   {wine.name}
                 </h3>
                 <p className='mt-2 line-clamp-3 text-gray-600'>
@@ -79,7 +79,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
                     {formatPrice(wine.price)}
                   </span>
                   <Link href={`/products/${wine.slug}`}>
-                    <Button className='text-white hover:bg-red-700'>
+                    <Button className='text-white hover:bg-red-700 rounded-none'>
                       View Details
                     </Button>
                   </Link>

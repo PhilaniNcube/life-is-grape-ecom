@@ -12,6 +12,8 @@ export default async function PublicHeader() {
 
   const user = await fetchQuery(api.users.getUser, { clerkUserId: clerKUserId })
 
+  const categories = await fetchQuery(api.categories.getCategories)
+
   return (
     <header className='py-4 container'>
      <Navigation user={user!} />

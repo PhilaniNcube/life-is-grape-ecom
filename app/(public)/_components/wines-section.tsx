@@ -41,7 +41,7 @@ const WinesSection = async () => {
                     {formatPrice(wine.price)}
                   </span>
                   <Link href={`/products/${wine.slug}`}>
-                    <Button className='text-white hover:bg-red-700'>
+                    <Button className='text-white hover:bg-red-700 rounded-none'>
                       View Details
                     </Button>
                   </Link>
@@ -52,7 +52,7 @@ const WinesSection = async () => {
         </div>
         <div className='mt-8 text-center'>
           <Link href='/wines'>
-            <Button className='px-6 py-3 text-lg text-white hover:bg-blue-700'>
+            <Button className='px-6 py-3 text-lg text-white hover:bg-blue-700 rounded-none'>
               View All Wines
             </Button>
           </Link>

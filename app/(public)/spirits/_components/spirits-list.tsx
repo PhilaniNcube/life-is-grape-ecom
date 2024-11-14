@@ -5,11 +5,14 @@ import ProductImage from "../../_components/product-image";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Id } from "@/convex/_generated/dataModel";
 
-const SpiritsList = async () => {
+const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
   const spirits = await fetchQuery(api.products.getShallowProductsByType, {
     type: 'spirit',
   })
+
+
 
   // Handle the case where no spirits are returned
   if (!spirits || spirits.length === 0) {
@@ -27,8 +30,13 @@ const SpiritsList = async () => {
     )
   }
 
+    const filteredSpirits = spirits.filter(spirit => {
+      if (filter === '') return true
+      return spirit.categories.includes(filter)
+    })
+
   return (
-    <section className='bg-gray-100 py-12'>
+    <section className='py-12'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         {/* Section Heading */}
         <h2 className='mb-6 text-center text-3xl font-extrabold text-gray-900'>
@@ -37,7 +45,7 @@ const SpiritsList = async () => {
 
         {/* 3-Column Grid */}
         <div className='grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-          {spirits.map(spirit => (
+          {filteredSpirits.map(spirit => (
             <div
               key={spirit._id}
               className='overflow-hidden rounded-lg bg-white shadow-md'
@@ -55,7 +63,7 @@ const SpiritsList = async () => {
 
               {/* spirit Details */}
               <div className='p-6'>
-                <h3 className='text-xl font-semibold text-gray-800'>
+                <h3 className='text-xl font-semibold text-gray-800 line-clamp-1'>
                   {spirit.name}
                 </h3>
                 <p className='mt-2 line-clamp-3 text-gray-600'>
@@ -68,7 +76,7 @@ const SpiritsList = async () => {
                     {formatPrice(spirit.price)}
                   </span>
                   <Link href={`/products/${spirit.slug}`}>
-                    <Button className='text-white hover:bg-red-700'>
+                    <Button className='text-white hover:bg-red-700 rounded-none'>
                       View Details
                     </Button>
                   </Link>
@@ -80,5 +88,5 @@ const SpiritsList = async () => {
       </div>
     </section>
   )
-};
+}
 export default SpiritsList;
