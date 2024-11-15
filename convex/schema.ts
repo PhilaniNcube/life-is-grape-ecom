@@ -31,7 +31,7 @@ export default defineSchema({
     main_image: v.id('_storage'),
     images: v.array(v.id('_storage')),
     in_stock: v.boolean(),
-    product_type: v.union(v.literal('wine'), v.literal('spirit')),
+    product_type: v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift')),
     // SEO and display
     slug: v.string(),
     meta_description: v.optional(v.string()),

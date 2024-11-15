@@ -45,6 +45,7 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
   // onAttributeAdded,
   productType,
 }) => {
+  const [isLoading, setIsLoading] = React.useState(false)
   // Initialize the mutation for adding a product attribute
   const addAttribute = useMutation(api.products.addProductAttributes)
   const router = useRouter()
@@ -66,7 +67,7 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
 
   // Handle form submission
   const onSubmit = async (data: FormSchema) => {
-    console.log('data', data)
+    setIsLoading(true)
     try {
       const payload =
         productType === 'wine'
@@ -92,11 +93,13 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
       toast.success('Product attribute added successfully')
       form.reset()
       router.refresh()
+      setIsLoading(false)
 
     } catch (error) {
       toast.error('Failed to add product attribute')
       console.error('Add Attribute Error:', error)
       router.refresh()
+      setIsLoading(false)
     }
   }
 
@@ -119,11 +122,14 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
               name='product_id'
               render={({ field }) => (
                 <FormItem>
-
                   <FormControl>
-                    <Input type='hidden' placeholder='Volume' {...field} value={productId} />
+                    <Input
+                      type='hidden'
+                      placeholder='Volume'
+                      {...field}
+                      value={productId}
+                    />
                   </FormControl>
-
                 </FormItem>
               )}
             />
@@ -278,8 +284,8 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
             )}
 
             <DialogFooter>
-              <Button type='submit'  variant='default'>
-                Add Attribute
+              <Button disabled={isLoading} type='submit' variant='default'>
+                {isLoading ? 'Loading...' : 'Add Attribute'}
               </Button>
               <DialogTrigger asChild>
                 <Button type='button' variant='ghost'>

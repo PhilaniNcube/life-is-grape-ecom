@@ -34,6 +34,7 @@ import { useRouter } from 'next/navigation'
 type FormSchema = z.infer<typeof CreateProductVariantSchema>
 
 const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
+  const [isLoading, setIsLoading] = React.useState(false)
   const addVariant = useMutation(api.products.addProductVariant)
   const router = useRouter()
 
@@ -49,8 +50,9 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
 
   // Handle form submission
   const onSubmit = async (data: FormSchema) => {
+    setIsLoading(true)
     try {
-     const result = await addVariant({
+      const result = await addVariant({
         product_id: productId,
         volume: data.volume,
         price: data.price,
@@ -62,17 +64,19 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
       // onVariantAdded()
       revalidatePath(`/dashboard/products/${productId}`)
       router.refresh()
+      setIsLoading(false)
     } catch (error) {
       // toast.error('Failed to add product variant')
       console.error('Add Variant Error:', error)
       router.refresh()
+      setIsLoading(false)
     }
   }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full bg-black text-white">Add Variant</Button>
+        <Button className='w-full bg-black text-white'>Add Variant</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -121,7 +125,12 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
                 <FormItem>
                   <FormLabel>Variant Stock On Hand</FormLabel>
                   <FormControl>
-                    <Input type='number' min={0} placeholder='e.g., 10' {...field} />
+                    <Input
+                      type='number'
+                      min={0}
+                      placeholder='e.g., 10'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -143,8 +152,8 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
             />
 
             <DialogFooter>
-              <Button type='submit' variant='default'>
-                Add Variant
+              <Button disabled={isLoading} type='submit' variant='default'>
+                {isLoading ? 'Loading...' : 'Add Variant'}
               </Button>
               <DialogTrigger asChild>
                 <Button type='button' variant='ghost'>

@@ -41,7 +41,7 @@ export default function DashboardShell({children}:{children:ReactNode}) {
       <aside className='hidden w-64 overflow-y-auto border-r bg-white dark:bg-gray-800 md:block'>
         <div className='flex h-full flex-col'>
           <div className='flex h-14 items-center border-b px-4'>
-            <Link href='#' className='flex items-center gap-2 font-semibold'>
+            <Link href='/' className='flex items-center gap-2 font-semibold'>
               <ShoppingBag className='h-6 w-6' />
               <span>Life Is Grape</span>
             </Link>

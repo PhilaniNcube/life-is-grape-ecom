@@ -233,6 +233,7 @@ const NewProductForm = ({
                     <SelectContent>
                       <SelectItem value='wine'>Wine</SelectItem>
                       <SelectItem value='spirit'>Spirit</SelectItem>
+                      <SelectItem value='gift'>Gift</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

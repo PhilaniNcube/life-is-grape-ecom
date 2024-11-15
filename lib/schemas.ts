@@ -12,7 +12,7 @@ const BaseProductSchema = z.object({
   main_image: z.string(),
   images: z.array(z.string()),
   in_stock: z.boolean(),
-  product_type: z.enum(['wine', 'spirit']),
+  product_type: z.enum(['wine', 'spirit', 'gift']),
   slug: z.string(),
   meta_description: z.string().optional(),
   featured: z.boolean(),
