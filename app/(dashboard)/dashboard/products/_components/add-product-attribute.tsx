@@ -36,7 +36,6 @@ type FormSchema = z.infer<typeof CreateAttributesSchema>
 
 interface AddProductAttributeDialogProps {
   productId: Id<'products'> // ID of the product to which the attribute will be added
-  // onAttributeAdded: () => void // Callback to refresh attributes list or similar
   productType: 'wine' | 'spirit' | 'gift' // Type of the product
 }
 
