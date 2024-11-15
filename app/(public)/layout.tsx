@@ -1,6 +1,7 @@
 
 import PublicHeader from '@/components/header'
 import Footer from '@/components/footer'
+import { CartStoreProvider } from '@/store/cart-store-provider'
 
 export default async function PublicLayout({
   children,
@@ -8,10 +9,12 @@ export default async function PublicLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className='flex h-[100dvh] flex-col'>
-      <PublicHeader />
-      <main className='grow'>{children}</main>
-      <Footer />
-    </div>
+    <CartStoreProvider>
+      <div className='flex h-[100dvh] flex-col'>
+        <PublicHeader />
+        <main className='grow'>{children}</main>
+        <Footer />
+      </div>
+    </CartStoreProvider>
   )
 }

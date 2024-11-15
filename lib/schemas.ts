@@ -3,7 +3,7 @@ import { JSONContent } from 'novel'
 // define zod schemas for form actions
 
 // Base product schema
-const BaseProductSchema = z.object({
+export const BaseProductSchema = z.object({
   name: z.string().min(2, 'Name is required'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
   producer_id: z.string(),

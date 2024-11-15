@@ -17,6 +17,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Doc } from '@/convex/_generated/dataModel'
 import { ThemeToggle } from './theme-toggle'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
+import { useCartStore } from '@/store/cart-store-provider'
 
 const routes = [
   { name: 'Wines', href: '/wines' },
@@ -28,6 +29,8 @@ const routes = [
 
 export default function Navigation({user}:{user:Doc<"users">}) {
 
+  const {totalCartItems} = useCartStore(state => state)
+  console.log(totalCartItems())
 
   return (
     <header className='sticky top-0 z-50 w-full lg:px-0'>
