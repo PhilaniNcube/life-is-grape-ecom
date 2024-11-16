@@ -42,6 +42,8 @@ export type CartStore = {
   totalCartItems: () => number;
   // get the total price of the items in the cart
   totalCartPrice: () => number;
+  isOpen: boolean;
+  toggleCart: () => void;
 }
 
 export const createCartStore = (
@@ -188,6 +190,10 @@ export const createCartStore = (
             0
           )
         },
+        isOpen: false,
+        toggleCart: () => {
+          set(state => ({isOpen: !state.isOpen}))
+        }
       }),
       {
         name: 'cart',

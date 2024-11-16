@@ -91,7 +91,7 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
                   <h3 className='mb-2 font-semibold'>Product Variants</h3>
                   <AddToCart
                     variants={product.variants}
-                    product_id={product.product._id}
+                    product={product.product}
                     />
                 </CardContent>
               </Card>

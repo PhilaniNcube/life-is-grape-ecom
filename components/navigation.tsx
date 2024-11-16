@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Menu, User } from 'lucide-react'
+import { Menu, ShoppingBag, User } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -18,6 +18,7 @@ import { Doc } from '@/convex/_generated/dataModel'
 import { ThemeToggle } from './theme-toggle'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import { useCartStore } from '@/store/cart-store-provider'
+import Cart from './cart'
 
 const routes = [
   { name: 'Wines', href: '/wines' },
@@ -29,15 +30,14 @@ const routes = [
 
 export default function Navigation({user}:{user:Doc<"users">}) {
 
-  const {totalCartItems} = useCartStore(state => state)
-  console.log(totalCartItems())
+
 
   return (
     <header className='sticky top-0 z-50 w-full lg:px-0'>
-      <div className='lg:px-0 flex h-16 items-center'>
+      <div className='flex h-16 items-center lg:px-0'>
         <MainNav />
         <MobileNav />
-        <div className='flex items-center justify-end gap-6 flex-1'>
+        <div className='flex flex-1 items-center justify-end gap-6'>
           <ThemeToggle />
 
           <SignedOut>
@@ -50,12 +50,18 @@ export default function Navigation({user}:{user:Doc<"users">}) {
             <UserButton />
           </SignedIn>
         </div>
+        <div className='relative ml-3'>
+         <Cart />
+        </div>
       </div>
     </header>
   )
 }
 
 function MainNav() {
+
+
+
   return (
     <div className='mr-4 hidden md:flex'>
       <Link href='/' className='mr-6 flex items-center space-x-2'>
@@ -72,6 +78,7 @@ function MainNav() {
           </Link>
         ))}
       </nav>
+
     </div>
   )
 }
@@ -113,34 +120,5 @@ function MobileNav() {
         </nav>
       </SheetContent>
     </Sheet>
-  )
-}
-
-function UserNav() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
-          <User className='h-5 w-5' />
-          <span className='sr-only'>User menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className='w-56' align='end' forceMount>
-        <DropdownMenuLabel className='font-normal'>
-          <div className='flex flex-col space-y-1'>
-            <p className='text-sm font-medium leading-none'>John Doe</p>
-            <p className='text-xs leading-none text-muted-foreground'>
-              john.doe@example.com
-            </p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Orders</DropdownMenuItem>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   )
 }
