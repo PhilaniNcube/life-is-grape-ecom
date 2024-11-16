@@ -7,11 +7,11 @@ import {persist} from 'zustand/middleware';
 type Product = Doc<"products">;
 type ProductVariant = Doc<"product_variants">;
 
-type GiftBox = {
+export type GiftBox = {
   name: string;
   price: number;
   description: string;
-  image: string;
+  dimensions: string;
 }
 
 // create an interface of the cart item that constains the product and the quantity of that product in the cart and the the product variant the cart item should also contain a gift box option that is potentially undefined
@@ -184,11 +184,12 @@ export const createCartStore = (
         },
         // implement the total cart price method
         totalCartPrice: () => {
-          // get the total price of the items in the cart
-          return get().cart.reduce(
-            (acc, item) => acc + item.quantity * item.variant.price,
-            0
-          )
+          // get the total price of the items in the cart it should add the price of any gift box option if it exists
+          return get().cart.reduce((acc, item) => {
+            const price = item.variant.price * item.quantity
+            const giftBoxPrice = item.giftBox?.price || 0
+            return acc + price + giftBoxPrice
+          }, 0)
         },
         isOpen: false,
         toggleCart: () => {

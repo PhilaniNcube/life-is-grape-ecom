@@ -63,6 +63,7 @@ export default function Cart() {
                 <p className='text-sm text-gray-500'>
                   {item.variant.volume}ml - {formatPrice(item.variant.price)}
                 </p>
+                <span className="text-xs text-red-700">{item.giftBox && `${item.giftBox.name} - ${formatPrice(item.giftBox.price)}`}</span>
               </div>
               <div className='flex items-center gap-2'>
                 <Button
