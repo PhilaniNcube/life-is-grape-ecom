@@ -14,11 +14,9 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react'
 import { useCartStore } from '@/store/cart-store-provider'
 import { formatPrice } from '@/lib/utils'
-
+import Link from 'next/link'
 
 export default function Cart() {
-
-
   const {
     totalCartItems,
     incrementQuantity,
@@ -63,7 +61,10 @@ export default function Cart() {
                 <p className='text-sm text-gray-500'>
                   {item.variant.volume}ml - {formatPrice(item.variant.price)}
                 </p>
-                <span className="text-xs text-red-700">{item.giftBox && `${item.giftBox.name} - ${formatPrice(item.giftBox.price)}`}</span>
+                <span className='text-xs text-red-700'>
+                  {item.giftBox &&
+                    `${item.giftBox.name} - ${formatPrice(item.giftBox.price)}`}
+                </span>
               </div>
               <div className='flex items-center gap-2'>
                 <Button
@@ -106,7 +107,9 @@ export default function Cart() {
             <span className='font-medium'>Total:</span>
             <span className='font-bold'>{formatPrice(totalPrice)}</span>
           </div>
-          <Button className='w-full rounded-none'>Proceed to Checkout</Button>
+          <Link href='/checkout'>
+            <Button className='w-full rounded-none'>Proceed to Checkout</Button>
+          </Link>
         </div>
       </SheetContent>
     </Sheet>
