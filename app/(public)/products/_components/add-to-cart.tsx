@@ -100,8 +100,8 @@ const AddToCart = ({
                 : 'bg-slate-50'
             )}
           >
-            <h4 className='font-semibold'>{giftBox.name}</h4>
-            <Badge className='absolute right-2 top-2 text-xs text-white'>
+            <h4 className='font-semibold text-black'>{giftBox.name}</h4>
+            <Badge className='absolute right-2 top-2 text-xs text-white dark:text-slate-700'>
               {giftBox.dimensions}
             </Badge>
             <p className='text-xs text-gray-500'>{giftBox.description}</p>

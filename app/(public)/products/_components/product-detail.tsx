@@ -1,18 +1,6 @@
 import { api } from '@/convex/_generated/api'
 import { fetchQuery } from 'convex/nextjs'
-import Image from 'next/image'
-import { Star, ShoppingCart } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { formatPrice } from '@/lib/utils'
 import ProductImage from '../../_components/product-image'
 import AddToCart from './add-to-cart'
@@ -78,7 +66,7 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
               <p className='text-xl font-bold'>
                 {formatPrice(product.product.price)}
               </p>
-              <p className='text-gray-600'>{product.product.description}</p>
+              <p className='text-gray-600 dark:text-gray-50 text-sm'>{product.product.description}</p>
               <Card>
                 <CardContent className='p-4'>
                   <h3 className='mb-2 font-semibold'>Product Attributes</h3>
