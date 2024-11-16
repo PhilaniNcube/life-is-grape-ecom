@@ -21,7 +21,7 @@ export default function CheckoutForm() {
   const {cart, totalCartPrice} = useCartStore(state => state)
   const totalPrice = totalCartPrice()
 
-  const shipping = 99
+  const shipping = totalPrice > 1500 ? 0 : 150
   const total = totalPrice + shipping
 
   return (
@@ -93,7 +93,7 @@ export default function CheckoutForm() {
               </div>
               <div className='flex justify-between'>
                 <span>Shipping</span>
-                <span>{formatPrice(shipping)}</span>
+                <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
               </div>
               <Separator />
               <div className='flex justify-between font-bold'>
