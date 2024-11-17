@@ -3,7 +3,7 @@ import "server-only"
 
 import { revalidatePath } from 'next/cache'
 
-import { CreateProductSchema, UpdateProductSchema } from '@/lib/schemas'
+import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateProductSchema } from '@/lib/schemas'
 import { fetchMutation } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
@@ -167,4 +167,110 @@ export async function deleteProductAction(id: Id<"products">): Promise<ActionRes
       error: 'Failed to delete product',
     }
   }
+}
+
+
+export async function addVariantAction(prevState:unknown, formData:FormData) {
+
+  const validatedFields = CreateProductVariantSchema.safeParse({
+    product_id: formData.get('product_id'),
+    volume: formData.get('volume'),
+    price: formData.get('price'),
+    sku: formData.get('sku'),
+    stock_level: formData.get('stock_level'),
+  })
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      error: 'Invalid form data',
+    }
+  }
+
+  const productId = validatedFields.data.product_id as Id<'products'>
+
+  try {
+  const result = await fetchMutation(api.products.addProductVariant, {
+      product_id: productId,
+      volume: validatedFields.data.volume,
+      price: validatedFields.data.price,
+      sku: validatedFields.data.sku || validatedFields.data.product_id,
+      stock_level: validatedFields.data.stock_level,
+    })
+
+    if(!result) {
+      throw new Error('Failed to add product variant')
+    }
+
+    revalidatePath(`/dashboard/products/${productId}`, "layout")
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to add product variant',
+    }
+  }
+
+}
+
+
+export async function addAttributeAction(prevState:unknown, formData:FormData) {
+
+  const validatedFields = CreateAttributesSchema.safeParse({
+    product_id: formData.get('product_id'),
+    variety: formData.get('variety'),
+    vintage: formData.get('vintage'),
+    alcohol_content: formData.get('alcohol_content'),
+    region: formData.get('region'),
+    tasting_notes: formData.get('tasting_notes'),
+    serving_suggestion: formData.get('serving_suggestion'),
+    awards: formData.get('awards'),
+    pairing_suggestions: formData.get('pairing_suggestions'),
+    aging: formData.get('aging'),
+    distillation_method: formData.get('distillation_method'),
+  })
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      error: 'Invalid form data',
+    }
+  }
+
+  const productId = validatedFields.data.product_id as Id<'products'>
+
+  try {
+
+    const result = await fetchMutation(api.products.addProductAttributes, {
+      product_id: productId,
+      variety: validatedFields.data.variety,
+      vintage: validatedFields.data.vintage,
+      alcohol_content: validatedFields.data.alcohol_content,
+      region: validatedFields.data.region,
+      tasting_notes: validatedFields.data.tasting_notes,
+      serving_suggestion: validatedFields.data.serving_suggestion,
+      awards: validatedFields.data.awards,
+      pairing_suggestions: validatedFields.data.pairing_suggestions,
+      aging: validatedFields.data.aging,
+      distillation_method: validatedFields.data.distillation_method,
+    })
+
+    if(!result) {
+      throw new Error('Failed to add product attribute')
+    }
+
+    revalidatePath(`/dashboard/products/${productId}`, "layout")
+
+    return { success: true, data: result }
+
+  } catch (error) {
+
+    return {
+      success: false,
+      error: 'Failed to add product attribute',
+    }
+
+  }
+
 }

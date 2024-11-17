@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { startTransition, useActionState } from 'react'
 import {
   Dialog,
   DialogTrigger,
@@ -29,6 +29,7 @@ import { Id } from '@/convex/_generated/dataModel'
 import { CreateProductVariantSchema } from '@/lib/schemas'
 import { revalidatePath } from 'next/cache'
 import { useRouter } from 'next/navigation'
+import { addVariantAction } from '@/actions/products'
 
 // Infer the TypeScript type from the Zod schema
 type FormSchema = z.infer<typeof CreateProductVariantSchema>
@@ -37,6 +38,8 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
   const [isLoading, setIsLoading] = React.useState(false)
   const addVariant = useMutation(api.products.addProductVariant)
   const router = useRouter()
+
+  const [state, formAction, isPending] = useActionState(addVariantAction, null)
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(CreateProductVariantSchema),
@@ -86,7 +89,14 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <form
+            action={(formData: FormData) => {
+              startTransition(() => {
+                formAction(formData)
+              })
+            }}
+            className='space-y-4'
+          >
             <FormField
               control={form.control}
               name='volume'
@@ -101,6 +111,19 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='product_id'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input type='hidden' defaultValue={productId} {...field} />
+                  </FormControl>
+
                 </FormItem>
               )}
             />
@@ -152,8 +175,8 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
             />
 
             <DialogFooter>
-              <Button disabled={isLoading} type='submit' variant='default'>
-                {isLoading ? 'Loading...' : 'Add Variant'}
+              <Button disabled={isPending} type='submit' variant='default'>
+                {isPending ? 'Loading...' : 'Add Variant'}
               </Button>
               <DialogTrigger asChild>
                 <Button type='button' variant='ghost'>

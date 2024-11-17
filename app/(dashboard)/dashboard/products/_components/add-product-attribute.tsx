@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { startTransition, useActionState } from 'react'
 import {
   Dialog,
   DialogTrigger,
@@ -30,6 +30,7 @@ import { CreateAttributesSchema } from '@/lib/schemas'
 import { Id } from '@/convex/_generated/dataModel'
 import { Textarea } from '@/components/ui/textarea'
 import { useRouter } from 'next/navigation'
+import { addAttributeAction } from '@/actions/products'
 
 // Infer TypeScript type
 type FormSchema = z.infer<typeof CreateAttributesSchema>
@@ -44,10 +45,12 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
   // onAttributeAdded,
   productType,
 }) => {
-  const [isLoading, setIsLoading] = React.useState(false)
+  // const [isLoading, setIsLoading] = React.useState(false)
   // Initialize the mutation for adding a product attribute
   const addAttribute = useMutation(api.products.addProductAttributes)
   const router = useRouter()
+
+  const [state, formAction, isPending] = useActionState(addAttributeAction, null)
 
   // Initialize the form with react-hook-form and Zod resolver
   const form = useForm<FormSchema>({
@@ -64,43 +67,43 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
     }
   })
 
-  // Handle form submission
-  const onSubmit = async (data: FormSchema) => {
-    setIsLoading(true)
-    try {
-      const payload =
-        productType === 'wine'
-          ? {
-              product_id: productId,
-              variety: data.variety,
-              vintage: data.vintage,
-              region: data.region,
-              tasting_notes: data.tasting_notes,
-              alcohol_content: data.alcohol_content,
-            }
-          : {
-              product_id: productId,
-              aging: data.aging,
-              distillation_method: data.distillation_method,
-              region: data.region,
-              tasting_notes: data.tasting_notes,
-              alcohol_content: data.alcohol_content,
-            }
+  // // Handle form submission
+  // const onSubmit = async (data: FormSchema) => {
+  //   setIsLoading(true)
+  //   try {
+  //     const payload =
+  //       productType === 'wine'
+  //         ? {
+  //             product_id: productId,
+  //             variety: data.variety,
+  //             vintage: data.vintage,
+  //             region: data.region,
+  //             tasting_notes: data.tasting_notes,
+  //             alcohol_content: data.alcohol_content,
+  //           }
+  //         : {
+  //             product_id: productId,
+  //             aging: data.aging,
+  //             distillation_method: data.distillation_method,
+  //             region: data.region,
+  //             tasting_notes: data.tasting_notes,
+  //             alcohol_content: data.alcohol_content,
+  //           }
 
-      const result = await addAttribute(payload)
-      console.log('result', result)
-      toast.success('Product attribute added successfully')
-      form.reset()
-      router.refresh()
-      setIsLoading(false)
+  //     const result = await addAttribute(payload)
+  //     console.log('result', result)
+  //     toast.success('Product attribute added successfully')
+  //     form.reset()
+  //     router.refresh()
+  //     setIsLoading(false)
 
-    } catch (error) {
-      toast.error('Failed to add product attribute')
-      console.error('Add Attribute Error:', error)
-      router.refresh()
-      setIsLoading(false)
-    }
-  }
+  //   } catch (error) {
+  //     toast.error('Failed to add product attribute')
+  //     console.error('Add Attribute Error:', error)
+  //     router.refresh()
+  //     setIsLoading(false)
+  //   }
+  // }
 
   return (
     <Dialog>
@@ -115,7 +118,13 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <form action={(formData) => {
+
+           startTransition(() => {
+            formAction(formData)
+           })
+
+          }} className='space-y-4'>
             <FormField
               control={form.control}
               name='product_id'
@@ -283,8 +292,8 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
             )}
 
             <DialogFooter>
-              <Button disabled={isLoading} type='submit' variant='default'>
-                {isLoading ? 'Loading...' : 'Add Attribute'}
+              <Button disabled={isPending} type='submit' variant='default'>
+                {isPending ? 'Loading...' : 'Add Attribute'}
               </Button>
               <DialogTrigger asChild>
                 <Button type='button' variant='ghost'>
