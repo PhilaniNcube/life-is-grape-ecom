@@ -349,6 +349,52 @@ export const updateProductVariant = mutation({
   },
 })
 
+export const updateVariantVolume = mutation({
+  args: {
+    id: v.id('product_variants'),
+    volume: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const variant = await ctx.db.get(args.id)
+
+    if (!variant) throw new Error('Product variant not found')
+
+    await ctx.db.patch(args.id, { volume: args.volume })
+    return args.id
+  },
+})
+
+export const updateVariantPrice = mutation({
+  args: {
+    id: v.id('product_variants'),
+    price: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const variant = await ctx.db.get(args.id)
+
+    if (!variant) throw new Error('Product variant not found')
+
+    await ctx.db.patch(args.id, { price: args.price })
+    return args.id
+  },
+})
+
+
+export const updateVariantStockLevel = mutation({
+  args: {
+    id: v.id('product_variants'),
+    stock_level: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const variant = await ctx.db.get(args.id)
+
+    if (!variant) throw new Error('Product variant not found')
+
+    await ctx.db.patch(args.id, { stock_level: args.stock_level })
+    return args.id
+  },
+})
+
 // Delete product variant
 export const deleteProductVariant = mutation({
   args: {

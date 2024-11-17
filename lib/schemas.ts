@@ -66,6 +66,21 @@ export const UpdateProductVariantSchema = ProductVariantSchema.partial().extend(
   }
 )
 
+export const UpdateVariantPriceSchema = z.object({
+  id: z.string(),
+  price: z.coerce.number().positive(),
+})
+
+export const UpdateVariantVolumeSchema = z.object({
+  id: z.string(),
+  volume: z.coerce.number().positive(),
+})
+
+export const UpdateVariantStockSchema = z.object({
+  id: z.string(),
+  stock_level: z.coerce.number().min(0),
+})
+
 export const CreateBookingSchema = z.object({
   experience_id: z.string(),
   name: z.string().min(2, 'Name is required'),

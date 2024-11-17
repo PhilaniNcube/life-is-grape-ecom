@@ -7,14 +7,16 @@ import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { formatPrice } from '@/lib/utils'
+import UpdateVolumeDialog from './update-variant-volume'
 
 type VariantListProps = {
   product_id: Id<'products'>
 }
 
-const VariantList = async ({  product_id }: VariantListProps) => {
-
-  const variants = await fetchQuery(api.products.getProductVariants, { product_id })
+const VariantList = async ({ product_id }: VariantListProps) => {
+  const variants = await fetchQuery(api.products.getProductVariants, {
+    product_id,
+  })
 
   return (
     <ScrollArea className='mt-2 h-[250px]'>
@@ -31,14 +33,16 @@ const VariantList = async ({  product_id }: VariantListProps) => {
               <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
                 Stock
               </th>
-
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200 bg-white'>
             {variants.map(variant => (
               <tr key={variant._id}>
                 <td className='whitespace-nowrap px-6 py-4'>
-                  {variant.volume}ml
+                  <UpdateVolumeDialog
+                    variantId={variant._id}
+                    initialVolume={variant.volume}
+                  />
                 </td>
                 <td className='whitespace-nowrap px-6 py-4'>
                   {formatPrice(variant.price)}
@@ -50,7 +54,6 @@ const VariantList = async ({  product_id }: VariantListProps) => {
                       : 'Out of Stock'}
                   </Badge>
                 </td>
-
               </tr>
             ))}
             {variants.length === 0 && (

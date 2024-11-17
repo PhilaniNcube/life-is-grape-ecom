@@ -3,11 +3,12 @@ import "server-only"
 
 import { revalidatePath } from 'next/cache'
 
-import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateProductSchema } from '@/lib/schemas'
+import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateProductSchema, UpdateProductVariantSchema, UpdateVariantVolumeSchema } from '@/lib/schemas'
 import { fetchMutation } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { redirect } from "next/navigation"
+import { form } from "sanity/structure"
 
 
 
@@ -212,6 +213,47 @@ export async function addVariantAction(prevState:unknown, formData:FormData) {
     }
   }
 
+}
+
+
+export async function updateVariantVolumeAction(prevState: unknown, formData: FormData) {
+  const validatedFields = UpdateVariantVolumeSchema.safeParse({
+    id: formData.get('id'),
+    volume: formData.get('volume'),
+  })
+
+  console.log("Volume",formData.get('volume'))
+
+  if (!validatedFields.success) {
+    console.log(validatedFields.error)
+    return {
+      success: false,
+      error: 'Invalid form data',
+    }
+  }
+
+  const variantId = validatedFields.data.id as Id<"product_variants">
+
+  try {
+    const result = await fetchMutation(api.products.updateVariantVolume, {
+      id: variantId,
+      volume: validatedFields.data.volume,
+    })
+
+    if (!result) {
+      throw new Error('Failed to add product variant')
+    }
+
+
+    revalidatePath(`/dashboard/products`, 'layout')
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to add product variant',
+    }
+  }
 }
 
 
