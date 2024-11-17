@@ -25,6 +25,10 @@ const ProductPage = async ({
 
   if (!product) return <div>Product not found</div>
 
+  const productImages = await fetchQuery(api.products.getProductImages, { id })
+
+  console.log({productImages})
+
   return (
     <div>
       <h1 className='text-2xl font-bold'>Update Product</h1>
@@ -50,7 +54,7 @@ const ProductPage = async ({
 
           <AttributeList attributes={attributes} product_id={id} />
           <div className='my-3'>
-            <MultiImageUpload productId={id} />
+            <MultiImageUpload productId={id} images={productImages!} />
           </div>
         </div>
       </div>

@@ -9,11 +9,14 @@ import { Id } from '@/convex/_generated/dataModel'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { toast } from 'sonner'
+import { revalidatePath } from 'next/cache'
 
 export default function MultiImageUpload({
   productId,
+  images,
 }: {
-  productId: Id<'products'>
+  productId: Id<'products'>,
+  images: (string | null)[]
 }) {
   const [files, setFiles] = useState<File[]>([])
   const [previewImages, setPreviewImages] = useState<string[]>([])
@@ -70,6 +73,8 @@ export default function MultiImageUpload({
 
       }
 
+      revalidatePath(`/dashboard/products/${productId}`)
+
 
     } catch (error) {
       toast.error('Failed to upload image')
@@ -98,27 +103,23 @@ export default function MultiImageUpload({
           )}
         </div>
 
-        {files.length > 0 && (
+        {images?.length > 0 && (
           <div className='mt-6 space-y-4'>
             <h3 className='font-semibold'>Selected Images:</h3>
             <div className='grid grid-cols-3 gap-4'>
-              {files.map((file, index) => (
-                <div key={index} className='group relative'>
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`preview ${index}`}
-                    className='h-24 w-full rounded-md object-cover'
-                  />
-                  <button
-                    onClick={() => removeFile(file)}
-                    className='absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100'
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-              ))}
+              {images.map((image, index) => {
+                if (!image) return null
+                return (
+                  <div key={image} className='group relative'>
+                    <img
+                      src={image}
+                      alt={`preview ${index}`}
+                      className='h-24 w-full rounded-md object-cover'
+                    />
+                  </div>
+                )
+              })}
             </div>
-
           </div>
         )}
       </CardContent>

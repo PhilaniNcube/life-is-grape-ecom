@@ -500,3 +500,22 @@ export const setProductImages = mutation({
     return args.id
   },
 })
+
+
+export const getProductImages = query({
+  args: { id: v.id('products') },
+  handler: async (ctx, args) => {
+    const product = await ctx.db.get(args.id)
+
+    if (!product) return []
+
+    const images = product.images
+
+    if (!images) return []
+
+    return Promise.all(images.map(async imageId => {
+      return await ctx.storage.getUrl(imageId)
+    }))
+
+  },
+})
