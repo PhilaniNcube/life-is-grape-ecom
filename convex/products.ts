@@ -306,12 +306,7 @@ export const addProductVariant = mutation({
     const product = await ctx.db.get(args.product_id)
     if (!product) throw new Error('Product not found')
 
-    // Check if SKU already exists
-    const existingVariant = await ctx.db
-      .query('product_variants')
-      .filter(q => q.eq(q.field('sku'), args.sku))
-      .first()
-    if (existingVariant) throw new Error('SKU already exists')
+
 
     return await ctx.db.insert('product_variants', args)
   },

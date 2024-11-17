@@ -199,6 +199,8 @@ export async function addVariantAction(prevState:unknown, formData:FormData) {
       stock_level: validatedFields.data.stock_level,
     })
 
+    console.log(result)
+
     if(!result) {
       throw new Error('Failed to add product variant')
     }

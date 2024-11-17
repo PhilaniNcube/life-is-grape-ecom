@@ -18,6 +18,8 @@ const VariantList = async ({ product_id }: VariantListProps) => {
     product_id,
   })
 
+  console.log(variants)
+
   return (
     <ScrollArea className='mt-2 h-[250px]'>
       <div className='overflow-x-auto'>
