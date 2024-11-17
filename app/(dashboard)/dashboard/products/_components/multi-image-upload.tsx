@@ -79,7 +79,7 @@ export default function MultiImageUpload({
 
   return (
     <Card className='mx-auto w-full max-w-md'>
-      <CardContent className='p-6'>
+      <CardContent className='p-4'>
         <div
           {...getRootProps()}
           className={`cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors ${

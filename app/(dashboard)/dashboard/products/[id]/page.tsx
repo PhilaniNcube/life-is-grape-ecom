@@ -9,7 +9,11 @@ import AddProductAttributeDialog from '../_components/add-product-attribute'
 import AttributeList from '../_components/attribute-list'
 import MultiImageUpload from '../_components/multi-image-upload'
 
-const ProductPage = async ({ params }: { params: Promise<{ id: Id<'products'> }> }) => {
+const ProductPage = async ({
+  params,
+}: {
+  params: Promise<{ id: Id<'products'> }>
+}) => {
   const { id } = await params
 
   const product = await fetchQuery(api.products.getShallowProduct, { id })
@@ -36,7 +40,7 @@ const ProductPage = async ({ params }: { params: Promise<{ id: Id<'products'> }>
             <VariantList product_id={id} />
           </Suspense>
           {attributes.length > 0 ? (
-            <h2 className='text-2xl font-bold text-center'>Attribute</h2>
+            <h2 className='text-center text-2xl font-bold'>Attribute</h2>
           ) : (
             <AddProductAttributeDialog
               productId={id}
@@ -45,7 +49,9 @@ const ProductPage = async ({ params }: { params: Promise<{ id: Id<'products'> }>
           )}
 
           <AttributeList attributes={attributes} product_id={id} />
-          <MultiImageUpload productId={id} />
+          <div className='my-3'>
+            <MultiImageUpload productId={id} />
+          </div>
         </div>
       </div>
     </div>
