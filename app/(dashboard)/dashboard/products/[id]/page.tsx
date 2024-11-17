@@ -7,6 +7,7 @@ import { Suspense } from 'react'
 import VariantList from '../_components/variant-list'
 import AddProductAttributeDialog from '../_components/add-product-attribute'
 import AttributeList from '../_components/attribute-list'
+import MultiImageUpload from '../_components/multi-image-upload'
 
 const ProductPage = async ({ params }: { params: Promise<{ id: Id<'products'> }> }) => {
   const { id } = await params
@@ -44,6 +45,7 @@ const ProductPage = async ({ params }: { params: Promise<{ id: Id<'products'> }>
           )}
 
           <AttributeList attributes={attributes} product_id={id} />
+          <MultiImageUpload productId={id} />
         </div>
       </div>
     </div>

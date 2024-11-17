@@ -220,6 +220,16 @@ export const deleteProduct = mutation({
 
     if (!product) throw new Error('Product not found')
 
+  // delete product attributes based on product id
+    const attributes = await ctx.db
+      .query('product_attributes')
+      .filter(q => q.eq(q.field('product_id'), args.id))
+      .collect()
+
+     for (const attribute of attributes) {
+      await ctx.db.delete(attribute._id)
+    }
+
     await ctx.db.delete(args.id)
     return args.id
   },
@@ -439,5 +449,54 @@ export const getMainImage = query({
   args: { id: v.id('_storage') },
   handler: async (ctx, args) => {
     return await ctx.storage.getUrl(args.id)
+  },
+})
+
+
+export const uploadProductImages = mutation({
+  args: { files: v.array(v.bytes()) },
+  handler: async (ctx, args) => {
+
+    // Upload files to storage from the array of bytes
+    const files = args.files
+    const urls = await Promise.all(
+      files.map(async file => {
+        const uploadUrl = await ctx.storage.generateUploadUrl()
+
+        // Upload file to storage
+        const result = await fetch(uploadUrl, {
+          method: 'PUT',
+          body: file,
+        })
+
+        if (!result.ok) {
+          throw new Error('Failed to upload file')
+        }
+
+        console.log('Uploaded file:', result.body)
+      })
+    )
+
+
+  },
+})
+
+
+export const setProductImages = mutation({
+  args: { id: v.id('products'), image_id: v.id('_storage') },
+  handler: async (ctx, args) => {
+
+    // get the images array from the product
+    const product = await ctx.db.get(args.id)
+    const images = product?.images
+
+    // if there are no images, then just add the image to the images array
+    if (!images) {
+      await ctx.db.patch(args.id, { images: [args.image_id] })
+      return args.id
+    }
+
+    await ctx.db.patch(args.id, { images: [...images, args.image_id] })
+    return args.id
   },
 })
