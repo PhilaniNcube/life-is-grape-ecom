@@ -8,6 +8,7 @@ import { api } from '@/convex/_generated/api'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { formatPrice } from '@/lib/utils'
 import UpdateVolumeDialog from './update-variant-volume'
+import UpdatePriceDialog from './update-varaint-price'
 
 type VariantListProps = {
   product_id: Id<'products'>
@@ -47,7 +48,10 @@ const VariantList = async ({ product_id }: VariantListProps) => {
                   />
                 </td>
                 <td className='whitespace-nowrap px-6 py-4'>
-                  {formatPrice(variant.price)}
+                  <UpdatePriceDialog
+                    variantId={variant._id}
+                    initialPrice={variant.price}
+                  />
                 </td>
                 <td className='whitespace-nowrap px-6 py-4'>
                   <Badge>
