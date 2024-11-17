@@ -59,7 +59,7 @@ export default function UpdatePriceDialog({
               name='price'
               onChange={e => setPrice(Number(e.target.value))}
               className='col-span-3'
-              min='1'
+              step="0.01"
               required
             />
           </div>
