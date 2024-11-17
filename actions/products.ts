@@ -4,7 +4,7 @@ import "server-only"
 import { revalidatePath } from 'next/cache'
 
 import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateProductSchema, UpdateProductVariantSchema, UpdateVariantVolumeSchema } from '@/lib/schemas'
-import { fetchMutation } from 'convex/nextjs'
+import { fetchMutation, fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { redirect } from "next/navigation"
@@ -261,19 +261,24 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
 
   const validatedFields = CreateAttributesSchema.safeParse({
     product_id: formData.get('product_id'),
-    variety: formData.get('variety'),
-    vintage: formData.get('vintage'),
+    variety: formData.get('variety') || '',
+    vintage: formData.get('vintage') || 1990,
     alcohol_content: formData.get('alcohol_content'),
     region: formData.get('region'),
     tasting_notes: formData.get('tasting_notes'),
-    serving_suggestion: formData.get('serving_suggestion'),
-    awards: formData.get('awards'),
-    pairing_suggestions: formData.get('pairing_suggestions'),
+    serving_suggestion: formData.get('serving_suggestion') || '',
+    awards: formData.get('awards') || [],
+    pairing_suggestions: formData.get('pairing_suggestions') || '',
     aging: formData.get('aging'),
     distillation_method: formData.get('distillation_method'),
   })
 
+
+
+
+
   if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten().fieldErrors)
     return {
       success: false,
       error: 'Invalid form data',
@@ -282,7 +287,39 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
 
   const productId = validatedFields.data.product_id as Id<'products'>
 
+  // get the product from the ProductId
+  const product = await fetchQuery(api.products.getShallowProduct, { id: productId })
+
+  if (!product) {
+    return {
+      success: false,
+      error: 'Product not found',
+    }
+  }
+
+  // get the product type
+  const productType = product.product_type
+
   try {
+
+    // if the product type is not wine, then we don't need to add the variety and vintage
+    if(productType !== 'wine') {
+     const data = await fetchMutation(api.products.addProductAttributes, {
+        product_id: productId,
+        alcohol_content: validatedFields.data.alcohol_content,
+        region: validatedFields.data.region,
+        tasting_notes: validatedFields.data.tasting_notes,
+        serving_suggestion: validatedFields.data.serving_suggestion,
+        awards: validatedFields.data.awards || [],
+        // pairing_suggestions: validatedFields.data.pairing_suggestions,
+        aging: validatedFields.data.aging,
+        distillation_method: validatedFields.data.distillation_method,
+      })
+
+          revalidatePath(`/dashboard/products/${productId}`, 'layout')
+
+          return { success: true, data }
+    }
 
     const result = await fetchMutation(api.products.addProductAttributes, {
       product_id: productId,
@@ -291,11 +328,11 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
       alcohol_content: validatedFields.data.alcohol_content,
       region: validatedFields.data.region,
       tasting_notes: validatedFields.data.tasting_notes,
-      serving_suggestion: validatedFields.data.serving_suggestion,
-      awards: validatedFields.data.awards,
+      // serving_suggestion: validatedFields.data.serving_suggestion,
+      // awards: validatedFields.data.awards,
       pairing_suggestions: validatedFields.data.pairing_suggestions,
-      aging: validatedFields.data.aging,
-      distillation_method: validatedFields.data.distillation_method,
+      // aging: validatedFields.data.aging,
+      // distillation_method: validatedFields.data.distillation_method,
     })
 
     if(!result) {
