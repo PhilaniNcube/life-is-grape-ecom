@@ -75,11 +75,14 @@ export default function MultiImageUpload({
 
       revalidatePath(`/dashboard/products/${productId}`)
 
+      toast.success('Images uploaded successfully')
 
     } catch (error) {
-      toast.error('Failed to upload image')
+
       setPreviewImages([])
     }
+
+    toast.info('Images being uploaded')
   }
 
   return (
