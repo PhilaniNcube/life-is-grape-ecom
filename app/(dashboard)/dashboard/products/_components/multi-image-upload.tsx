@@ -10,6 +10,8 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { toast } from 'sonner'
 import { revalidatePath } from 'next/cache'
+import { useRouter } from 'next/navigation'
+import { set } from 'sanity'
 
 export default function MultiImageUpload({
   productId,
@@ -20,6 +22,9 @@ export default function MultiImageUpload({
 }) {
   const [files, setFiles] = useState<File[]>([])
   const [previewImages, setPreviewImages] = useState<string[]>([])
+
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   const uploadFiles = useMutation(api.products.setProductImages)
 
@@ -43,6 +48,7 @@ export default function MultiImageUpload({
   const generateUploadUrl = useMutation(api.products.generateUploadUrl)
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true)
     const files = e.target.files
     if (!files) return
 
@@ -76,10 +82,17 @@ export default function MultiImageUpload({
       revalidatePath(`/dashboard/products/${productId}`)
 
       toast.success('Images uploaded successfully')
+      setLoading(false)
+      router.refresh()
 
     } catch (error) {
 
       setPreviewImages([])
+        setLoading(false)
+        router.refresh()
+    } finally {
+      setLoading(false)
+       router.refresh()
     }
 
     toast.info('Images being uploaded')
