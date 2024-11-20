@@ -310,8 +310,8 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
     serving_suggestion: formData.get('serving_suggestion') || '',
     awards: formData.get('awards') || [],
     pairing_suggestions: formData.get('pairing_suggestions') || '',
-    aging: formData.get('aging'),
-    distillation_method: formData.get('distillation_method'),
+    aging: formData.get('aging') || "",
+    distillation_method: formData.get('distillation_method') || '',
   })
 
 
@@ -377,6 +377,7 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
     })
 
     if(!result) {
+      console.log(result)
       throw new Error('Failed to add product attribute')
     }
 
