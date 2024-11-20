@@ -83,6 +83,7 @@ export default function CheckoutForm() {
       })
 
       if (!order) {
+        console.log('Failed to create order', order)
         throw new Error('Failed to create order')
       }
 
@@ -94,7 +95,7 @@ export default function CheckoutForm() {
       toast.error('Failed to place order. Please try again.')
     } finally {
       // Clear the cart
-      clearCart()
+      // clearCart()
     }
 
     // Clear the cart

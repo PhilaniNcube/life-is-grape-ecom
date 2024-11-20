@@ -49,13 +49,7 @@ export const createOrder = mutation({
   },
   handler: async (ctx, args) => {
 
-    // query clerk to get the current user
-    const clerkUser = await auth()
 
-    // use the clerk user id to get the current user
-    const user = await ctx.db
-      .query('users')
-      .filter(q => q.eq(q.field("clerkUserId"), clerkUser.userId)).first()
 
     // create a new order
     const order = await ctx.db.insert("orders", {
@@ -64,7 +58,7 @@ export const createOrder = mutation({
       last_name: args.last_name,
       email: args.email,
       phone: args.phone,
-      userId: user ? user._id : undefined,
+      // userId: user ? user._id : undefined,
       shipping_address: {
         street: args.street,
         city: args.city,
