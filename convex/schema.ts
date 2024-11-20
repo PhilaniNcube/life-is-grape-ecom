@@ -151,6 +151,10 @@ export default defineSchema({
     ),
     // Customer info - now optional
     userId: v.optional(v.id('users')),
+    first_name: v.string(),
+    last_name: v.string(),
+    email: v.string(),
+    phone: v.string(),
     shipping_address: v.object({
       street: v.string(),
       city: v.string(),

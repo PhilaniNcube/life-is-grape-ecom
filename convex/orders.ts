@@ -14,6 +14,10 @@ export const createOrder = mutation({
       v.literal('cancelled')
     ),
     street: v.string(),
+    first_name: v.string(),
+    last_name: v.string(),
+    email: v.string(),
+    phone: v.string(),
     city: v.string(),
     province: v.string(),
     postal_code: v.string(),
@@ -56,6 +60,10 @@ export const createOrder = mutation({
     // create a new order
     const order = await ctx.db.insert("orders", {
       status: "pending",
+      first_name: args.first_name,
+      last_name: args.last_name,
+      email: args.email,
+      phone: args.phone,
       userId: user ? user._id : undefined,
       shipping_address: {
         street: args.street,

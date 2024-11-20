@@ -20,7 +20,9 @@ import { toast } from 'sonner'
 import { redirect } from 'next/navigation'
 
 interface CheckoutFormInputs {
-  name: string
+  first_name: string
+  last_name: string
+  phone: string
   email: string
   street: string
   city: string
@@ -29,14 +31,13 @@ interface CheckoutFormInputs {
 }
 
 export default function CheckoutForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<CheckoutFormInputs>()
 
-    const {
-      register,
-      handleSubmit,
-      formState: { errors, isSubmitting },
-    } = useForm<CheckoutFormInputs>()
-
-  const {cart, totalCartPrice, clearCart} = useCartStore(state => state)
+  const { cart, totalCartPrice, clearCart } = useCartStore(state => state)
   const totalPrice = totalCartPrice()
 
   const shipping = totalPrice > 1500 ? 0 : 150
@@ -44,7 +45,7 @@ export default function CheckoutForm() {
 
   const addOrder = useMutation(api.orders.createOrder)
 
-  const onSubmit: SubmitHandler<CheckoutFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<CheckoutFormInputs> = async data => {
     const orderItems = cart.map(item => ({
       product: { id: item.product._id, name: item.product.name },
       quantity: item.quantity,
@@ -66,6 +67,10 @@ export default function CheckoutForm() {
 
     try {
       const order = await addOrder({
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        phone: data.phone,
         status: 'pending',
         street: data.street,
         city: data.city,
@@ -87,7 +92,7 @@ export default function CheckoutForm() {
     } catch (error) {
       console.error('Error creating order:', error)
       toast.error('Failed to place order. Please try again.')
-    }  finally {
+    } finally {
       // Clear the cart
       clearCart()
     }
@@ -112,27 +117,53 @@ export default function CheckoutForm() {
               <div className='grid grid-cols-2 gap-4'>
                 <div className='space-y-2'>
                   <Label htmlFor='first_name'>First Name</Label>
-                  <Input id='first_name' name='first_name' placeholder='John' />
+                  <Input
+                    {...register('first_name')}
+                    id='first_name'
+                    placeholder='John'
+                  />
                 </div>
                 <div className='space-y-2'>
                   <Label htmlFor='last_name'>Last Name</Label>
-                  <Input id='last_name' name='last_name' placeholder='Doe' />
+                  <Input
+                    id='last_name'
+                    {...register('last_name')}
+                    placeholder='Doe'
+                  />
+                </div>
+                <div className='space-y-2'>
+                  <Label htmlFor='email'>Email</Label>
+                  <Input
+                    type='email'
+                    id='email'
+                    {...register('email')}
+                    placeholder='Doe'
+                  />
                 </div>
               </div>
               <div className='space-y-2'>
                 <Label htmlFor='address'>Address</Label>
-                <Input id='address' name='address' placeholder='123 Main St' />
+                <Input
+                  id='address'
+                  {...register('street')}
+                  name='address'
+                  placeholder='123 Main St'
+                />
               </div>
               <div className='grid grid-cols-2 gap-4'>
                 <div className='space-y-2'>
                   <Label htmlFor='city'>City</Label>
-                  <Input id='city' name='city' placeholder='Port Elizabeth' />
+                  <Input
+                    id='city'
+                    {...register('city')}
+                    placeholder='Port Elizabeth'
+                  />
                 </div>
                 <div className='space-y-2'>
                   <Label htmlFor='postal_code'>Postal Code</Label>
                   <Input
                     id='postal_code'
-                    name='postal_code'
+                    {...register('postal_code')}
                     placeholder='10001'
                   />
                 </div>
@@ -184,7 +215,11 @@ export default function CheckoutForm() {
             </CardContent>
             <CardFooter>
               <div className='w-full space-y-4'>
-                <Button type="submit" disabled={isSubmitting} className='w-full rounded-none'>
+                <Button
+                  type='submit'
+                  disabled={isSubmitting}
+                  className='w-full rounded-none'
+                >
                   Proceed to Payment
                 </Button>
                 <p className='text-sm text-muted-foreground'>
