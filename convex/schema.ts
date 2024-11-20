@@ -1,5 +1,5 @@
-import { defineSchema, defineTable } from "convex/server";
-import {v} from "convex/values";
+import { defineSchema, defineTable } from 'convex/server'
+import { v } from 'convex/values'
 
 export default defineSchema({
   users: defineTable({
@@ -31,7 +31,11 @@ export default defineSchema({
     main_image: v.id('_storage'),
     images: v.array(v.id('_storage')),
     in_stock: v.boolean(),
-    product_type: v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift')),
+    product_type: v.union(
+      v.literal('wine'),
+      v.literal('spirit'),
+      v.literal('gift')
+    ),
     // SEO and display
     slug: v.string(),
     meta_description: v.optional(v.string()),
@@ -136,5 +140,51 @@ export default defineSchema({
     order_id: v.string(), // Reference to order system
     created_at: v.number(),
   }),
-
+  orders: defineTable({
+    // Order info
+    status: v.union(
+      v.literal('pending'),
+      v.literal('processing'),
+      v.literal('paid'),
+      v.literal('fulfilled'),
+      v.literal('cancelled')
+    ),
+    // Customer info - now optional
+    userId: v.optional(v.id('users')),
+    shipping_address: v.object({
+      street: v.string(),
+      city: v.string(),
+      province: v.string(),
+      postal_code: v.string(),
+    }),
+    // Payment details
+    payment_reference: v.optional(v.string()),
+    subtotal: v.number(),
+    shipping: v.number(),
+    total: v.number(),
+    // Timestamps
+    updated_at: v.number(),
+    paid_at: v.optional(v.number()),
+  })
+    .index('byUserId', ['userId'])
+    .index('byStatus', ['status']),
+  order_items: defineTable({
+    order_id: v.id('orders'),
+    product_id: v.id('products'),
+    quantity: v.number(),
+    price_at_time: v.number(),
+    gift_box: v.optional(
+      v.object({
+        name: v.string(),
+        price: v.number(),
+        description: v.string(),
+        dimensions: v.string(),
+      })
+    ),
+    variant_id: v.optional(v.id('product_variants')),
+    created_at: v.number(),
+  })
+    .index('byOrder', ['order_id'])
+    .index('byProduct', ['product_id'])
+    .index('byVariant', ['variant_id']),
 })
