@@ -167,13 +167,12 @@ export default function CheckoutForm() {
                 </div>
               </div>
               <div className='space-y-2'>
-                <Label htmlFor='address'>Address</Label>
+                <Label htmlFor='city'>Address</Label>
                 <Input
-                  id='address'
+                  id='city'
                   {...register('street', {
                     required: 'Address is required',
                   })}
-                  name='address'
                   placeholder='123 Main St'
                 />
                 {errors.street && (
