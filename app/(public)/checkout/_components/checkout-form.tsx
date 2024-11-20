@@ -213,6 +213,21 @@ export default function CheckoutForm() {
                   )}
                 </div>
                 <div className='space-y-2'>
+                  <Label htmlFor='province'>Province</Label>
+                  <Input
+                    id='province'
+                    {...register('province', {
+                      required: 'Province is required',
+                    })}
+
+                  />
+                  {errors.province && (
+                    <span className='text-sm text-red-500'>
+                      {errors.province.message}
+                    </span>
+                  )}
+                </div>
+                <div className='space-y-2'>
                   <Label htmlFor='postal_code'>Postal Code</Label>
                   <Input
                     id='postal_code'
