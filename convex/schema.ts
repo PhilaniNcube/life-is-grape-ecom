@@ -163,14 +163,17 @@ export default defineSchema({
     shipping: v.number(),
     total: v.number(),
     // Timestamps
-    updated_at: v.number(),
+    updated_at: v.optional(v.number()),
     paid_at: v.optional(v.number()),
   })
     .index('byUserId', ['userId'])
     .index('byStatus', ['status']),
   order_items: defineTable({
     order_id: v.id('orders'),
-    product_id: v.id('products'),
+    product: v.object({
+      id: v.id('products'),
+      name: v.string(),
+    }),
     quantity: v.number(),
     price_at_time: v.number(),
     gift_box: v.optional(
@@ -181,10 +184,13 @@ export default defineSchema({
         dimensions: v.string(),
       })
     ),
-    variant_id: v.optional(v.id('product_variants')),
-    created_at: v.number(),
+    variant: v.object({
+      id: v.id('product_variants'),
+      volume: v.number(),
+      price: v.number(),
+    }),
   })
     .index('byOrder', ['order_id'])
-    .index('byProduct', ['product_id'])
-    .index('byVariant', ['variant_id']),
+    .index('byProduct', ['product.id'])
+    .index('byVariant', ['variant.id']),
 })

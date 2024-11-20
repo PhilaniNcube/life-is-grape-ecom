@@ -13,6 +13,8 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { useCartStore } from '@/store/cart-store-provider'
 import { formatPrice } from '@/lib/utils'
+import { useMutation } from 'convex/react'
+import { api } from '@/convex/_generated/api'
 
 
 
@@ -23,6 +25,8 @@ export default function CheckoutForm() {
 
   const shipping = totalPrice > 1500 ? 0 : 150
   const total = totalPrice + shipping
+
+  const addOrder = useMutation(api.orders.createOrder)
 
   return (
     <div className='container mx-auto px-4 py-8'>
