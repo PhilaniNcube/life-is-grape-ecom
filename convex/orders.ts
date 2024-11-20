@@ -71,6 +71,8 @@ export const createOrder = mutation({
 
 
 
+
+
     // create the order items
     for (const item of args.order_items) {
       await ctx.db.insert("order_items", {
@@ -83,6 +85,8 @@ export const createOrder = mutation({
       })
     }
 
+
+    return order
 
   },
 })
