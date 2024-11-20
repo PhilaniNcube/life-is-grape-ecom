@@ -84,20 +84,18 @@ export default function CheckoutForm() {
 
       console.log('Creating order:', order)
 
-      if (!order) {
-        console.log('Failed to create order', order)
-        throw new Error('Failed to create order')
-      }
+
 
       toast.success('Order placed successfully!')
       redirect(`/checkout/payment?order_id=${order}`)
       // Optionally, redirect or reset the form here
     } catch (error) {
       console.error('Error creating order:', error)
-      toast.error('Failed to place order. Please try again.')
+
     } finally {
       // Clear the cart
       // clearCart()
+      toast.info('Please wait while order is being created!')
     }
 
     // Clear the cart
