@@ -49,7 +49,7 @@ export const createOrder = mutation({
   },
   handler: async (ctx, args) => {
 
-
+    console.log("Creating order", args)
 
     // create a new order
     const order = await ctx.db.insert("orders", {
@@ -70,11 +70,6 @@ export const createOrder = mutation({
     })
 
 
-    // if the order was not created return an error
-    if (!order) {
-      console.log("Failed to create order", order)
-      throw new Error("Failed to create order")
-    }
 
     // create the order items
     for (const item of args.order_items) {

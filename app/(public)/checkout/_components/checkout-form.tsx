@@ -82,6 +82,8 @@ export default function CheckoutForm() {
         order_items: orderItems,
       })
 
+      console.log('Creating order:', order)
+
       if (!order) {
         console.log('Failed to create order', order)
         throw new Error('Failed to create order')
