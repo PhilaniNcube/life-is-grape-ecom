@@ -119,54 +119,99 @@ export default function CheckoutForm() {
                 <div className='space-y-2'>
                   <Label htmlFor='first_name'>First Name</Label>
                   <Input
-                    {...register('first_name')}
+                    {...register('first_name', {
+                      required: 'First name is required',
+                    })}
                     id='first_name'
                     placeholder='John'
                   />
+                  {errors.first_name && (
+                    <span className='text-sm text-red-500'>
+                      {errors.first_name.message}
+                    </span>
+                  )}
                 </div>
                 <div className='space-y-2'>
                   <Label htmlFor='last_name'>Last Name</Label>
                   <Input
                     id='last_name'
-                    {...register('last_name')}
+                    {...register('last_name', {
+                      required: 'Last name is required',
+                    })}
                     placeholder='Doe'
                   />
+                  {errors.last_name && (
+                    <span className='text-sm text-red-500'>
+                      {errors.last_name.message}
+                    </span>
+                  )}
                 </div>
                 <div className='space-y-2'>
                   <Label htmlFor='email'>Email</Label>
                   <Input
                     type='email'
                     id='email'
-                    {...register('email')}
-                    placeholder='Doe'
+                    {...register('email', {
+                      required: 'Email is required',
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                        message: 'Invalid email address',
+                      },
+                    })}
                   />
+                  {errors.email && (
+                    <span className='text-sm text-red-500'>
+                      {errors.email.message}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className='space-y-2'>
                 <Label htmlFor='address'>Address</Label>
                 <Input
                   id='address'
-                  {...register('street')}
+                  {...register('street', {
+                    required: 'Address is required',
+                  })}
                   name='address'
                   placeholder='123 Main St'
                 />
+                {errors.street && (
+                  <span className='text-sm text-red-500'>
+                    {errors.street.message}
+                  </span>
+                )}
               </div>
               <div className='grid grid-cols-2 gap-4'>
                 <div className='space-y-2'>
                   <Label htmlFor='city'>City</Label>
                   <Input
                     id='city'
-                    {...register('city')}
+                    {...register('city', {
+                      required: 'City is required',
+                    })}
                     placeholder='Port Elizabeth'
                   />
+                  {errors.city && (
+                    <span className='text-sm text-red-500'>
+                      {errors.city.message}
+                    </span>
+                  )}
                 </div>
                 <div className='space-y-2'>
                   <Label htmlFor='postal_code'>Postal Code</Label>
                   <Input
                     id='postal_code'
-                    {...register('postal_code')}
+                    {...register('postal_code', {
+                      required: 'Postal code is required',
+                    })}
                     placeholder='10001'
                   />
+                  {errors.postal_code && (
+                    <span className='text-sm text-red-500'>
+                      {errors.postal_code.message}
+                    </span>
+                  )}
                 </div>
               </div>
             </CardContent>
