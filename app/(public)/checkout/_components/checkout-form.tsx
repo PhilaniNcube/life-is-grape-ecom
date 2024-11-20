@@ -165,6 +165,21 @@ export default function CheckoutForm() {
                     </span>
                   )}
                 </div>
+                <div className='space-y-2'>
+                  <Label htmlFor='phone'>Phone Number</Label>
+                  <Input
+                    type='tel'
+                    id='phone'
+                    {...register('phone', {
+                      required: 'Phone is required',
+                    })}
+                  />
+                  {errors.phone && (
+                    <span className='text-sm text-red-500'>
+                      {errors.phone.message}
+                    </span>
+                  )}
+                </div>
               </div>
               <div className='space-y-2'>
                 <Label htmlFor='city'>Address</Label>

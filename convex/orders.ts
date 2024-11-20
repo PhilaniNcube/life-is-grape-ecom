@@ -58,7 +58,6 @@ export const createOrder = mutation({
       last_name: args.last_name,
       email: args.email,
       phone: args.phone,
-      // userId: user ? user._id : undefined,
       shipping_address: {
         street: args.street,
         city: args.city,
@@ -73,6 +72,7 @@ export const createOrder = mutation({
 
     // if the order was not created return an error
     if (!order) {
+      console.log("Failed to create order", order)
       throw new Error("Failed to create order")
     }
 
