@@ -371,7 +371,7 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
       tasting_notes: validatedFields.data.tasting_notes,
       // serving_suggestion: validatedFields.data.serving_suggestion,
       // awards: validatedFields.data.awards,
-      pairing_suggestions: validatedFields.data.pairing_suggestions,
+      // pairing_suggestions: validatedFields.data.pairing_suggestions,
       // aging: validatedFields.data.aging,
       // distillation_method: validatedFields.data.distillation_method,
     })
