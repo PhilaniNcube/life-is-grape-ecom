@@ -1,6 +1,18 @@
+import { updateOrderStatus } from '@/actions/orders'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
+import { formatPrice } from '@/lib/utils'
 import { fetchQuery } from 'convex/nextjs'
+import PaymentForm from '../_components/payment-form'
 
 const page = async ({
   params,
@@ -15,23 +27,6 @@ const page = async ({
     return <div>Order not found</div>
   }
 
-  return (
-    <div className="max-w-7xl mx-auto px-6">
-      <h1>Order Details</h1>
-      <p>Order ID: {order._id}</p>
-      <p>Order Status: {order.status}</p>
-      <p>Order Total: {order.total}</p>
-      <p>
-        Name: {order.first_name} {order.last_name}
-      </p>
-      <p>Email: {order.email}</p>
-      <p>Phone: {order.phone}</p>
-      <p>
-        Shipping Address: {order.shipping_address.street},{' '}
-        {order.shipping_address.city}, {order.shipping_address.province},{' '}
-        {order.shipping_address.postal_code}
-      </p>
-    </div>
-  )
+  return <PaymentForm order={order} />
 }
 export default page
