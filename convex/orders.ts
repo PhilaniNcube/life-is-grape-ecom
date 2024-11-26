@@ -90,3 +90,15 @@ export const createOrder = mutation({
 
   },
 })
+
+
+
+// get order by order_id
+export const getOrder = query({
+  args: {
+    order_id: v.id('orders'),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.order_id)
+  },
+})
