@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
+import { PaystackEvent } from '@/lib/types'
+import { fetchMutation } from 'convex/nextjs'
+import { api } from '@/convex/_generated/api'
 
 export async function POST(req: NextRequest) {
   const secret = process.env.PAYSTACK_SECRET
   const hash = req.headers.get('x-paystack-signature')
 
-  const event = await req.json()
+  const event: PaystackEvent = await req.json()
+
+  console.log(event)
 
   // Example: Verify the hash using HMAC (adjust as needed)
   const computedHash = crypto
@@ -14,8 +19,15 @@ export async function POST(req: NextRequest) {
     .digest('hex')
 
   if (hash === computedHash) {
-    // Handle the verified event here
-   console.log(event)
+    //  if event type is paymentrequest.success then update the order status to paid
+
+    if (event.event === 'paymentrequest.success') {
+      await fetchMutation(api.orders.updateOrderPaidStatus, {
+        payment_reference: event.data.request_code,
+        status: event.data.paid,
+      })
+    }
+
     return NextResponse.json(
       { status: 200 },
       {
