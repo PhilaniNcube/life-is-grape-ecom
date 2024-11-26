@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, ) {
 
-  return NextResponse.json({ status: 'success' });
+  const data = await req.json();
+
+  console.log(data);
+
+  return NextResponse.json({ status: 'success', data: data });
 
 }
