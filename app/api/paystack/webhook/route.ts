@@ -21,9 +21,9 @@ export async function POST(req: NextRequest) {
   if (hash === computedHash) {
     //  if event type is paymentrequest.success then update the order status to paid
 
-    if (event.event === 'paymentrequest.success') {
+    if (event.event === 'charge.success') {
       await fetchMutation(api.orders.updateOrderPaidStatus, {
-        payment_reference: event.data.request_code,
+        payment_reference: event.data.reference,
         status: event.data.paid,
       })
     }

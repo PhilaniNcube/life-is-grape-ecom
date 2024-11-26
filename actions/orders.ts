@@ -19,6 +19,8 @@ export async function updateOrderStatus(
     throw new Error('Invalid form data')
   }
 
+  const payment_amount = parseInt(amount) * 100
+
   const options = {
     method: 'POST',
     headers: {
@@ -32,7 +34,7 @@ export async function updateOrderStatus(
     {
       ...options,
       body: JSON.stringify({
-        amount: Number(amount) * 100,
+        amount: payment_amount,
         email,
         reference: order_id,
         currency: 'ZAR',

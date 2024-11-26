@@ -71,29 +71,40 @@ type PastackEventType =
 
 export type PaystackEvent = {
   event: PastackEventType
-   data: {
-    id: number,
-    "domain": string,
-    "amount": number,
-    "currency": string,
-    "due_date": string | null,
-    "has_invoice": boolean,
-    "invoice_number": string | null,
-    "description": string,
-    "pdf_url": string | null,
-    "request_code": string,
-    "status": string,
-    "paid": boolean,
-    "paid_at": string,
-    "notifications": [
+  data: {
+    id: number
+    domain: string
+    status: string
+    reference: string
+    paid_at: string
+    amount: number
+    message: string
+    gateway_response: string
+    currency: string
+    due_date: string | null
+    has_invoice: boolean
+    invoice_number: string | null
+    description: string
+    pdf_url: string | null
+    request_code: string
+    paid: boolean
+    paidAt: string
+    requested_amount: number
+    notifications: [
       {
-        "sent_at": string,
-        "channel": string
-      }
-    ],
-    "offline_reference": string,
-    "customer": number,
-    "created_at": string
+        sent_at: string
+        channel: string
+      },
+    ]
+    offline_reference: string
+    customer: {
+      id: number
+      customer_code: string
+      first_name: string
+      last_name: string
+      email: string
+      phone: string | null
+      risk_action: string | null
+    }
   }
-
 }
