@@ -17,7 +17,7 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 
 interface CheckoutFormInputs {
   first_name: string
@@ -44,6 +44,8 @@ export default function CheckoutForm() {
   const total = totalPrice + shipping
 
   const addOrder = useMutation(api.orders.createOrder)
+
+  const router = useRouter()
 
   const onSubmit: SubmitHandler<CheckoutFormInputs> = async data => {
     const orderItems = cart.map(item => ({
@@ -87,7 +89,7 @@ export default function CheckoutForm() {
 
 
       toast.success('Order placed successfully!')
-      redirect(`/checkout/payment?order_id=${order}`)
+      router.push(`/checkout/payment/${order}`)
       // Optionally, redirect or reset the form here
     } catch (error) {
       console.error('Error creating order:', error)

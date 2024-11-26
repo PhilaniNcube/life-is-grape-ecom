@@ -16,7 +16,7 @@ const page = async ({
   }
 
   return (
-    <div>
+    <div className="max-w-7xl mx-auto px-6">
       <h1>Order Details</h1>
       <p>Order ID: {order._id}</p>
       <p>Order Status: {order.status}</p>

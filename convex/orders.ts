@@ -86,7 +86,7 @@ export const createOrder = mutation({
       })
     }
 
-    redirect(`/checkout/payment?order_id=${order}`)
+    // redirect(`/checkout/payment?order_id=${order}`)
     return order
 
   },
