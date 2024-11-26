@@ -103,3 +103,20 @@ export const getOrder = query({
     return await ctx.db.get(args.order_id)
   },
 })
+
+
+// update order payment_reference
+export const updateOrderPaymentReference = mutation({
+  args: {
+    order_id: v.id('orders'),
+    payment_reference: v.string(),
+  },
+  handler: async (ctx, args) => {
+
+    const id = args.order_id
+
+    return await ctx.db.patch(id, {
+      payment_reference: args.payment_reference,
+    })
+  },
+})

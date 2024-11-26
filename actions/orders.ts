@@ -1,5 +1,7 @@
 'use server'
+import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
+import { fetchMutation } from 'convex/nextjs'
 import { redirect } from 'next/navigation'
 import { form } from 'sanity/structure'
 import 'server-only'
@@ -48,6 +50,11 @@ export async function updateOrderStatus(
     }
   } = await response.json()
   console.log(data)
+
+  await fetchMutation(api.orders.updateOrderPaymentReference, {
+    order_id,
+    payment_reference: data.data.reference
+  })
 
   if(data.status === true) {
     redirect(data.data.authorization_url)

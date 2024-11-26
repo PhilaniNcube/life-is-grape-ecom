@@ -64,6 +64,7 @@
     "react-dom": "19.0.0-rc-69d4b800-20241021",
     "react-dropzone": "^14.3.5",
     "react-hook-form": "^7.53.0",
+    "react-paystack": "^6.0.0",
     "react-resizable-panels": "^2.1.4",
     "recharts": "^2.12.7",
     "sanity": "3",
