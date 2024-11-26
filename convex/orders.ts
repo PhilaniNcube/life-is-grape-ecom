@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
+import { redirect } from 'next/navigation'
 
 // create a new order
 export const createOrder = mutation({
@@ -85,7 +86,7 @@ export const createOrder = mutation({
       })
     }
 
-
+    redirect(`/checkout/payment?order_id=${order}`)
     return order
 
   },
