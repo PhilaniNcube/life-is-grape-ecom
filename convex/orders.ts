@@ -125,7 +125,7 @@ export const updateOrderPaymentReference = mutation({
 // update order paid status and paid_at timestamp
 export const updateOrderPaidStatus = mutation({
   args: {
-    payment_reference: v.string(),
+    payment_reference: v.id('orders'),
     status: v.string(),
   },
   handler: async (ctx, args) => {
@@ -133,8 +133,7 @@ export const updateOrderPaidStatus = mutation({
     const payment_reference = args.payment_reference
     const status = args.status
 
-    const order = await ctx.db.query("orders").filter((q) => q.eq(q.field("payment_reference"), payment_reference)).first()
-
+    const order = await ctx.db.get(payment_reference)
     if (!order) {
       throw new Error("Order not found")
     }

@@ -3,6 +3,7 @@ import crypto from 'crypto'
 import { PaystackEvent } from '@/lib/types'
 import { fetchMutation } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
+import { Id } from '@/convex/_generated/dataModel'
 
 export async function POST(req: NextRequest) {
   const secret = process.env.PAYSTACK_SECRET
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     if (event.event === 'charge.success') {
       await fetchMutation(api.orders.updateOrderPaidStatus, {
-        payment_reference: event.data.reference,
+        payment_reference: event.data.reference as Id<"orders">,
         status: "paid",
       })
     }
