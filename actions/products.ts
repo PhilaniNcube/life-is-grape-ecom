@@ -3,7 +3,7 @@ import "server-only"
 
 import { revalidatePath } from 'next/cache'
 
-import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateProductSchema, UpdateProductVariantSchema, UpdateVariantPriceSchema, UpdateVariantVolumeSchema } from '@/lib/schemas'
+import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateProductSchema, UpdateProductVariantSchema, UpdateVariantPriceSchema, UpdateVariantStockSchema, UpdateVariantVolumeSchema } from '@/lib/schemas'
 import { fetchMutation, fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
@@ -290,6 +290,39 @@ export async function updateVariantPriceAction(prevState: unknown, formData: For
 
     return { success: true }
   } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to add product variant',
+    }
+  }
+}
+
+export async function updateStockAction(prevState: unknown, formData: FormData) {
+  const validatedFields = UpdateVariantStockSchema.safeParse({
+    id: formData.get('id'),
+    stock_level: formData.get('stock_level'),
+  })
+
+  if (!validatedFields.success) {
+    console.log(validatedFields.error)
+    return {
+      success: false,
+      error: 'Invalid form data',
+    }
+  }
+
+  const variantId = validatedFields.data.id as Id<"product_variants">
+
+  try {
+    const result = await fetchMutation(api.products.updateVariantStockLevel, {
+      id: variantId,
+      stock_level: validatedFields.data.stock_level,
+    })
+
+    if (!result) {
+      throw new Error('Failed to add product variant')
+    }
+} catch (error) {
     return {
       success: false,
       error: 'Failed to add product variant',

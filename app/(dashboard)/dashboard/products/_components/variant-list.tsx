@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { formatPrice } from '@/lib/utils'
 import UpdateVolumeDialog from './update-variant-volume'
 import UpdatePriceDialog from './update-varaint-price'
+import UpdateStockDialog from './update-variant-stock'
 
 type VariantListProps = {
   product_id: Id<'products'>
@@ -54,11 +55,10 @@ const VariantList = async ({ product_id }: VariantListProps) => {
                   />
                 </td>
                 <td className='whitespace-nowrap px-6 py-4'>
-                  <Badge>
-                    {variant.stock_level > 0
-                      ? `${variant.stock_level} In Stock`
-                      : 'Out of Stock'}
-                  </Badge>
+                 <UpdateStockDialog
+                    variantId={variant._id}
+                    stock_level={variant.stock_level}
+                  />
                 </td>
               </tr>
             ))}
