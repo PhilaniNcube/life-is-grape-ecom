@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
 
   const event: PaystackEvent = await req.json()
 
-  console.log(event)
+  console.log("Event: ", event.event)
+  console.log("Data: ", event.data)
 
   // Example: Verify the hash using HMAC (adjust as needed)
   const computedHash = crypto
@@ -23,13 +24,14 @@ export async function POST(req: NextRequest) {
 
     console.log("Is hash the same", checkHash)
 
-  if (hash === computedHash) {
-    //  if event type is paymentrequest.success then update the order status to paid
+  if (checkHash) {
+
+
 
     if (event.event === 'charge.success') {
       await fetchMutation(api.orders.updateOrderPaidStatus, {
-        payment_reference: event.data.reference as Id<"orders">,
-        status: "paid",
+        payment_reference: event.data.reference as Id<'orders'>,
+        status: 'paid',
       })
     }
 
