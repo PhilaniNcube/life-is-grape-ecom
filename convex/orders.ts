@@ -126,7 +126,7 @@ export const updateOrderPaymentReference = mutation({
 export const updateOrderPaidStatus = mutation({
   args: {
     payment_reference: v.string(),
-    status: v.boolean(),
+    status: v.string(),
   },
   handler: async (ctx, args) => {
 
@@ -140,7 +140,7 @@ export const updateOrderPaidStatus = mutation({
     }
 
      await ctx.db.patch(order._id, {
-      status: status === true ? "paid" : "pending",
+      status: status === "paid" ? "paid" : "pending",
       paid_at: Date.now(),
     })
   },
