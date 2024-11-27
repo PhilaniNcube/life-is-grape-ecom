@@ -24,28 +24,26 @@ export async function POST(req: NextRequest) {
 
     console.log("Is hash the same", checkHash)
 
-  if (checkHash) {
-
-
-
-    if (event.event === 'charge.success') {
-      await fetchMutation(api.orders.updateOrderPaidStatus, {
-        payment_reference: event.data.reference as Id<'orders'>,
-        status: 'paid',
-      })
+    if(!checkHash) {
+      console.error('Invalid webhook signature')
+      return NextResponse.json({ status: 400 }, { status: 400 })
     }
 
-    return NextResponse.json(
-      { status: 200 },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        status: 200,
-      }
-    )
-  } else {
-    console.error('Invalid webhook signature')
-    return NextResponse.json({ status: 400 }, { status: 400 })
-  }
+     if (event.event === 'charge.success') {
+       await fetchMutation(api.orders.updateOrderPaidStatus, {
+         payment_reference: event.data.reference as Id<'orders'>,
+         status: 'paid',
+       })
+     }
+
+      return NextResponse.json(
+        { status: 200 },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          status: 200,
+        }
+      )
+
 }
