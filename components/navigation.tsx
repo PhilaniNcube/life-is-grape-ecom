@@ -2,22 +2,14 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Menu, ShoppingBag, User } from 'lucide-react'
+import { Menu} from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Doc } from '@/convex/_generated/dataModel'
 import { ThemeToggle } from './theme-toggle'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
-import { useCartStore } from '@/store/cart-store-provider'
 import Cart from './cart'
 
 const routes = [
@@ -28,7 +20,7 @@ const routes = [
 
 ]
 
-export default function Navigation({user}:{user:Doc<"users">}) {
+export default function Navigation({user}:{user:Doc<"users"> | null}) {
 
 
 

@@ -13,9 +13,10 @@ export default async function PublicHeader() {
   const user = await fetchQuery(api.users.getUser, { clerkUserId: clerKUserId })
 
 
+
   return (
     <header className='py-4 container'>
-     <Navigation user={user!} />
+     <Navigation user={user} />
     </header>
   )
 }

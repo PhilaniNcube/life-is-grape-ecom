@@ -2,6 +2,7 @@ import type * as PropTypes from "prop-types";
 import { v, Validator } from 'convex/values'
 import { internalMutation, query, QueryCtx } from './_generated/server'
 import { UserJSON } from '@clerk/backend'
+import { auth } from "@clerk/nextjs/server";
 
 export const getUsers = query({
   args: {},
@@ -35,6 +36,11 @@ export const current = query({
 export const isAdmin = query({
   handler: async ctx => {
     const user = await getCurrentUser(ctx)
+
+    const clerkId = await auth()
+
+
+    console.log({ user, clerkId })
 
     if (user === null || user.role !== 'admin') {
       return false
