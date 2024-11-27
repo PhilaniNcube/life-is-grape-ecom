@@ -26,7 +26,15 @@ export async function POST(req: NextRequest) {
 
     if(!checkHash) {
       console.error('Invalid webhook signature')
-      return NextResponse.json({ status: 400 }, { status: 400 })
+       return NextResponse.json(
+        { status: 203 },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+
+        }
+      )
     }
 
      if (event.event === 'charge.success') {
