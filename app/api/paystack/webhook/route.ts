@@ -18,6 +18,10 @@ export async function POST(req: NextRequest) {
     .update(JSON.stringify(event))
     .digest('hex')
 
+    const checkHash = hash === computedHash
+
+    console.log("Is hash the same", checkHash)
+
   if (hash === computedHash) {
     //  if event type is paymentrequest.success then update the order status to paid
 

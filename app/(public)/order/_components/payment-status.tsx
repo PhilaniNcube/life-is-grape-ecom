@@ -11,8 +11,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { CheckCircle2, XCircle } from 'lucide-react'
+import { Doc } from '@/convex/_generated/dataModel'
 
-export function PaymentStatus({ status }: { status: 'success' | 'failure' }) {
+export function PaymentStatus({ status, order }: { status: 'success' | 'failure', order:Doc<"orders"> | null }) {
   const router = useRouter()
 
   const handleContinue = () => {
