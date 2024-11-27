@@ -28,23 +28,23 @@ export function PaymentStatus({ status, order }: { status: 'success' | 'failure'
     <Card className='mx-auto w-full max-w-md'>
       <CardHeader>
         <CardTitle className='text-center'>
-          {status === 'success' ? 'Payment Successful' : 'Payment Failed'}
+          {order?.status === 'paid' ? 'Payment Successful' : 'Payment Failed'}
         </CardTitle>
         <CardDescription className='text-center'>
-          {status === 'success'
+          {order?.status === 'paid'
             ? 'Your payment has been processed successfully.'
             : 'There was an issue processing your payment.'}
         </CardDescription>
       </CardHeader>
       <CardContent className='flex justify-center py-6'>
-        {status === 'success' ? (
+        {order?.status === 'paid' ? (
           <CheckCircle2 className='h-16 w-16 text-green-500' />
         ) : (
           <XCircle className='h-16 w-16 text-red-500' />
         )}
       </CardContent>
       <CardFooter className='flex justify-center space-x-4'>
-        {status === 'success' ? (
+        {order?.status === 'paid' ? (
           <Button onClick={handleContinue}>Continue Shopping</Button>
         ) : (
           <>
