@@ -108,7 +108,7 @@ export default function Cart() {
             <span className='font-bold'>{formatPrice(totalPrice)}</span>
           </div>
           <Link href='/checkout'>
-            <Button className='w-full rounded-none'>Proceed to Checkout</Button>
+            <Button onClick={() => toggleCart()} className='w-full rounded-none'>Proceed to Checkout</Button>
           </Link>
         </div>
       </SheetContent>
