@@ -138,6 +138,11 @@ export const updateOrderPaidStatus = mutation({
       throw new Error("Order not found")
     }
 
+    if(order.status === "paid") {
+      console.log("Order already paid")
+      return
+    }
+
      await ctx.db.patch(order._id, {
       status: status === "paid" ? "paid" : "pending",
       paid_at: Date.now(),
