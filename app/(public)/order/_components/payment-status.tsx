@@ -12,48 +12,37 @@ import {
 } from '@/components/ui/card'
 import { CheckCircle2, XCircle } from 'lucide-react'
 import { Doc } from '@/convex/_generated/dataModel'
+import { useCartStore } from '@/store/cart-store-provider'
 
 export function PaymentStatus({ status, order }: { status: 'success' | 'failure', order:Doc<"orders"> | null }) {
   const router = useRouter()
+  const {clearCart} = useCartStore(state => state)
 
   const handleContinue = () => {
+    clearCart()
     router.push('/') // Redirect to home page or order confirmation page
   }
 
-  const handleTryAgain = () => {
-    router.push('/checkout') // Redirect back to the checkout page
+  const handleGoToOrder = () => {
+    clearCart()
+    router.push(`/order/${order?._id}`) // Redirect back to the checkout page
   }
 
   return (
     <Card className='mx-auto w-full max-w-md'>
       <CardHeader>
-        <CardTitle className='text-center'>
-          {order?.status === 'paid' ? 'Payment Successful' : 'Payment Failed'}
-        </CardTitle>
+        <CardTitle className='text-center'>Order is being processed</CardTitle>
         <CardDescription className='text-center'>
-          {order?.status === 'paid'
-            ? 'Your payment has been processed successfully.'
-            : 'There was an issue processing your payment.'}
+          Your order is being processed, please look out for a confirmation
+          email.
         </CardDescription>
       </CardHeader>
       <CardContent className='flex justify-center py-6'>
-        {order?.status === 'paid' ? (
-          <CheckCircle2 className='h-16 w-16 text-green-500' />
-        ) : (
-          <XCircle className='h-16 w-16 text-red-500' />
-        )}
+        <CheckCircle2 className='h-16 w-16 text-green-500' />
       </CardContent>
       <CardFooter className='flex justify-center space-x-4'>
-        {order?.status === 'paid' ? (
-          <Button onClick={handleContinue}>Continue Shopping</Button>
-        ) : (
-          <>
-            <Button onClick={handleTryAgain} variant='outline'>
-              Try Again
-            </Button>
-            <Button onClick={handleContinue}>Back to Home</Button>
-          </>
-        )}
+        <Button onClick={handleContinue}>Continue Shopping</Button>
+        <Button onClick={handleGoToOrder}>View Order</Button>
       </CardFooter>
     </Card>
   )

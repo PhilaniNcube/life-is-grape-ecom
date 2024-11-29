@@ -18,6 +18,7 @@ import type * as categories from "../categories.js";
 import type * as gifts from "../gifts.js";
 import type * as http from "../http.js";
 import type * as orders from "../orders.js";
+import type * as order_items from "../order_items.js";
 import type * as producers from "../producers.js";
 import type * as products from "../products.js";
 import type * as tasting_experiences from "../tasting_experiences.js";
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   gifts: typeof gifts;
   http: typeof http;
   orders: typeof orders;
+  order_items: typeof order_items;
   producers: typeof producers;
   products: typeof products;
   tasting_experiences: typeof tasting_experiences;

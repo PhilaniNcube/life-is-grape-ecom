@@ -4,12 +4,7 @@ import { internalMutation, query, QueryCtx } from './_generated/server'
 import { UserJSON } from '@clerk/backend'
 import { auth } from "@clerk/nextjs/server";
 
-export const getUsers = query({
-  args: {},
-  handler: async ctx => {
-    return await ctx.db.query('users').collect()
-  },
-})
+
 
 export const getUser = query({
   args: {
@@ -20,39 +15,6 @@ export const getUser = query({
   },
 })
 
-export const getRecentUsers = query({
-  args: {},
-  handler: async ctx => {
-    return await ctx.db.query('users').order('desc').take(5)
-  },
-})
-
-export const current = query({
-  handler: async ctx => {
-    return await getCurrentUser(ctx)
-  },
-})
-
-export const isAdmin = query({
-  handler: async ctx => {
-    const user = await getCurrentUser(ctx)
-
-    const clerkId = await auth()
-
-
-    console.log({ user, clerkId })
-
-    if (user === null || user.role !== 'admin') {
-      return false
-    }
-
-    if (user.role === 'admin') {
-      return true
-    }
-
-    return false
-  },
-})
 
 export const upsertFromClerk = internalMutation({
   // @ts-ignore
