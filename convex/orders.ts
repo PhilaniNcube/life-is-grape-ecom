@@ -1,7 +1,7 @@
 
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
-
+import { paginationOptsValidator } from 'convex/server'
 
 // create a new order
 export const createOrder = mutation({
@@ -104,6 +104,20 @@ export const getOrder = query({
   },
 })
 
+// get all orders
+export const getOrders = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("orders").collect()
+  },
+})
+
+// get paid orders
+export const getPaidOrders = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("orders").filter(q => q.eq(q.field("status"), "paid")).collect()
+  },
+})
+
 
 
 
@@ -149,5 +163,18 @@ export const updateOrderPaidStatus = mutation({
       status: status === "paid" ? "paid" : "pending",
       paid_at: Date.now(),
     })
+  },
+})
+
+
+export const getPaginatedOrders = query({
+  args: {
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('orders')
+      .order('desc')
+      .paginate(args.paginationOpts)
   },
 })
