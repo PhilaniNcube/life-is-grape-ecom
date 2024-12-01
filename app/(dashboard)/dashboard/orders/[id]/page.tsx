@@ -23,7 +23,8 @@ const page = async ({ params }: { params: Promise<{ id: Id<'orders'> }> }) => {
       <div className='flex items-center justify-between'>
         <h1 className='text-3xl font-bold'>Order Details</h1>
         <div className="flex gap-x-3">
-          <Button>Update Order Status</Button>
+          <Button>Fulfil Order</Button>
+          <Button variant="destructive">Cancel Order</Button>
         </div>
       </div>
       <OrderSummary order={order} orderItems={orderItems} />
