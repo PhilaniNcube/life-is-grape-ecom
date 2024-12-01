@@ -6,10 +6,10 @@ import { formatPrice } from "@/lib/utils";
 const OrdersAnalytics = async () => {
 
   const ordersData = fetchQuery(api.orders.getPaidOrders)
-  const orderItemData = fetchQuery(api.order_items.getOrderItems)
+  const orderItemData = fetchQuery(api.order_items.getOrderItemsFromPaidOrders)
 
   const [orders, orderItems] = await Promise.allSettled([ordersData, orderItemData])
-  console.log(orders, orderItems)
+  console.log(orders)
 
   // calculate the number of total orders
   const totalOrders = orders.status === 'fulfilled' ? orders.value.length : 0
@@ -18,10 +18,7 @@ const OrdersAnalytics = async () => {
   const totalOrderItems = orderItems.status === 'fulfilled' ? orderItems.value.length : 0
 
   // calculate the total revenue
-  const totalRevenue = orderItems.status === 'fulfilled' ? orderItems.value.reduce((acc, orderItem) => {
-    const price = orderItem.quantity * orderItem.variant.price
-    return acc + (orderItem.gift_box ? price + orderItem.gift_box.price : price)
-  }, 0) : 0
+  const totalRevenue = orders.status === 'fulfilled' ? orders.value.reduce((acc, order) => acc + order.total, 0) : 0
 
   // calculate the average order value
   const averageOrderValue = totalRevenue / totalOrders
