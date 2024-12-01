@@ -4,6 +4,7 @@ import { api } from '@/convex/_generated/api'
 import { fetchQuery } from 'convex/nextjs'
 import OrdersAnalytics from './orders/_components/orders-analytics'
 import { Suspense } from 'react'
+import { OrdersChart } from './orders/_components/orders-charts'
 
 const DashboardPage = async () => {
 
@@ -42,7 +43,9 @@ const DashboardPage = async () => {
         }
       >
         <OrdersAnalytics />
+
       </Suspense>
+      <OrdersChart />
     </div>
   )
 }
