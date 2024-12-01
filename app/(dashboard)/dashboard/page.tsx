@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { api } from '@/convex/_generated/api'
 import { fetchQuery } from 'convex/nextjs'
+import OrdersAnalytics from './orders/_components/orders-analytics'
+import { Suspense } from 'react'
 
 const DashboardPage = async () => {
 
@@ -13,56 +15,34 @@ const DashboardPage = async () => {
       <h1 className='text-3xl font-bold'>Dashboard</h1>
 
       <Separator className='my-2' />
-      <div className='@sm:grid-cols-3 @md:grid-col-4 grid grid-cols-1 gap-4'>
-        <Card>
-          <CardHeader>
-            <CardTitle>Brandy</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* <p>There are {brandy.length} brandy product(s).</p> */}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Whiskey</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* <p>There are {whiskey.length} whiskey product(s).</p> */}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Vodka</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* <p>There are {vodka.length} vodka product(s).</p> */}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Gin</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* <p>There are {gin.length} gin product(s).</p> */}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Rum</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* <p>There are {rum.length} rum product(s).</p> */}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Tequila</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* <p>There are {tequila.length} tequila product(s).</p> */}
-          </CardContent>
-        </Card>
-      </div>
+      <Suspense
+        fallback={
+          <div className='grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4'>
+            <Card>
+              <CardContent>
+                <div className='p-8 text-2xl font-bold'>Loading...</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent>
+                <div className='p-8 text-2xl font-bold'>Loading...</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent>
+                <div className='p-8 text-2xl font-bold'>Loading...</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent>
+                <div className='p-8 text-2xl font-bold'>Loading...</div>
+              </CardContent>
+            </Card>
+          </div>
+        }
+      >
+        <OrdersAnalytics />
+      </Suspense>
     </div>
   )
 }
