@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
@@ -13,17 +13,66 @@ import {
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Package, Tag, Wine, Check, X } from 'lucide-react'
-import { useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
-import { Doc } from '@/convex/_generated/dataModel';
-import Image from 'next/image';
+import { useQuery } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { Doc, Id } from '@/convex/_generated/dataModel'
+import Image from 'next/image'
+import { useCartStore } from '@/store/cart-store-provider'
+import { formatPrice } from '@/lib/utils'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+
+export default function GiftDetails({ gift, wines }: { gift: Doc<'gifts'>, wines: Doc<'products'>[] }) {
+  const { cart, addToCart, toggleCart } = useCartStore(state => state)
+
+  const image = useQuery(api.gifts.fetchGiftImage, { image: gift.main_image })
+
+
+  const [selectedWineId, setSelectedWineId] = useState<
+    Id<'products'>
+  >(wines?.[0]._id)
 
 
 
-export default function GiftDetails({gift}:{gift: Doc<'gifts'>}) {
+  // Fetch variants based on selectedWineId
+  const variants = useQuery(api.products.getProductVariants, {
+    product_id: selectedWineId,
+  })
 
+  const updateCart = () => {
+    if (selectedWineId === undefined) {
+      return
+    }
 
-  const image = useQuery(api.gifts.fetchGiftImage, {image:gift.main_image})
+    const variant = variants?.[0]
+
+    if (variant === undefined) {
+      return
+    }
+
+    // get the product from the selected wine id
+    const selectedWine = wines?.find(wine => wine._id === selectedWineId)
+
+    if (selectedWine === undefined) {
+      return
+    }
+
+    addToCart(selectedWine, variant, {
+      name: gift.name,
+      description: gift.description,
+      price: gift.type === "label" ? gift.price * 6 : gift.price,
+      dimensions: '',
+    })
+
+    toggleCart()
+  }
 
   return (
     <div className='container mx-auto py-10'>
@@ -50,7 +99,13 @@ export default function GiftDetails({gift}:{gift: Doc<'gifts'>}) {
               <p className='text-md'>{gift.description}</p>
               <div>
                 <h3 className='text-lg font-semibold'>Price</h3>
-                <p className='text-2xl font-bold'>${gift.price.toFixed(2)}</p>
+                {/* IF is is a wine label it is a minimum of 6 labels */}
+                {gift.type === 'label' && (
+                  <p className='text-sm'>
+                    Minimum order of 6 labels. Price per label.
+                  </p>
+                )}
+                <p className='text-2xl font-bold'>{formatPrice(gift.price)}</p>
                 <Badge
                   // variant={gift.in_stock ? 'success' : 'destructive'}
                   className='text-sm'
@@ -121,7 +176,40 @@ export default function GiftDetails({gift}:{gift: Doc<'gifts'>}) {
                   </div>
                 )}
               </div>
-              <Button disabled={!gift.in_stock} size="lg" className='rounded-none'>
+
+              {/* list available wines */}
+              <div>
+                <h3 className='text-lg font-semibold'>Select a wine</h3>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select a wine' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel className='text-sm'>
+                        Select a wine
+                      </SelectLabel>
+
+                      {wines?.map(wine => (
+                        <SelectItem
+                          onClick={() => setSelectedWineId(wine._id)}
+                          value={wine._id}
+                          key={wine._id}
+                        >
+                          {wine.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Button
+                disabled={!gift.in_stock}
+                onClick={updateCart}
+                size='lg'
+                className='rounded-none'
+              >
                 {gift.in_stock ? 'Add to Cart' : 'Out of Stock'}
               </Button>
             </div>

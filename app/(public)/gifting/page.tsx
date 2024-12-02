@@ -1,6 +1,10 @@
+import { fetchQuery } from 'convex/nextjs'
 import GiftingContent from './_components/gifting-content'
 
-const GiftingPage = () => {
+const GiftingPage =  () => {
+
+
+
   return (
     <div>
       <GiftingContent />

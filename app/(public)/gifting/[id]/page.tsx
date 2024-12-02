@@ -13,6 +13,9 @@ const GiftPage = async ({
   const { id } = await params
 
   const gift = await fetchQuery(api.gifts.getGift, { gift_id: id })
+    const wines = await fetchQuery(api.products.getShallowProductsByType, {
+      type: 'wine',
+    })
 
   if (!gift) {
     return (
@@ -24,7 +27,7 @@ const GiftPage = async ({
 
   return (
     <div>
-      <GiftDetails gift={gift} />
+      <GiftDetails gift={gift} wines={wines} />
     </div>
   )
 }
