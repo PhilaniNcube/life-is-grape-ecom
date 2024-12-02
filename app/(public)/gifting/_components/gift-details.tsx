@@ -79,7 +79,7 @@ export default function GiftDetails({ gift, wines }: { gift: Doc<'gifts'>, wines
 
   return (
     <div className='container mx-auto py-10'>
-      <Card className='w-full'>
+      <Card className='w-full border-none shadow-none'>
         <CardContent>
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
             <div className='space-y-4'>
