@@ -36,17 +36,20 @@ export default function GiftDetails({ gift, wines }: { gift: Doc<'gifts'>, wines
 
 
   const [selectedWineId, setSelectedWineId] = useState<
-    Id<'products'>
-  >(wines?.[0]._id)
+    string
+  >(wines?.[0]._id as string)
 
 
 
   // Fetch variants based on selectedWineId
   const variants = useQuery(api.products.getProductVariants, {
-    product_id: selectedWineId,
+    product_id: selectedWineId as Id<'products'>,
   })
 
-  const updateCart = () => {
+  const updateCart = (wineId:string) => {
+
+   console.log('updateCart', wineId)
+
     if (selectedWineId === undefined) {
       return
     }
@@ -58,7 +61,7 @@ export default function GiftDetails({ gift, wines }: { gift: Doc<'gifts'>, wines
     }
 
     // get the product from the selected wine id
-    const selectedWine = wines?.find(wine => wine._id === selectedWineId)
+    const selectedWine = wines?.find(wine => wineId === wine._id)
 
     if (selectedWine === undefined) {
       return
@@ -180,7 +183,7 @@ export default function GiftDetails({ gift, wines }: { gift: Doc<'gifts'>, wines
               {/* list available wines */}
               <div>
                 <h3 className='text-lg font-semibold'>Select a wine</h3>
-                <Select>
+                <Select onValueChange={setSelectedWineId}>
                   <SelectTrigger>
                     <SelectValue placeholder='Select a wine' />
                   </SelectTrigger>
@@ -192,7 +195,7 @@ export default function GiftDetails({ gift, wines }: { gift: Doc<'gifts'>, wines
 
                       {wines?.map(wine => (
                         <SelectItem
-                          onClick={() => setSelectedWineId(wine._id)}
+
                           value={wine._id}
                           key={wine._id}
                         >
@@ -206,7 +209,7 @@ export default function GiftDetails({ gift, wines }: { gift: Doc<'gifts'>, wines
 
               <Button
                 disabled={!gift.in_stock}
-                onClick={updateCart}
+                onClick={() => updateCart(selectedWineId)}
                 size='lg'
                 className='rounded-none'
               >
