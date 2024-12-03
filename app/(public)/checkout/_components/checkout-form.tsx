@@ -63,6 +63,7 @@ export default function CheckoutForm() {
             price: item.giftBox.price,
             description: item.giftBox.description,
             dimensions: item.giftBox.dimensions,
+            quantity: item.giftBox.quantity,
           }
         : undefined,
     }))

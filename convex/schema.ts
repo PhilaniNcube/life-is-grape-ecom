@@ -186,6 +186,7 @@ export default defineSchema({
         price: v.number(),
         description: v.string(),
         dimensions: v.string(),
+        quantity: v.optional(v.number()),
       })
     ),
     variant: v.object({

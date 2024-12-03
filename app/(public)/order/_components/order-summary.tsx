@@ -89,14 +89,14 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
                     {item.product.name}
                     {item.gift_box && (
                       <div className='text-sm text-muted-foreground'>
-                        Gift Box: {item.gift_box.name}
+                        Gift Box: {item.gift_box.name} &times; {item.gift_box.quantity}
                       </div>
                     )}
                   </TableCell>
                   <TableCell>{item.quantity}</TableCell>
-                  <TableCell>${item.price_at_time}</TableCell>
+                  <TableCell>formatPrice{item.price_at_time}</TableCell>
                   <TableCell>
-                    ${(item.quantity * item.price_at_time)}
+                    {formatPrice(item.quantity * item.price_at_time)}
                   </TableCell>
                 </TableRow>
               ))}
