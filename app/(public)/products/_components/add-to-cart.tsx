@@ -18,9 +18,17 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
+import { add } from 'date-fns'
+
+type GiftWrappingOption = {
+  name: string
+  price: number
+  description: string
+  dimensions: string
+}
 
 // Add gift wrapping/box options to add to the cart along with the product
-const giftWrappingOptions: GiftBox[] = [
+const giftWrappingOptions: GiftWrappingOption[] = [
   {
     name: 'Single gift bag',
     price: 25,
@@ -60,7 +68,8 @@ const AddToCart = ({
     variant => variant._id === selectedVariantId
   )
 
-  const [selectedGiftBox, setSelectedGiftBox] = useState<GiftBox | null>(null)
+  const [selectedGiftBox, setSelectedGiftBox] =
+    useState<GiftWrappingOption | null>(null)
 
   return (
     <div className='w-full'>
@@ -120,7 +129,23 @@ const AddToCart = ({
       <Button
         onClick={() => {
           if (!selectedVariant) return
-          addToCart(product, selectedVariant, selectedGiftBox || undefined)
+
+          if (!selectedGiftBox) {
+            addToCart(product, selectedVariant)
+            toggleCart()
+            return
+          }
+
+          const wrappingOption = {
+            name: selectedGiftBox.name || '',
+            price: selectedGiftBox.price,
+            dimensions: selectedGiftBox.dimensions,
+            description: selectedGiftBox.description,
+            quantity: 1,
+          }
+
+          addToCart(product, selectedVariant, wrappingOption || undefined)
+
           toggleCart()
         }}
         className='mt-4 w-full rounded-none'

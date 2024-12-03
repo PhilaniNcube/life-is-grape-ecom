@@ -63,7 +63,7 @@ export default function Cart() {
                 </p>
                 <span className='text-xs text-red-700'>
                   {item.giftBox &&
-                    `${item.giftBox.name} - ${formatPrice(item.giftBox.price)}`}
+                    `${item.giftBox.name} - ${formatPrice(item.giftBox.price)} x ${item.giftBox.quantity}`}
                 </span>
               </div>
               <div className='flex items-center gap-2'>

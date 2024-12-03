@@ -70,8 +70,9 @@ export default function GiftDetails({ gift, wines }: { gift: Doc<'gifts'>, wines
     addToCart(selectedWine, variant, {
       name: gift.name,
       description: gift.description,
-      price: gift.type === "label" ? gift.price * 6 : gift.price,
+      price: gift.price,
       dimensions: '',
+      quantity: gift.type === 'label' ? 6 : 1,
     })
 
     toggleCart()
@@ -117,7 +118,7 @@ export default function GiftDetails({ gift, wines }: { gift: Doc<'gifts'>, wines
                 </Badge>
               </div>
               <div>
-                <h3 className='text-lg font-semibold'>Type</h3>
+
                 <p className='flex items-center space-x-2'>
                   {gift.type === 'box' && (
                     <Package className='inline' size={20} />
