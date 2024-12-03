@@ -42,7 +42,7 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
           <p className='text-sm text-muted-foreground'>Order ID: {order._id}</p>
           {order.updated_at && (
             <p className='text-sm text-muted-foreground'>
-              Last updated: {format(order.updated_at, "PPP")}
+              Last updated: {format(order.updated_at, 'PPP')}
             </p>
           )}
         </CardHeader>
@@ -89,12 +89,13 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
                     {item.product.name}
                     {item.gift_box && (
                       <div className='text-sm text-muted-foreground'>
-                        Gift Box: {item.gift_box.name} &times; {item.gift_box.quantity}
+                        Gift Box: {item.gift_box.name} {formatPrice(item.gift_box.price)} &times;{' '}
+                        {item.gift_box.quantity}
                       </div>
                     )}
                   </TableCell>
                   <TableCell>{item.quantity}</TableCell>
-                  <TableCell>formatPrice{item.price_at_time}</TableCell>
+                  <TableCell>{formatPrice(item.price_at_time)}</TableCell>
                   <TableCell>
                     {formatPrice(item.quantity * item.price_at_time)}
                   </TableCell>
@@ -132,7 +133,7 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
             {order.paid_at && (
               <div className='flex justify-between'>
                 <span>Paid At</span>
-                <span>{format(order.paid_at, "PPP")}</span>
+                <span>{format(order.paid_at, 'PPP')}</span>
               </div>
             )}
           </div>
