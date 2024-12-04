@@ -17,6 +17,7 @@ const routes = [
   { name: 'Spirits', href: '/spirits' },
   { name: 'Shop', href: '/products' },
   { name: 'Gifting', href: '/gifting' },
+  {name: 'Wine Tasting', href: '/wine-tasting'},
 
 ]
 
