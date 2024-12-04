@@ -18,7 +18,7 @@ const WineTastingHeader = () => {
             Curated Tasting Experiences, Meticulously Crafted for the Discerning
             Palate
           </h1>
-          <Link href="/tasting-experiences#experiences">
+          <Link href="/wine-tasting#experiences">
             <Button className='mt-4 rounded-none' size="lg">Explore Experiences</Button>
           </Link>
         </div>
