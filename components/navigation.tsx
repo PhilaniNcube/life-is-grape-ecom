@@ -6,11 +6,12 @@ import { Menu} from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Doc } from '@/convex/_generated/dataModel'
 import { ThemeToggle } from './theme-toggle'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import Cart from './cart'
+import Image from 'next/image'
 
 const routes = [
   { name: 'Wines', href: '/wines' },
@@ -58,7 +59,16 @@ function MainNav() {
   return (
     <div className='mr-4 hidden md:flex'>
       <Link href='/' className='mr-6 flex items-center space-x-2'>
-        <span className='hidden font-bold sm:inline-block'>Life Is Grape</span>
+        <Image
+          src='https://quiet-caterpillar-834.convex.cloud/api/storage/f73007fc-e4e4-4ab6-a05d-e21895641152'
+          width={500}
+          height={194}
+          className='w-[200px] object-cover'
+          alt='Life Is Grape'
+        />
+        <span className='sr-only hidden font-bold sm:inline-block'>
+          Life Is Grape
+        </span>
       </Link>
       <nav className='flex items-center space-x-6 text-sm font-medium'>
         {routes.map(route => (
@@ -71,7 +81,6 @@ function MainNav() {
           </Link>
         ))}
       </nav>
-
     </div>
   )
 }
@@ -92,13 +101,22 @@ function MobileNav() {
         </Button>
       </SheetTrigger>
       <SheetContent side='left' className='pr-0'>
-        <Link
-          href='/'
-          className='flex items-center'
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span className='font-bold'>Life Is Grape</span>
-        </Link>
+        <SheetTitle>
+          <Link
+            href='/'
+            className='flex items-center'
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <Image
+              src='https://quiet-caterpillar-834.convex.cloud/api/storage/f73007fc-e4e4-4ab6-a05d-e21895641152'
+              width={500}
+              height={194}
+              className='w-[100px] object-cover'
+              alt='Life Is Grape'
+            />
+            <span className='sr-only font-bold'>Life Is Grape</span>
+          </Link>
+        </SheetTitle>
         <nav className='mt-6 flex flex-col space-y-3'>
           {routes.map(route => (
             <Link
