@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { startTransition, useActionState, useState } from 'react'
 import { AtSign } from 'lucide-react'
 import { CalendarIcon, Clock } from 'lucide-react'
 import { format } from 'date-fns'
@@ -33,13 +33,16 @@ import { Id } from '@/convex/_generated/dataModel'
 import { createBookingAction } from '@/actions/bookings'
 import SubmitButton from '@/components/submit-button'
 
-export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
+export default function BookingForm({ id, setIsOpen }: { id: Id<'tasting_experiences'>, setIsOpen: (isOpen:boolean) => void }) {
   const [date, setDate] = useState<Date>()
   const [time, setTime] = useState<string>('')
   const [guests, setGuests] = useState<string>('1')
   const [isBooked, setIsBooked] = useState(false)
 
-  const [state, formAction] = useActionState(createBookingAction, null)
+  const [state, formAction, isPending] = useActionState(
+    createBookingAction,
+    null
+  )
 
   const generateTimeSlots = () => {
     const slots = []
@@ -71,7 +74,10 @@ export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
       <CardContent>
         <form
           action={formData => {
-            formAction(formData)
+            startTransition(() => {
+              formAction(formData)
+            })
+            setIsOpen(false)
           }}
         >
           <div className='grid w-full items-center gap-4'>
@@ -155,7 +161,9 @@ export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
             </div>
           </div>
 
-          <SubmitButton className='mt-3'>Book Now</SubmitButton>
+          <Button disabled={isPending} className='mt-3'>
+            {isPending ? 'Booking...' : 'Book Now'}
+          </Button>
         </form>
       </CardContent>
     </Card>

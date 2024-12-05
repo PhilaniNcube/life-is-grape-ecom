@@ -5,9 +5,11 @@ import { formatPrice } from "@/lib/utils";
 import { fetchQuery } from "convex/nextjs";
 import BookingDialog from "./booking-dialog";
 
+
 const ExperienceOptions = async () => {
 
   const experiences = await fetchQuery(api.tasting_experiences.getTastingExperiences)
+
 
 
 
