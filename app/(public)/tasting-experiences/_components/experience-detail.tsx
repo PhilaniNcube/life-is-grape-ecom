@@ -84,7 +84,7 @@ const ExperienceDetail = async ({ id }: { id: Id<'tasting_experiences'> }) => {
         </Card>
         <div className='flex flex-col md:flex-row-reverse justify-between mt-8 gap-6 lg:gap-10'>
           <BookingConditions />
-          <BookingForm id={experience._id} />
+
         </div>
       </div>
     </div>
