@@ -2,6 +2,7 @@
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
 import { paginationOptsValidator } from 'convex/server'
+import { Quando } from 'next/font/google'
 
 // create a new order
 export const createOrder = mutation({
@@ -43,6 +44,7 @@ export const createOrder = mutation({
             price: v.number(),
             description: v.string(),
             dimensions: v.string(),
+            quantity: v.number(),
           })
         ),
       })
