@@ -15,7 +15,7 @@ const ExperienceOptions = async () => {
 
 
   return (
-    <div>
+    <div id='experiences'>
       <h2 className='mb-6 text-2xl font-bold text-gray-900'>
         Book A Tasting Experience
       </h2>
