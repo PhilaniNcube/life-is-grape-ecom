@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import { Doc } from '@/convex/_generated/dataModel'
 import { formatPrice } from '@/lib/utils'
+import { Separator } from '@radix-ui/react-dropdown-menu'
 
 
 
@@ -119,23 +120,24 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
               <span>Subtotal</span>
               <span>{formatPrice(order.subtotal)}</span>
             </div>
-            <div className='flex flex-col justify-between md:flex-row'>
+            <div className='flex flex-row justify-between'>
               <span>Shipping</span>
               <span>{formatPrice(order.shipping)}</span>
             </div>
-            <div className='flex flex-col justify-between font-semibold md:flex-row'>
+            <div className='flex justify-between font-semibold'>
               <span>Total</span>
               <span>{formatPrice(order.total)}</span>
             </div>
+            <Separator className='my-3' />
             {order.payment_reference && (
-              <div className='flex flex-col justify-between md:flex-row'>
-                <span>Payment Reference</span>
-                <span>{order.payment_reference}</span>
+              <div className='mt-4 flex flex-col justify-between md:flex-row'>
+                <span className='text-lg font-bold'>Payment Reference</span>
+                <span className='text-sm'>{order.payment_reference}</span>
               </div>
             )}
             {order.paid_at && (
               <div className='flex flex-col justify-between md:flex-row'>
-                <span>Paid At</span>
+                <span className='text-lg font-bold mt-4'>Paid At</span>
                 <span>{format(order.paid_at, 'PPP')}</span>
               </div>
             )}
