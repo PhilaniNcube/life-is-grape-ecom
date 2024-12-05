@@ -8,7 +8,7 @@ import ProductTable from "./_components/products-table";
 
 const DashboardProductsPage = async () => {
 
-  const products = await fetchQuery(api.products.getShallowProducts);
+  const products = await fetchQuery(api.products.getProducts);
 
   return (
     <div>

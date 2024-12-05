@@ -30,6 +30,13 @@ export const getShallowProductWithMainImage = query({
   },
 })
 
+export const getProducts = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query('products').collect()
+  },
+})
+
 export const getShallowProducts = query({
   args: {},
   handler: async (ctx) => {
