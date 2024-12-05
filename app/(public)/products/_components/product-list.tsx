@@ -7,18 +7,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { use } from "react";
 
-const ProductList = ({products}:{products:Doc<"products">[]}) => {
+type Product =  Omit<Doc<"products">, 'main_image'> & {
+  main_image: string
+}
 
-  const getImage = async (id:Id<"_storage">) => {
-    const image = await useQuery(api.products.getMainImage, {id})
-    return image
-  }
+const ProductList = ({ products }: { products: Product[] }) => {
 
 
   return (
     <div className='grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
       {products.map(product => {
-          const image = use(getImage(product.main_image))
+
         return (
           <div
             key={product._id}
@@ -26,7 +25,7 @@ const ProductList = ({products}:{products:Doc<"products">[]}) => {
           >
             {/* Product Image */}
             <Image
-              src={image!}
+              src={product.main_image}
               alt={product.name}
               width={500}
               height={500}
@@ -56,5 +55,5 @@ const ProductList = ({products}:{products:Doc<"products">[]}) => {
       })}
     </div>
   )
-};
+}
 export default ProductList;
