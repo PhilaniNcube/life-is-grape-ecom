@@ -71,7 +71,6 @@ export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
       <CardContent>
         <form
           action={formData => {
-
             formAction(formData)
           }}
         >
@@ -99,7 +98,11 @@ export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
                   >
                     <CalendarIcon className='mr-2 h-4 w-4' />
                     {date ? format(date, 'PPP') : <span>Pick a date</span>}
-                    <Input name='date' type='hidden' value={date?.toISOString()} />
+                    <Input
+                      name='date'
+                      type='hidden'
+                      defaultValue={date?.toISOString()}
+                    />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className='w-auto p-0'>
@@ -116,7 +119,7 @@ export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
             </div>
             <div className='flex flex-col space-y-1.5'>
               <Label htmlFor='time'>Time</Label>
-              <Select name="time" value={time} onValueChange={setTime}>
+              <Select name='time' value={time} onValueChange={setTime}>
                 <SelectTrigger id='time'>
                   <SelectValue placeholder='Select time' />
                 </SelectTrigger>
@@ -136,17 +139,23 @@ export default function BookingForm({ id }: { id: Id<'tasting_experiences'> }) {
                   <SelectValue placeholder='Select guests' />
                 </SelectTrigger>
                 <SelectContent position='popper'>
-                  {[...Array(11)].map((_, i) => (
-                    <SelectItem key={i} value={(i + 1).toString()}>
-                      {i + 10}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value='10'>10</SelectItem>
+                  <SelectItem value='11'>11</SelectItem>
+                  <SelectItem value='12'>12</SelectItem>
+                  <SelectItem value='13'>13</SelectItem>
+                  <SelectItem value='14'>14</SelectItem>
+                  <SelectItem value='15'>15</SelectItem>
+                  <SelectItem value='16'>16</SelectItem>
+                  <SelectItem value='17'>17</SelectItem>
+                  <SelectItem value='18'>18</SelectItem>
+                  <SelectItem value='19'>19</SelectItem>
+                  <SelectItem value='20'>20</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          <SubmitButton className="mt-3">Book Now</SubmitButton>
+          <SubmitButton className='mt-3'>Book Now</SubmitButton>
         </form>
       </CardContent>
     </Card>

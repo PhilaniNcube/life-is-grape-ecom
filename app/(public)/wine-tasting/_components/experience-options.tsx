@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { api } from "@/convex/_generated/api";
 import { formatPrice } from "@/lib/utils";
 import { fetchQuery } from "convex/nextjs";
+import BookingDialog from "./booking-dialog";
 
 const ExperienceOptions = async () => {
 
@@ -34,7 +35,7 @@ const ExperienceOptions = async () => {
               <span className='text-sm text-gray-500'>
                 {formatPrice(experience.price)} per person
               </span>
-              <Button className='rounded-none'>Book Now</Button>
+             <BookingDialog id={experience._id} />
             </CardFooter>
           </Card>
         ))}
