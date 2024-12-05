@@ -77,8 +77,8 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
             <TableHeader>
               <TableRow>
                 <TableHead>Product</TableHead>
-                <TableHead>Quantity</TableHead>
-                <TableHead>Price</TableHead>
+
+                <TableHead className='hidden md:block'>Price</TableHead>
                 <TableHead>Total</TableHead>
               </TableRow>
             </TableHeader>
@@ -89,13 +89,16 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
                     {item.product.name}
                     {item.gift_box && (
                       <div className='text-sm text-muted-foreground'>
-                        Gift Box: {item.gift_box.name} {formatPrice(item.gift_box.price)} &times;{' '}
+                        Gift Box: {item.gift_box.name}{' '}
+                        {formatPrice(item.gift_box.price)} &times;{' '}
                         {item.gift_box.quantity}
                       </div>
                     )}
                   </TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell>{formatPrice(item.price_at_time)}</TableCell>
+
+                  <TableCell className='hidden md:block'>
+                    {formatPrice(item.price_at_time)} &times; {item.quantity}
+                  </TableCell>
                   <TableCell>
                     {formatPrice(item.quantity * item.price_at_time)}
                   </TableCell>
@@ -116,22 +119,22 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
               <span>Subtotal</span>
               <span>{formatPrice(order.subtotal)}</span>
             </div>
-            <div className='flex justify-between'>
+            <div className='flex flex-col justify-between md:flex-row'>
               <span>Shipping</span>
               <span>{formatPrice(order.shipping)}</span>
             </div>
-            <div className='flex justify-between font-semibold'>
+            <div className='flex flex-col justify-between font-semibold md:flex-row'>
               <span>Total</span>
               <span>{formatPrice(order.total)}</span>
             </div>
             {order.payment_reference && (
-              <div className='flex justify-between'>
+              <div className='flex flex-col justify-between md:flex-row'>
                 <span>Payment Reference</span>
                 <span>{order.payment_reference}</span>
               </div>
             )}
             {order.paid_at && (
-              <div className='flex justify-between'>
+              <div className='flex flex-col justify-between md:flex-row'>
                 <span>Paid At</span>
                 <span>{format(order.paid_at, 'PPP')}</span>
               </div>
