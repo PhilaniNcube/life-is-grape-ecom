@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/utils"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Filter from "./_components/filter"
+import Image from "next/image"
 
 const ShopPage = async () => {
 
@@ -23,7 +24,7 @@ const ShopPage = async () => {
 
         <div className='flex w-full'>
           <div className='w-1/4'>
-           <Filter />
+            <Filter />
           </div>
           {/* 3-Column Grid */}
           <div className='grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
@@ -33,19 +34,17 @@ const ShopPage = async () => {
                 className='overflow-hidden rounded-lg bg-white shadow-md'
               >
                 {/* product Image */}
-                <Suspense
-                  fallback={
-                    <div className='flex aspect-square w-full animate-pulse items-center justify-center'>
-                      Image Loading...
-                    </div>
-                  }
-                >
-                  <ProductImage id={product.main_image} />
-                </Suspense>
+                <Image
+                  src={product.main_image}
+                  alt={product.name}
+                  width={800}
+                  height={800}
+                  className='aspect-square w-full'
+                />
 
                 {/* product Details */}
                 <div className='p-6'>
-                  <h3 className='text-md line-clamp-1 lg:text-lg font-semibold text-gray-800'>
+                  <h3 className='text-md line-clamp-1 font-semibold text-gray-800 lg:text-lg'>
                     {product.name}
                   </h3>
                   <p className='mt-2 line-clamp-3 text-sm text-gray-600'>
@@ -58,7 +57,10 @@ const ShopPage = async () => {
                       {formatPrice(product.price)}
                     </span>
                     <Link href={`/products/${product.slug}`}>
-                      <Button className='text-white hover:bg-red-700 rounded-none' size="sm">
+                      <Button
+                        className='rounded-none text-white hover:bg-red-700'
+                        size='sm'
+                      >
                         View Details
                       </Button>
                     </Link>

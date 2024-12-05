@@ -7,10 +7,9 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Filter from '@/app/(public)/products/_components/filter'
 import ProductImage from '@/app/(public)/_components/product-image'
+import Image from 'next/image'
 
-const CategoryProducts = async ({slug}:{slug:string}) => {
-
-
+const CategoryProducts = async ({ slug }: { slug: string }) => {
   // const category = await fetchQuery(api.categories.getCategoryBySlug, { slug })
 
   const products = await fetchQuery(api.categories.getProductsByCategorySlug, {
@@ -19,13 +18,10 @@ const CategoryProducts = async ({slug}:{slug:string}) => {
 
   return (
     <section className='py-12'>
-      <div className='mx-auto container px-4 sm:px-6 lg:px-8'>
+      <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
         {/* Section Heading */}
 
         <div className='flex w-full'>
-          <div className='w-1/4'>
-            <Filter />
-          </div>
           {/* 3-Column Grid */}
           <div className='grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
             {products.map(product => (
@@ -34,15 +30,13 @@ const CategoryProducts = async ({slug}:{slug:string}) => {
                 className='overflow-hidden rounded-lg bg-white shadow-md'
               >
                 {/* product Image */}
-                <Suspense
-                  fallback={
-                    <div className='flex aspect-square w-full animate-pulse items-center justify-center'>
-                      Image Loading...
-                    </div>
-                  }
-                >
-                  <ProductImage id={product.main_image} />
-                </Suspense>
+                <Image
+                  src={product.main_image}
+                  alt={product.name}
+                  width={800}
+                  height={800}
+                  className='aspect-square w-full'
+                />
 
                 {/* product Details */}
                 <div className='p-6'>

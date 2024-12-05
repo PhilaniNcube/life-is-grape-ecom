@@ -9,10 +9,42 @@ export const getShallowProduct = query({
   },
 })
 
+// get shallow product by id and include the main image
+export const getShallowProductWithMainImage = query({
+  args: { id: v.id('products') },
+  handler: async (ctx, args) => {
+    const product = await ctx.db.get(args.id)
+
+    if (!product) {
+      throw new Error('Product not found')
+    }
+
+    const mainImage = await ctx.storage.getUrl(product.main_image)
+
+    return {
+      ...product,
+      main_image: mainImage
+        ? mainImage
+        : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+    }
+  },
+})
+
 export const getShallowProducts = query({
   args: {},
   handler: async (ctx) => {
-    return await ctx.db.query('products').collect()
+    const products = await ctx.db.query('products').collect()
+
+    return Promise.all(products.map(async product => {
+      const mainImage = await ctx.storage.getUrl(product.main_image)
+
+      return {
+        ...product,
+        main_image: mainImage
+          ? mainImage
+          : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+      }
+    }))
   },
 })
 
@@ -23,6 +55,30 @@ export const getShallowProductsByType = query({
       .query('products')
       .filter(q => q.eq(q.field('product_type'), args.type))
       .collect()
+  },
+})
+
+// get shallow products by type and includ the main image
+export const getShallowProductsWithMainImage = query({
+  args: { type: v.union(v.literal('wine'), v.literal('spirit')) },
+  handler: async (ctx, args) => {
+    const products = await ctx.db
+      .query('products')
+      .filter(q => q.eq(q.field('product_type'), args.type))
+      .collect()
+
+    return Promise.all(products.map(async product => {
+      const mainImage = await ctx.storage.getUrl(product.main_image)
+
+
+
+      return {
+        ...product,
+        main_image: mainImage
+          ? mainImage
+          : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+      }
+    }))
   },
 })
 

@@ -70,12 +70,12 @@ function MainNav() {
           Life Is Grape
         </span>
       </Link>
-      <nav className='flex items-center space-x-6 text-sm font-medium'>
+      <nav className='flex items-center space-x-6 font-medium'>
         {routes.map(route => (
           <Link
             key={route.href}
             href={route.href}
-            className='text-foreground/60 transition-colors hover:text-foreground/80'
+            className='md:text-md text-sm text-foreground/60 transition-colors hover:text-foreground/80'
           >
             {route.name}
           </Link>

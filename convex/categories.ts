@@ -241,7 +241,21 @@ export const getProductsByCategorySlug = query({
         product.categories.includes(category._id)
       )
 
-      return filteredProducts
+      // return the filtered products with the product main image
+      return Promise.all(
+        filteredProducts.map(async product => {
+          const mainImage = await ctx.storage.getUrl(product.main_image)
+
+          return {
+            ...product,
+            main_image: mainImage
+              ? mainImage
+              : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+          }
+        })
+      )
+
+
     } catch (error) {
       console.error(error)
       return []

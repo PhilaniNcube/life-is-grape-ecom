@@ -6,14 +6,18 @@ import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Id } from "@/convex/_generated/dataModel";
+import Image from "next/image";
 
 const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
 
 
 
-   const wines = await fetchQuery(api.products.getShallowProductsByType, {
-    type: 'wine',
-  })
+   const wines = await fetchQuery(
+     api.products.getShallowProductsWithMainImage,
+     {
+       type: 'wine',
+     }
+   )
 
   // take the filter and filter the wines by the category by checking the array of category ids on each product
   const filteredWines = wines.filter(wine => {
@@ -39,7 +43,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
   }
 
   return (
-    <section className='peer-has-[data-[pending=true]]:animate-pulse py-12'>
+    <section className='py-12 peer-has-[data-[pending=true]]:animate-pulse'>
       <div className='mx-auto max-w-7xl'>
         {/* Section Heading */}
         <h2 className='mb-6 text-center text-3xl font-extrabold text-gray-900'>
@@ -53,20 +57,18 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
               key={wine._id}
               className='overflow-hidden rounded-lg bg-white shadow-md'
             >
-              {/* Wine Image */}
-              <Suspense
-                fallback={
-                  <div className='flex aspect-square w-full animate-pulse items-center justify-center'>
-                    Image Loading...
-                  </div>
-                }
-              >
-                <ProductImage id={wine.main_image} />
-              </Suspense>
+              {/* spirit Image */}
+              <Image
+                src={wine.main_image}
+                alt={wine.name}
+                width={800}
+                height={800}
+                className='aspect-square w-full'
+              />
 
               {/* Wine Details */}
               <div className='p-6'>
-                <h3 className='text-xl font-semibold text-gray-800 line-clamp-1'>
+                <h3 className='line-clamp-1 text-xl font-semibold text-gray-800'>
                   {wine.name}
                 </h3>
                 <p className='mt-2 line-clamp-3 text-gray-600'>
@@ -79,7 +81,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
                     {formatPrice(wine.price)}
                   </span>
                   <Link href={`/products/${wine.slug}`}>
-                    <Button className='text-white hover:bg-red-700 rounded-none'>
+                    <Button className='rounded-none text-white hover:bg-red-700'>
                       View Details
                     </Button>
                   </Link>

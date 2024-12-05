@@ -6,11 +6,16 @@ import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Id } from "@/convex/_generated/dataModel";
+import Image from "next/image";
 
 const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
-  const spirits = await fetchQuery(api.products.getShallowProductsByType, {
-    type: 'spirit',
-  })
+
+  const spirits = await fetchQuery(
+    api.products.getShallowProductsWithMainImage,
+    {
+      type: 'spirit',
+    }
+  )
 
 
 
@@ -31,7 +36,7 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
   }
 
     const filteredSpirits = spirits.filter(spirit => {
-      if (filter === '') return true
+      if (filter === '') return
       return spirit.categories.includes(filter)
     })
 
@@ -51,19 +56,17 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
               className='overflow-hidden rounded-lg bg-white shadow-md'
             >
               {/* spirit Image */}
-              <Suspense
-                fallback={
-                  <div className='flex aspect-square w-full animate-pulse items-center justify-center'>
-                    Image Loading...
-                  </div>
-                }
-              >
-                <ProductImage id={spirit.main_image} />
-              </Suspense>
+              <Image
+                src={spirit.main_image}
+                alt={spirit.name}
+                width={800}
+                height={800}
+                className='aspect-square w-full'
+              />
 
               {/* spirit Details */}
               <div className='p-6'>
-                <h3 className='text-xl font-semibold text-gray-800 line-clamp-1'>
+                <h3 className='line-clamp-1 text-xl font-semibold text-gray-800'>
                   {spirit.name}
                 </h3>
                 <p className='mt-2 line-clamp-3 text-gray-600'>
@@ -76,7 +79,7 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
                     {formatPrice(spirit.price)}
                   </span>
                   <Link href={`/products/${spirit.slug}`}>
-                    <Button className='text-white hover:bg-red-700 rounded-none'>
+                    <Button className='rounded-none text-white hover:bg-red-700'>
                       View Details
                     </Button>
                   </Link>
