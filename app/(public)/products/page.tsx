@@ -15,7 +15,7 @@ const ShopPage = async () => {
 
 
   return (
-    <section className='bg-gray-100 py-12'>
+    <section className=' py-12'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         {/* Section Heading */}
         <h2 className='mb-6 text-center text-3xl font-extrabold text-gray-900'>

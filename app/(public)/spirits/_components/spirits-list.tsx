@@ -1,23 +1,20 @@
-import { api } from "@/convex/_generated/api";
-import { fetchQuery } from "convex/nextjs";
-import { Suspense } from "react";
-import ProductImage from "../../_components/product-image";
-import { formatPrice } from "@/lib/utils";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Id } from "@/convex/_generated/dataModel";
-import Image from "next/image";
+import { api } from '@/convex/_generated/api'
+import { fetchQuery } from 'convex/nextjs'
+import { Suspense } from 'react'
+import ProductImage from '../../_components/product-image'
+import { formatPrice } from '@/lib/utils'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Id } from '@/convex/_generated/dataModel'
+import Image from 'next/image'
 
 const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
-
   const spirits = await fetchQuery(
     api.products.getShallowProductsWithMainImage,
     {
       type: 'spirit',
     }
   )
-
-
 
   // Handle the case where no spirits are returned
   if (!spirits || spirits.length === 0) {
@@ -35,10 +32,22 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
     )
   }
 
-    const filteredSpirits = spirits.filter(spirit => {
-      if (filter === '') return
+  let filteredSpirits
+
+  if (
+    filter === '' ||
+    filter === null ||
+    filter === undefined ||
+    filter === 'all'
+  ) {
+    {
+      filteredSpirits = spirits
+    }
+  } else {
+    filteredSpirits = spirits.filter(spirit => {
       return spirit.categories.includes(filter)
     })
+  }
 
   return (
     <section className='py-12'>
@@ -92,4 +101,4 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
     </section>
   )
 }
-export default SpiritsList;
+export default SpiritsList

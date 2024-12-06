@@ -39,10 +39,10 @@ export default WinesPage
 
 const WineListLoading = () => {
   return (
-    <section className='bg-gray-100 py-12'>
+    <section className='w-full bg-gray-100 py-12'>
       <div className='mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8'>
         <h2 className='mb-6 text-3xl font-extrabold text-gray-900'>
-          Our Selection of Fine Wines
+          Explore Our Diverse Collection of Wines
         </h2>
         <div className='flex w-full gap-x-5'>
           <div className='animate-pulse rounded bg-slate-200 lg:h-[400px] lg:w-[300px]'>
