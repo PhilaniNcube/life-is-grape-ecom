@@ -22,12 +22,11 @@ const ShopPage = async () => {
           Explore Our Diverse Collection
         </h2>
 
-        <div className='flex w-full'>
-          <div className='w-1/4'>
+        <div className='flex flex-col md:flex-row w-full'>
             <Filter />
-          </div>
+
           {/* 3-Column Grid */}
-          <div className='grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='grid mt-3 flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
             {products.map(product => (
               <div
                 key={product._id}
