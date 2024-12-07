@@ -1,4 +1,6 @@
 import AboutUs from "./_components/about-us";
+import Brands from "./_components/brands";
+import BrandCarousel from "./_components/brands";
 import DeliveryInfo from "./_components/delivery-info";
 import GiftBoxes from "./_components/gift-boxes";
 import HomePageHero from "./_components/home-page-hero";
@@ -11,6 +13,7 @@ export default function Home() {
       <HomePageHero />
       <DeliveryInfo />
       <WinesSection />
+      {/* <Brands /> */}
       <AboutUs />
       <GiftBoxes />
       <SugarbirdBanner />
