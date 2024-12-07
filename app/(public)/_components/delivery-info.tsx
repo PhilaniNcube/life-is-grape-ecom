@@ -17,7 +17,7 @@ export default function DeliveryInfo() {
   ]
 
   return (
-    <div className='bg-secondary'>
+    <div className='bg-fuchsia-900 text-white'>
       <div className='container mx-auto px-4 py-2 md:py-6'>
         <div className='-mx-2 flex flex-wrap items-center justify-between'>
           {deliveryInfo.map((info, index) => (
@@ -25,8 +25,8 @@ export default function DeliveryInfo() {
               key={index}
               className='flex w-1/2 items-center px-2 py-1 md:w-auto md:py-0'
             >
-              <div className='mr-2 text-primary'>{info.icon}</div>
-              <p className='text-xs text-secondary-foreground md:text-sm'>
+              <div className='mr-2 text-white'>{info.icon}</div>
+              <p className='text-xs md:text-sm'>
                 {info.description}
               </p>
             </div>

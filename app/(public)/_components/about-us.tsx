@@ -21,9 +21,7 @@ export default function AboutUs() {
               interesting and distinctive wines and spirits in an
               environmentally sensitive and ethically responsible manner.
             </p>
-            <Button className='bg-red-700 text-white hover:bg-red-800'>
-              Discover Our Brands
-            </Button>
+
           </div>
           <div className='relative h-96 lg:h-full'>
             <Image

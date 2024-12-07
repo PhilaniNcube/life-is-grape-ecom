@@ -1,5 +1,6 @@
 import AboutUs from "./_components/about-us";
 import DeliveryInfo from "./_components/delivery-info";
+import GiftBoxes from "./_components/gift-boxes";
 import HomePageHero from "./_components/home-page-hero";
 import SugarbirdBanner from "./_components/sugarbird-banner";
 import WinesSection from "./_components/wines-section";
@@ -11,6 +12,7 @@ export default function Home() {
       <DeliveryInfo />
       <WinesSection />
       <AboutUs />
+      <GiftBoxes />
       <SugarbirdBanner />
     </section>
   )
