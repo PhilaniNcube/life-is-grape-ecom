@@ -40,12 +40,12 @@ const CategoryProducts = async ({ slug }: { slug: string }) => {
 
                 {/* product Details */}
                 <div className='p-6'>
-                  <h3 className='text-md line-clamp-1 font-semibold text-gray-800 lg:text-lg'>
+                  <h3 className='text-lg line-clamp-1 font-semibold text-gray-800 lg:text-lg'>
                     {product.name}
                   </h3>
-                  <p className='mt-2 line-clamp-3 text-sm text-gray-600'>
+                  {/* <p className='mt-2 line-clamp-3 text-sm text-gray-600'>
                     {product.description}
-                  </p>
+                  </p> */}
 
                   {/* Price and Action Button */}
                   <div className='mt-4 flex items-center justify-between'>
@@ -54,7 +54,7 @@ const CategoryProducts = async ({ slug }: { slug: string }) => {
                     </span>
                     <Link href={`/products/${product.slug}`}>
                       <Button
-                        className='rounded-none text-white hover:bg-red-700'
+                        className='rounded-md text-white hover:bg-red-700'
                         size='sm'
                       >
                         View Details

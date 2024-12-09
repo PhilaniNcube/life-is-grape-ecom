@@ -68,12 +68,12 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
 
               {/* Wine Details */}
               <div className='p-6'>
-                <h3 className='line-clamp-1 text-xl font-semibold text-gray-800'>
+                <h3 className='line-clamp-1 text-lg font-semibold text-gray-800'>
                   {wine.name}
                 </h3>
-                <p className='mt-2 line-clamp-3 text-gray-600'>
+                {/* <p className='mt-2 line-clamp-3 text-gray-600'>
                   {wine.description}
-                </p>
+                </p> */}
 
                 {/* Price and Action Button */}
                 <div className='mt-4 flex items-center justify-between'>
@@ -81,7 +81,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
                     {formatPrice(wine.price)}
                   </span>
                   <Link href={`/products/${wine.slug}`}>
-                    <Button className='rounded-none text-white hover:bg-red-700'>
+                    <Button className='rounded-md text-white hover:bg-red-700'>
                       View Details
                     </Button>
                   </Link>

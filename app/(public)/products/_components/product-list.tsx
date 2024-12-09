@@ -34,17 +34,17 @@ const ProductList = ({ products }: { products: Product[] }) => {
 
             {/* Product Details */}
             <div className='p-6'>
-              <h3 className='text-xl font-semibold text-gray-800'>
+              <h3 className='text-lg font-semibold text-gray-800'>
                 {product.name}
               </h3>
-              <p className='mt-2 text-gray-600'>{product.description}</p>
+              {/* <p className='mt-2 text-gray-600'>{product.description}</p> */}
               {/* Price and Action Button */}
               <div className='mt-4 flex items-center justify-between'>
                 <span className='text-lg font-bold text-gray-900'>
                   {formatPrice(product.price)}
                 </span>
                 <Link href={`/products/${product.slug}`}>
-                  <Button className='bg-red-600 text-white hover:bg-red-700'>
+                  <Button className=' text-white hover:bg-red-700'>
                     View Details
                   </Button>
                 </Link>
