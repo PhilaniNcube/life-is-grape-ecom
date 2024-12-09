@@ -2,11 +2,16 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Menu} from 'lucide-react'
+import { Menu } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
 import { Doc } from '@/convex/_generated/dataModel'
 import { ThemeToggle } from './theme-toggle'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
@@ -18,21 +23,18 @@ const routes = [
   { name: 'Spirits', href: '/spirits' },
   { name: 'Shop', href: '/products' },
   { name: 'Gifting', href: '/gifting' },
-  {name: 'Wine Tasting', href: '/wine-tasting'},
-
+  { name: 'Wine Tasting', href: '/wine-tasting' },
 ]
 
-export default function Navigation({user}:{user:Doc<"users"> | null}) {
-
-
-
+export default function Navigation({ user }: { user: Doc<'users'> | null }) {
   return (
-    <header className='sticky top-0 z-50 w-full lg:px-0'>
+    <header className='sticky top-0 z-50 w-full flex-1 lg:px-0'>
       <div className='flex h-16 items-center lg:px-0'>
-        <MainNav />
-        <MobileNav />
         <div className='flex flex-1 items-center justify-end gap-6'>
-          <ThemeToggle />
+          <div className='flex flex-1 flex-row justify-start'>
+            <MainNav />
+            <MobileNav />
+          </div>
 
           <SignedOut>
             <SignInButton mode='modal'>
@@ -45,7 +47,7 @@ export default function Navigation({user}:{user:Doc<"users"> | null}) {
           </SignedIn>
         </div>
         <div className='relative ml-3'>
-         <Cart />
+          <Cart />
         </div>
       </div>
     </header>
@@ -53,11 +55,8 @@ export default function Navigation({user}:{user:Doc<"users"> | null}) {
 }
 
 function MainNav() {
-
-
-
   return (
-    <div className='mr-4 hidden md:flex'>
+    <div className='mr-4 hidden w-full md:flex md:justify-between'>
       <Link href='/' className='mr-6 flex items-center space-x-2'>
         <Image
           src='https://quiet-caterpillar-834.convex.cloud/api/storage/f73007fc-e4e4-4ab6-a05d-e21895641152'
@@ -70,7 +69,7 @@ function MainNav() {
           Life Is Grape
         </span>
       </Link>
-      <nav className='flex items-center space-x-6 font-medium'>
+      <nav className='flex flex-1 items-center justify-end space-x-6 font-medium'>
         {routes.map(route => (
           <Link
             key={route.href}
@@ -86,12 +85,11 @@ function MainNav() {
 }
 
 function MobileNav() {
-
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
+      <SheetTrigger asChild className=''>
         <Button
           variant='ghost'
           className='mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden'

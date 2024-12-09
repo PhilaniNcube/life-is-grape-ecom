@@ -61,7 +61,7 @@ export default function RootLayout({
       <html lang='en' className='scroll-smooth' suppressHydrationWarning>
         <body
           className={cn(
-            'flex min-h-screen flex-col',
+            'flex min-h-screen flex-col bg-white',
             geistSans.variable,
             geistMono.variable,
             inter.variable
