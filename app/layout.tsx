@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
-import { Inter, Playfair_Display } from 'next/font/google'
+import { Inter, Playfair_Display, Kanit, Work_Sans } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
 
@@ -20,7 +20,9 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
   weight: '100 900',
 })
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
+// const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
+export const kanit = Kanit({weight: [ "500", "600", "700", "800", "900"] , variable: '--font-sans'})
+export const work_sans = Work_Sans({weight: [ "500", "600", "700", "800", "900"] , variable: '--font-sans'})
 // const playfair = Playfair_Display({
 //   subsets: ['latin'],
 //   variable: '--font-serif',
@@ -64,7 +66,7 @@ export default function RootLayout({
             'flex min-h-screen flex-col bg-white',
             geistSans.variable,
             geistMono.variable,
-            inter.variable
+            kanit.variable
             // playfair.variable
           )}
         >
