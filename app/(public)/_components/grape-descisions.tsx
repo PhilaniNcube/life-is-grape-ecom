@@ -1,7 +1,9 @@
-import { kanit, work_sans } from "@/app/layout";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-
+import { ibm_sans } from '@/app/fonts'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { ArrowRight } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 
 const GrapeDescisions = () => {
   return (
@@ -17,11 +19,11 @@ const GrapeDescisions = () => {
       <div className='absolute inset-0'>
         <div className='container mx-auto h-full'>
           <div className='flex h-full items-center justify-end p-4'>
-            <div className='flex w-full max-w-2xl justify-start'>
+            <div className='flex w-full max-w-2xl flex-col justify-start'>
               <h1
                 className={cn(
-                  'text-left text-3xl font-bold md:text-5xl lg:text-7xl leading-4',
-                  work_sans.className
+                  'text-left text-3xl font-bold leading-4 md:text-5xl lg:text-7xl',
+                  ibm_sans.className
                 )}
               >
                 <span className='lowercase text-slate-800'>We Make</span> <br />
@@ -29,11 +31,20 @@ const GrapeDescisions = () => {
                   Grape Descisions!
                 </span>
               </h1>
+              <Link href='/products' prefetch={true}>
+                <Button
+                  className='mt-10 w-fit rounded-full text-white'
+                  size='lg'
+                >
+                  Shop Now
+                  <ArrowRight className='ml-2' />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       </div>
     </div>
   )
-};
-export default GrapeDescisions;
+}
+export default GrapeDescisions
