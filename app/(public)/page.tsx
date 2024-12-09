@@ -4,6 +4,7 @@ import BrandCarousel from "./_components/brands";
 import DeliveryInfo from "./_components/delivery-info";
 import GiftBoxes from "./_components/gift-boxes";
 import GrapeDescisions from "./_components/grape-descisions";
+import HomePageGrid from "./_components/home-page-grid";
 import HomePageHero from "./_components/home-page-hero";
 import SugarbirdBanner from "./_components/sugarbird-banner";
 import WinesSection from "./_components/wines-section";
@@ -14,7 +15,8 @@ export default function Home() {
       {/* <HomePageHero /> */}
       <GrapeDescisions />
       <DeliveryInfo />
-      <WinesSection />
+      <HomePageGrid />
+      {/* <WinesSection /> */}
       {/* <Brands /> */}
       <AboutUs />
       <GiftBoxes />
