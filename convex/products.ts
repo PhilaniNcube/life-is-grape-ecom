@@ -185,6 +185,29 @@ export const getProductBySlug = query({
   },
 })
 
+export const getProductBySlugWithMainImage = query({
+  args:{ slug: v.string() },
+  handler: async (ctx, args) => {
+
+    const product = await ctx.db
+      .query('products')
+      .withIndex('bySlug', q => q.eq('slug', args.slug))
+      .first()
+
+    if (!product) return null
+
+    const mainImage = await ctx.storage.getUrl(product.main_image)
+
+    return {
+      ...product,
+      main_image: mainImage
+        ? mainImage
+        : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52'
+    }
+
+  }
+})
+
 // Get product by ID
 export const getProductById = query({
   args: { id: v.id('products') },
@@ -621,5 +644,32 @@ export const getProductImages = query({
       return await ctx.storage.getUrl(imageId)
     }))
 
+  },
+})
+
+
+// write a query to return a list of products based on a search term
+export const searchProducts = query({
+  args: { term: v.string() },
+  handler: async (ctx, args) => {
+    const results = await ctx.db
+      .query('products').withSearchIndex('name', (q) => q.search('name', args.term)).take(20)
+
+      if (!results) return null
+
+
+      // fetch the main image for each product
+      const products = await Promise.all(results.map(async product => {
+        const mainImage = await ctx.storage.getUrl(product.main_image)
+
+        return {
+          ...product,
+          main_image: mainImage
+            ? mainImage
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52'
+        }
+      }))
+
+    return products
   },
 })

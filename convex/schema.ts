@@ -41,6 +41,12 @@ export default defineSchema({
     meta_description: v.optional(v.string()),
     featured: v.boolean(),
   })
+    .searchIndex('name', {
+      searchField: 'name',
+    })
+    .searchIndex('description', {
+      searchField: 'description',
+    })
     .index('bySlug', ['slug'])
     .index('byCategories', ['categories'])
     .index('byProducer', ['producer_id']),
