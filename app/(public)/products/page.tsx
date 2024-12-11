@@ -33,7 +33,7 @@ const ShopPage = async () => {
                 key={product._id}
                 className='group relative overflow-hidden rounded-lg bg-white shadow-md'
               >
-                <ListAddToCartButton product_id={product._id} />
+
 
                 {/* product Image */}
                 <Image
