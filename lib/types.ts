@@ -1,4 +1,5 @@
 import { Doc, Id } from '@/convex/_generated/dataModel'
+import { getShallowProductWithMainImage } from '@/convex/products'
 
 export type Post = {
   _id: Id<'posts'>
@@ -23,6 +24,8 @@ export type Post = {
   } | null
 }
 
+// create a return type for the getShallowProductWithMainImage query using typescript genericts
+export type ProductWithMainImage = ReturnType<typeof getShallowProductWithMainImage>
 
 
 export type ExpandedBooking = {

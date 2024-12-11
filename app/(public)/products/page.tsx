@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import Filter from "./_components/filter"
 import Image from "next/image"
 import ListAddToCartButton from "./_components/list-add-to-cart-button"
+import ProductItem from "../_components/product-item"
 
 const ShopPage = async () => {
 
@@ -29,54 +30,7 @@ const ShopPage = async () => {
           {/* 3-Column Grid */}
           <div className='mt-3 grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
             {products.map(product => (
-              <div
-                key={product._id}
-                className='group relative overflow-hidden rounded-lg bg-white shadow-md'
-              >
-
-
-                {/* product Image */}
-                <Image
-                  src={product.main_image}
-                  alt={product.name}
-                  width={800}
-                  height={800}
-                  className='aspect-square w-full'
-                />
-
-                {/* product Details */}
-                <div className='p-6'>
-                  <h3 className='text-sm line-clamp-1 text-gray-800'>
-                    {product.name}
-                  </h3>
-                  {/* <p className='mt-2 line-clamp-3 text-sm text-gray-600'>
-                    {product.description}
-                  </p> */}
-
-                  {/* Price and Action Button */}
-                  <span className='text-lg font-bold text-gray-900'>
-                    {formatPrice(product.price)}
-                  </span>
-                  <div className='mt-4 flex items-center justify-between'>
-                    <Suspense
-                      fallback={
-                        <div className='rounded-md border-2 border-slate-200 text-sm text-slate-600'>
-                          Loading...
-                        </div>
-                      }>
-                    <ListAddToCartButton product_id={product._id} />
-                      </Suspense>
-                    <Link href={`/products/${product.slug}`}>
-                      <Button
-                        className='rounded-md text-white bg-gray-700'
-                        size='sm'
-                      >
-                        View Details
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
+             <ProductItem key={product._id} product_id={product._id} />
             ))}
           </div>
         </div>

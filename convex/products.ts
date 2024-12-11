@@ -31,6 +31,9 @@ export const getShallowProductWithMainImage = query({
 })
 
 
+
+
+
 // get shallow product by id and include the main image and product vaiants
 export const getProductWithVairants = query({
   args: { id: v.id('products') },

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Id } from "@/convex/_generated/dataModel";
 import Image from "next/image";
 import ListAddToCartButton from "../../products/_components/list-add-to-cart-button";
+import ProductItem from "../../_components/product-item";
 
 const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
 
@@ -54,55 +55,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
         {/* 3-Column Grid */}
         <div className='grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {filteredWines.map(wine => (
-            <div
-              key={wine._id}
-              className='overflow-hidden rounded-lg bg-white shadow-md'
-            >
-              {/* spirit Image */}
-              <Image
-                src={wine.main_image}
-                alt={wine.name}
-                width={800}
-                height={800}
-                className='aspect-square w-full'
-              />
-
-              {/* Wine Details */}
-              <div className='p-6'>
-                <h3 className='line-clamp-1 text-sm text-gray-800'>
-                  {wine.name}
-                </h3>
-                {/* <p className='mt-2 line-clamp-3 text-gray-600'>
-                  {wine.description}
-                </p> */}
-
-                {/* Price and Action Button */}
-                <span className='text-lg font-bold text-gray-900'>
-                  {formatPrice(wine.price)}
-                </span>
-
-                <div className='mt-4 flex items-center justify-between'>
-                  <Suspense
-                    fallback={
-                      <div className='rounded-md border-2 border-slate-200 text-sm text-slate-600'>
-                        Loading...
-                      </div>
-                    }
-                  >
-                    <ListAddToCartButton product_id={wine._id} />
-                  </Suspense>
-
-                  <Link href={`/products/${wine.slug}`}>
-                    <Button
-                      className='rounded-md bg-gray-700 text-white'
-                      size='sm'
-                    >
-                      View Details
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
+           <ProductItem key={wine._id} product_id={wine._id} />
           ))}
         </div>
       </div>
