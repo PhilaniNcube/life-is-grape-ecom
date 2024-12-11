@@ -16,24 +16,23 @@ const ShopPage = async () => {
 
 
   return (
-    <section className=' py-12'>
+    <section className='py-12'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         {/* Section Heading */}
         <h2 className='mb-6 text-center text-3xl font-extrabold text-gray-900'>
           Explore Our Diverse Collection
         </h2>
 
-        <div className='flex flex-col md:flex-row w-full'>
-            <Filter />
+        <div className='flex w-full flex-col md:flex-row'>
+          <Filter />
 
           {/* 3-Column Grid */}
-          <div className='grid mt-3 flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='mt-3 grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
             {products.map(product => (
               <div
                 key={product._id}
-                className='overflow-hidden rounded-lg bg-white shadow-md relative group'
+                className='group relative overflow-hidden rounded-lg bg-white shadow-md'
               >
-
                 <ListAddToCartButton product_id={product._id} />
 
                 {/* product Image */}
@@ -47,7 +46,7 @@ const ShopPage = async () => {
 
                 {/* product Details */}
                 <div className='p-6'>
-                  <h3 className='text-md line-clamp-1 font-semibold text-gray-800 lg:text-lg'>
+                  <h3 className='text-sm line-clamp-1 text-gray-800'>
                     {product.name}
                   </h3>
                   {/* <p className='mt-2 line-clamp-3 text-sm text-gray-600'>
@@ -55,13 +54,14 @@ const ShopPage = async () => {
                   </p> */}
 
                   {/* Price and Action Button */}
+                  <span className='text-lg font-bold text-gray-900'>
+                    {formatPrice(product.price)}
+                  </span>
                   <div className='mt-4 flex items-center justify-between'>
-                    <span className='text-lg font-bold text-gray-900'>
-                      {formatPrice(product.price)}
-                    </span>
+                    <ListAddToCartButton product_id={product._id} />
                     <Link href={`/products/${product.slug}`}>
                       <Button
-                        className='rounded-md text-white hover:bg-red-700'
+                        className='rounded-md text-white bg-gray-700'
                         size='sm'
                       >
                         View Details

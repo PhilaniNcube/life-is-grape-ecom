@@ -33,10 +33,12 @@ const ListAddToCartButton = ({ product_id }: {product_id:Id<"products">}) => {
   if (!variants || !product) return null
 
   return (
-    <Button size='icon' className='hidden group-hover:flex group-hover:absolute right-4 top-3 bg-slate-500'>
-      <ShoppingCart
-        onClick={() => addToCart(product, variants[0])}
-      />
+    <Button
+      variant="outline"
+      className='text-slate-600 outline-slate-600 outline-4'
+      onClick={() => addToCart(product, variants[0])}
+    >
+      Add To Cart
     </Button>
   )
 }
