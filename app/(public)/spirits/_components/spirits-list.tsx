@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Id } from '@/convex/_generated/dataModel'
 import Image from 'next/image'
+import ListAddToCartButton from '../../products/_components/list-add-to-cart-button'
 
 const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
   const spirits = await fetchQuery(
@@ -75,20 +76,27 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
 
               {/* spirit Details */}
               <div className='p-6'>
-                <h3 className='line-clamp-1 text-lg font-semibold text-gray-800'>
+                <h3 className='line-clamp-1 text-sm text-gray-800'>
                   {spirit.name}
                 </h3>
                 {/* <p className='mt-2 line-clamp-3 text-gray-600'>
                   {spirit.description}
                 </p> */}
+                <span className='text-lg font-bold text-gray-900'>
+                  {formatPrice(spirit.price)}
+                </span>
 
                 {/* Price and Action Button */}
                 <div className='mt-4 flex items-center justify-between'>
-                  <span className='text-lg font-bold text-gray-900'>
-                    {formatPrice(spirit.price)}
-                  </span>
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <ListAddToCartButton product_id={spirit._id} />
+                  </Suspense>
+
                   <Link href={`/products/${spirit.slug}`}>
-                    <Button className='rounded-md text-white hover:bg-red-700'>
+                    <Button
+                      className='rounded-md bg-gray-700 text-white'
+                      size='sm'
+                    >
                       View Details
                     </Button>
                   </Link>

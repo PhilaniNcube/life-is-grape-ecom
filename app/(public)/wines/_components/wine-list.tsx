@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Id } from "@/convex/_generated/dataModel";
 import Image from "next/image";
+import ListAddToCartButton from "../../products/_components/list-add-to-cart-button";
 
 const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
 
@@ -68,7 +69,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
 
               {/* Wine Details */}
               <div className='p-6'>
-                <h3 className='line-clamp-1 text-lg font-semibold text-gray-800'>
+                <h3 className='line-clamp-1 text-sm text-gray-800'>
                   {wine.name}
                 </h3>
                 {/* <p className='mt-2 line-clamp-3 text-gray-600'>
@@ -76,12 +77,20 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
                 </p> */}
 
                 {/* Price and Action Button */}
+                <span className='text-lg font-bold text-gray-900'>
+                  {formatPrice(wine.price)}
+                </span>
+
                 <div className='mt-4 flex items-center justify-between'>
-                  <span className='text-lg font-bold text-gray-900'>
-                    {formatPrice(wine.price)}
-                  </span>
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <ListAddToCartButton product_id={wine._id} />
+                  </Suspense>
+
                   <Link href={`/products/${wine.slug}`}>
-                    <Button className='rounded-md text-white hover:bg-red-700'>
+                    <Button
+                      className='rounded-md bg-gray-700 text-white'
+                      size='sm'
+                    >
                       View Details
                     </Button>
                   </Link>
