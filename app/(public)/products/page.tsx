@@ -58,7 +58,14 @@ const ShopPage = async () => {
                     {formatPrice(product.price)}
                   </span>
                   <div className='mt-4 flex items-center justify-between'>
+                    <Suspense
+                      fallback={
+                        <div className='rounded-md border-2 border-slate-200 text-sm text-slate-600'>
+                          Loading...
+                        </div>
+                      }>
                     <ListAddToCartButton product_id={product._id} />
+                      </Suspense>
                     <Link href={`/products/${product.slug}`}>
                       <Button
                         className='rounded-md text-white bg-gray-700'

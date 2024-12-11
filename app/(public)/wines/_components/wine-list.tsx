@@ -82,7 +82,13 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
                 </span>
 
                 <div className='mt-4 flex items-center justify-between'>
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense
+                    fallback={
+                      <div className='rounded-md border-2 border-slate-200 text-sm text-slate-600'>
+                        Loading...
+                      </div>
+                    }
+                  >
                     <ListAddToCartButton product_id={wine._id} />
                   </Suspense>
 

@@ -88,7 +88,7 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
 
                 {/* Price and Action Button */}
                 <div className='mt-4 flex items-center justify-between'>
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<div className="border-2 border-slate-200 text-slate-600 text-sm rounded-md">Loading...</div>}>
                     <ListAddToCartButton product_id={spirit._id} />
                   </Suspense>
 
