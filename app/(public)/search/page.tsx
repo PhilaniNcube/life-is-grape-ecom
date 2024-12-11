@@ -12,7 +12,6 @@ const page = async ({searchParams}:{searchParams: Promise<{term:string}>}) => {
 
   const searchProducts = await fetchQuery(api.products.searchProducts, {term});
 
-  console.log(searchProducts);
 
   return (
     <div className='container'>
