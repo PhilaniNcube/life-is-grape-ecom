@@ -8,6 +8,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Filter from "./_components/filter"
 import Image from "next/image"
+import ListAddToCartButton from "./_components/list-add-to-cart-button"
 
 const ShopPage = async () => {
 
@@ -30,8 +31,11 @@ const ShopPage = async () => {
             {products.map(product => (
               <div
                 key={product._id}
-                className='overflow-hidden rounded-lg bg-white shadow-md'
+                className='overflow-hidden rounded-lg bg-white shadow-md relative group'
               >
+
+                <ListAddToCartButton product_id={product._id} />
+
                 {/* product Image */}
                 <Image
                   src={product.main_image}

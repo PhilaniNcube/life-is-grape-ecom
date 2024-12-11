@@ -2,12 +2,15 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ClerkProvider } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
+import { Poppins } from 'next/font/google'
 
 import Providers from '@/components/providers'
 
 import './globals.css'
 
 import { Toaster } from 'sonner'
+
+
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -20,10 +23,11 @@ const geistMono = localFont({
   weight: '100 900',
 })
 
-// const playfair = Playfair_Display({
-//   subsets: ['latin'],
-//   variable: '--font-serif',
-// })
+const poppins = Poppins({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+})
 
 export const metadata: Metadata = {
   title: 'Life Is Grape',
@@ -61,8 +65,8 @@ export default function RootLayout({
         <body
           className={cn(
             'flex min-h-screen flex-col bg-white',
-            geistSans.variable,
-            geistMono.variable,
+
+            poppins.className,
 
           )}
         >

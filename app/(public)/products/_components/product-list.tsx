@@ -5,11 +5,12 @@ import { formatPrice } from "@/lib/utils";
 import { useQuery } from "convex/react";
 import Image from "next/image";
 import Link from "next/link";
-import { use } from "react";
+
 
 type Product =  Omit<Doc<"products">, 'main_image'> & {
   main_image: string
 }
+
 
 const ProductList = ({ products }: { products: Product[] }) => {
 
@@ -21,8 +22,10 @@ const ProductList = ({ products }: { products: Product[] }) => {
         return (
           <div
             key={product._id}
-            className='overflow-hidden rounded-lg bg-white shadow-md'
+            className='overflow-hidden rounded-lg bg-white shadow-md relative'
           >
+
+
             {/* Product Image */}
             <Image
               src={product.main_image}

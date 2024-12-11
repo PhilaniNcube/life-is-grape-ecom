@@ -15,9 +15,13 @@ export type GiftBox = {
   quantity: number
 }
 
+type ProductWithImage =  Omit<Doc<"products">, 'main_image'> & {
+  main_image: string
+}
+
 // create an interface of the cart item that constains the product and the quantity of that product in the cart and the the product variant the cart item should also contain a gift box option that is potentially undefined
 export interface CartItem {
-  product: Product
+  product: Product | ProductWithImage
   quantity: number
   variant: ProductVariant
   giftBox: GiftBox | undefined

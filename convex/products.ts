@@ -30,6 +30,35 @@ export const getShallowProductWithMainImage = query({
   },
 })
 
+
+// get shallow product by id and include the main image and product vaiants
+export const getProductWithVairants = query({
+  args: { id: v.id('products') },
+  handler: async (ctx, args) => {
+    const product = await ctx.db.get(args.id)
+
+    if (!product) {
+      throw new Error('Product not found')
+    }
+
+    const mainImage = await ctx.storage.getUrl(product.main_image)
+
+    // fetch the product variants
+    const variants = await ctx.db
+      .query('product_variants')
+      .filter(q => q.eq(q.field('product_id'), args.id))
+      .collect()
+
+    return {
+      ...product,
+      main_image: mainImage
+        ? mainImage
+        : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+        variants
+    }
+  },
+})
+
 export const getProducts = query({
   args: {},
   handler: async (ctx) => {
@@ -45,11 +74,13 @@ export const getShallowProducts = query({
     return Promise.all(products.map(async product => {
       const mainImage = await ctx.storage.getUrl(product.main_image)
 
+
+
       return {
         ...product,
         main_image: mainImage
           ? mainImage
-          : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+          : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52'
       }
     }))
   },
@@ -79,13 +110,18 @@ export const getShallowProductsWithMainImage = query({
     return Promise.all(products.map(async product => {
       const mainImage = await ctx.storage.getUrl(product.main_image)
 
-
+      // fetch the product variants
+      const variants = await ctx.db
+        .query('product_variants')
+        .filter(q => q.eq(q.field('product_id'), product._id))
+        .collect()
 
       return {
         ...product,
         main_image: mainImage
           ? mainImage
           : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+          variants
       }
     }))
   },

@@ -17,7 +17,7 @@ export default function DeliveryInfo() {
   ]
 
   return (
-    <div className='bg-fuchsia-900 text-white'>
+    <div className='bg-slate-500 text-white'>
       <div className='container mx-auto px-4 py-2 md:py-6'>
         <div className='-mx-2 flex flex-wrap items-center justify-between'>
           {deliveryInfo.map((info, index) => (

@@ -12,8 +12,8 @@ import WinesSection from "./_components/wines-section";
 export default function Home() {
   return (
     <section className=''>
-      {/* <HomePageHero /> */}
-      <GrapeDescisions />
+      <HomePageHero />
+      {/* <GrapeDescisions /> */}
       <DeliveryInfo />
       <HomePageGrid />
       {/* <WinesSection /> */}

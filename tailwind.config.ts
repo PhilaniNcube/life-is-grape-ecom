@@ -21,6 +21,7 @@ const config: Config = {
         sans: ['var(--font-sans)', ...fontFamily.sans],
         serif: ['var(--font-serif)', ...fontFamily.serif],
         geist: ['var(--font-geist-sans)', ...fontFamily.sans],
+        littlepot: ['var(--font-little-pot)', ...fontFamily.sans],
         'geist-mono': ['var(--font-geist-mono)', ...fontFamily.mono],
       },
       colors: {
