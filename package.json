@@ -54,14 +54,14 @@
     "input-otp": "^1.2.4",
     "lowlight": "^3.1.0",
     "lucide-react": "^0.445.0",
-    "next": "15.0.3",
+    "next": "15.1.0",
     "next-sanity": "9",
     "next-themes": "^0.3.0",
     "novel": "^0.5.0",
     "prop-types": "^15.8.1",
-    "react": "19.0.0-rc-66855b96-20241106",
+    "react": "19.0.0",
     "react-day-picker": "8.10.1",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0",
     "react-dropzone": "^14.3.5",
     "react-hook-form": "^7.53.0",
     "react-paystack": "^6.0.0",
@@ -82,11 +82,11 @@
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^22.5.5",
     "@types/prop-types": "^15.7.13",
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.11.0",
-    "eslint-config-next": "15.0.3",
+    "eslint-config-next": "15.1.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
@@ -97,8 +97,8 @@
   },
   "pnpm": {
     "overrides": {
-      "@types/react": "npm:types-react@19.0.0-rc.1",
-      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+      "@types/react": "19.0.1",
+      "@types/react-dom": "19.0.2"
     }
   }
 }
