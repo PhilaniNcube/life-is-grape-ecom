@@ -26,7 +26,7 @@ const HomePageHero = () => {
           <br />
           grape descisions
         </h1>
-        <p className='mb-8 max-w-[30ch] text-lg sm:text-xl'>
+        <p className='mb-8 max-w-[30ch] text-lg'>
           Discover a wide range of fine wines and spirits tailored to develop
           and satisfy every palate.
         </p>

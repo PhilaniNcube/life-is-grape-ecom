@@ -1,9 +1,11 @@
+import { littlepot } from "@/app/fonts";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { fetchQuery } from "convex/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import ProductItem from "./product-item";
 
 const GiftBoxes = async () => {
 
@@ -28,53 +30,22 @@ const GiftBoxes = async () => {
     );
   }
 
-  return <div className="mt-8 mb-10">
-    <div className="container">
-      {/* Section Heading */}
-      <h2 className="text-center text-3xl font-extrabold text-fuchsia-900">
-        Need a Gift? We've Got You Covered!
-      </h2>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 @container">
-        {giftBoxes.map(giftBox => (
-          <div
-            key={giftBox._id}
-            className="overflow-hidden rounded-lg bg-white shadow-md"
-          >
-            {/* giftBox Image */}
-            <Image
-              src={giftBox.main_image}
-              alt={giftBox.name}
-              width={800}
-              height={800}
-              className="aspect-square w-full"
-            />
-
-              {/* giftBox Details */}
-              <div className="p-6">
-                <h3 className="text-md line-clamp-1 font-semibold text-gray-800 lg:text-lg">
-                  {giftBox.name}
-                </h3>
-
-                {/* Price and Action Button */}
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="text-lg font-bold text-gray-900">
-                    {formatPrice(giftBox.price)}
-                  </span>
-                  <Link href={`/products/${giftBox.slug}`}>
-                    <Button
-                      className="rounded-none text-white hover:bg-red-700"
-                      size="sm"
-                    >
-                      View Details
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-          </div>
-
-        ))}
+  return (
+    <div className='mb-10 mt-8'>
+      <div className='container'>
+        {/* Section Heading */}
+        <h2
+          className={cn('text-center text-5xl font-extrabold text-fuchsia-900', littlepot.className)}
+        >
+          Need a Gift? We've Got You Covered!
+        </h2>
+        <div className='grid grid-cols-1 gap-6 @container md:grid-cols-2 lg:grid-cols-3'>
+          {giftBoxes.map(giftBox => (
+            <ProductItem key={giftBox._id} product_id={giftBox._id} />
+          ))}
+        </div>
       </div>
     </div>
-  </div>;
+  )
 };
 export default GiftBoxes;

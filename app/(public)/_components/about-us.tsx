@@ -1,4 +1,4 @@
-import { ibm_sans } from '@/app/fonts'
+import { ibm_sans, littlepot } from '@/app/fonts'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
@@ -12,7 +12,7 @@ export default function AboutUs() {
             <h2
               className={cn(
                 'w-fit flex-1 text-3xl font-extrabold text-gray-900 sm:text-4xl lg:min-w-[350px]',
-                ibm_sans.className
+                littlepot.className
               )}
             >
               The Grape Story
