@@ -1,7 +1,7 @@
 export default {
   providers: [
     {
-      domain: 'https://fast-chimp-1.clerk.accounts.dev',
+      domain: 'https://clerk.lifeisgrape.co.za',
       applicationID: 'convex',
     },
   ],
