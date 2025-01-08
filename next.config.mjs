@@ -8,6 +8,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'fabulous-peacock-233.convex.cloud',
+      },
+      {
+        protocol: 'https',
         hostname: 'images.prismic.io',
       },
       {
@@ -16,7 +20,6 @@ const nextConfig = {
       },
     ],
   },
-
 }
 
 export default nextConfig;
