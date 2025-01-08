@@ -8,25 +8,25 @@ const HomePageHero = () => {
   return (
     <section className='relative flex h-[80vh] items-center justify-center overflow-hidden lg:h-[75vh]'>
       <Image
-        src='https://quiet-caterpillar-834.convex.cloud/api/storage/c42d1e73-5c2e-426c-8937-9e10fc9efe37'
+        src='https://quiet-caterpillar-834.convex.cloud/api/storage/fab54c25-b425-4a60-b930-9fbe5c41a8c3'
         alt='Elegant wine glass in a vineyard setting'
         width={1920}
         height={1400}
         className='absolute inset-0 h-full w-full object-cover'
         priority
       />
-      <div className='absolute inset-0 bg-white lg:bg-transparent' />
+      <div className='absolute inset-0 bg-white/40 lg:bg-transparent' />
       <div className='container relative z-10 px-4 sm:px-6 lg:px-8'>
         <h1
           className={cn(
-            'mb-4 w-[20ch] text-2xl font-bold lowercase text-slate-700 sm:text-4xl lg:text-6xl'
+            'mb-4 w-[20ch] text-5xl font-bold lowercase text-slate-700 sm:text-4xl lg:text-6xl'
           , littlepot.className)}
         >
           We Make
           <br />
           grape descisions
         </h1>
-        <p className='mb-8 max-w-[30ch] text-lg'>
+        <p className='mb-8 max-w-[23ch] text-sm'>
           Discover a wide range of fine wines and spirits tailored to develop
           and satisfy every palate.
         </p>
