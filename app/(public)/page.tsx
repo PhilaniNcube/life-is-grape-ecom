@@ -15,7 +15,7 @@ export default function Home() {
       <HomePageHero />
       {/* <GrapeDescisions /> */}
       <DeliveryInfo />
-      <HomePageGrid />
+      {/* <HomePageGrid /> */}
       {/* <WinesSection /> */}
       {/* <Brands /> */}
       <AboutUs />
