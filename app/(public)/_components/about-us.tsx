@@ -23,7 +23,7 @@ export default function AboutUs() {
               Established on 1 April 2016, our purpose is to introduce proudly
               South African brands of hand-crafted wines and spirits to those
               operating in the trade, and to consumers. These products are
-              produced in South Africa with quality and passion.
+              produced in South Africa with quality and passion
             </p>
             <p className='text-lg text-gray-700 mt-2'>
               South Africa is recognised worldwide as producing premium quality,
