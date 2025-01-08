@@ -22,7 +22,7 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
   // Handle the case where no spirits are returned
   if (!spirits || spirits.length === 0) {
     return (
-      <section className='bg-gray-100 py-12'>
+      <section className='py-12'>
         <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
           <h2 className='mb-6 text-3xl font-extrabold text-gray-900'>
             Our Selection of South African Spirits
