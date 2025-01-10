@@ -5,7 +5,11 @@ import { v } from 'convex/values'
 export const getProducers = query({
   args: {},
   handler: async ctx => {
-    return await ctx.db.query('producers').collect()
+    const producers = await  ctx.db.query('producers').collect()
+
+    // order the producers by name which is a string
+    return producers.sort((a, b) => a.name.localeCompare(b.name))
+
   },
 })
 
