@@ -80,15 +80,15 @@ const AddToCart = ({
           className={cn(
             'cursor-pointer',
             selectedVariantId === variant._id ? 'bg-blue-800' : 'bg-slate-600',
-            variant.stock_level <= 0 ? 'opacity-50' : ''
+            variant.stock_level > 0 ? '' : 'opacity-80'
           )}
         >
           {variant.volume}ml - {formatPrice(variant.price)}
-          {selectedVariantId === variant._id && (<Check className='ml-2' />)}
+          {selectedVariantId === variant._id && (
+            <Check className='ml-2' size={12} />
+          )}
         </Badge>
       ))}
-
-
 
       {/* Add gift wrapping/box options to add to the cart along with the product */}
       <div className='mt-4 flex flex-col gap-3'>
