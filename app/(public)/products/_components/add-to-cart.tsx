@@ -12,7 +12,7 @@ import { Doc, Id } from '@/convex/_generated/dataModel'
 import { cn, formatPrice } from '@/lib/utils'
 import { GiftBox } from '@/store/cart'
 import { useCartStore } from '@/store/cart-store-provider'
-import { ShoppingCart } from 'lucide-react'
+import { Check, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -73,27 +73,22 @@ const AddToCart = ({
 
   return (
     <div className='w-full'>
-      <Select
-        value={selectedVariantId?.toString()}
-        onValueChange={(value: Id<'product_variants'>) =>
-          setSelectedVariantId(value)
-        }
-      >
-        <SelectTrigger id='variant'>
-          <SelectValue placeholder='Select product variant' />
-        </SelectTrigger>
-        <SelectContent>
-          {variants.map(variant => (
-            <SelectItem
-              disabled={variant.stock_level <= 0}
-              key={variant._id}
-              value={variant._id.toString()}
-            >
-              {variant.volume}ml - {formatPrice(variant.price)}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      {variants.map(variant => (
+        <Badge
+          key={variant._id}
+          onClick={() => setSelectedVariantId(variant._id)}
+          className={cn(
+            'cursor-pointer',
+            selectedVariantId === variant._id ? 'bg-blue-800' : 'bg-slate-50',
+            variant.stock_level <= 0 ? 'opacity-50' : ''
+          )}
+        >
+          {variant.volume}ml - {formatPrice(variant.price)}
+          {selectedVariantId === variant._id && (<Check className='ml-2' />)}
+        </Badge>
+      ))}
+
+
 
       {/* Add gift wrapping/box options to add to the cart along with the product */}
       <div className='mt-4 flex flex-col gap-3'>
@@ -110,7 +105,7 @@ const AddToCart = ({
             )}
           >
             <h4 className='font-semibold text-black'>{giftBox.name}</h4>
-            <Badge className='lg:absolute lg:right-2 lg:top-2 text-xs text-white dark:text-slate-700'>
+            <Badge className='text-xs text-white dark:text-slate-700 lg:absolute lg:right-2 lg:top-2'>
               {giftBox.dimensions}
             </Badge>
             <p className='text-xs text-gray-500'>{giftBox.description}</p>
