@@ -79,7 +79,7 @@ const AddToCart = ({
           onClick={() => setSelectedVariantId(variant._id)}
           className={cn(
             'cursor-pointer',
-            selectedVariantId === variant._id ? 'bg-blue-800' : 'bg-slate-50',
+            selectedVariantId === variant._id ? 'bg-blue-800' : 'bg-slate-600',
             variant.stock_level <= 0 ? 'opacity-50' : ''
           )}
         >
