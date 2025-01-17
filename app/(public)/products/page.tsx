@@ -19,20 +19,21 @@ const ShopPage = async () => {
 
   return (
     <section className='py-12'>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+      <div className='mx-auto container px-4 sm:px-6 lg:px-8'>
         {/* Section Heading */}
-        <h2 className={cn('mb-6 text-3xl font-extrabold text-gray-900', littlepot.className)}>
-          Explore Our Collection
-        </h2>
 
         <div className='flex w-full flex-col md:flex-row'>
+          <div className="">
           <Filter />
+          </div>
 
           {/* 3-Column Grid */}
-          <div className='mt-3 grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-            {products.map(product => (
-              <ProductItem key={product._id} product_id={product._id} />
-            ))}
+          <div className="md:flex-1">
+            <div className='mt-3 grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+              {products.map(product => (
+                <ProductItem key={product._id} product_id={product._id} />
+              ))}
+            </div>
           </div>
         </div>
 

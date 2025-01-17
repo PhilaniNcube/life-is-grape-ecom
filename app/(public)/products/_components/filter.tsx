@@ -1,6 +1,4 @@
-import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import { api } from '@/convex/_generated/api'
 import { fetchQuery } from 'convex/nextjs'
 import Link from 'next/link'
@@ -12,12 +10,12 @@ const Filter = async () => {
   )
 
   return (
-    <div>
+    <div className=''>
       {/* createt a mobile filter */}
-    <MobileFilter categories={categories} />
+      <MobileFilter categories={categories} />
       <div className='mt-10 hidden w-[200px] max-w-[200px] pr-3 md:block'>
         <h2 className='text-lg font-semibold text-gray-800'>Filter</h2>
-        <ScrollArea className='mt-4 h-[400px] w-full'>
+        <ScrollArea className='fixed left-0 right-0 top-0 mt-4 h-[600px] w-full'>
           {categories.map(category => {
             // if category has a parent_id it is a child category so we skip it
             if (category.parent_id) {
