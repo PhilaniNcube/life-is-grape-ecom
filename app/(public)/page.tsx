@@ -19,7 +19,7 @@ export default function Home() {
       {/* <WinesSection /> */}
       {/* <Brands /> */}
       <AboutUs />
-      <GiftBoxes />
+      {/* <GiftBoxes /> */}
       <SugarbirdBanner />
     </section>
   )
