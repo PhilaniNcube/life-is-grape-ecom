@@ -21,7 +21,7 @@ const SugarbirdBanner = () => {
             A unique blend of South African botanicals
           </p>
           <Link href='/products/sugarbird-gin-original-fynbos'>
-            <Button className='mt-3 rounded-none'>View Product</Button>
+            <Button className='mt-3 bg-slate-700 text-white'>View Product</Button>
           </Link>
         </div>
       </div>
