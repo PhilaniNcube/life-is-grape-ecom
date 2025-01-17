@@ -41,7 +41,7 @@ const GiftCard = async ({ gift }: GiftCardProps) => {
       </CardContent>
       <CardFooter className='flex items-center justify-between p-4 pt-0'>
         <p className='font-semibold'>{formatPrice(gift.price)}</p>
-        <Button asChild>
+        <Button asChild className='bg-slate-700 text-white'>
           <Link href={`/gifting/${gift._id}`}>View Details</Link>
         </Button>
       </CardFooter>

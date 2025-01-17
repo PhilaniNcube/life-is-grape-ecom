@@ -3,13 +3,19 @@ import { Card, CardContent } from '@/components/ui/card'
 import { GrapeIcon, GiftIcon, PaintbrushIcon, TicketIcon } from 'lucide-react'
 import { Suspense } from 'react'
 import GiftsGrid from './gifts-grid'
+import { cn } from '@/lib/utils'
+import { littlepot } from '@/app/fonts'
 
 export default function GiftingContent() {
   return (
     <div className='container mx-auto space-y-12 px-4 py-8'>
-      {/* Hero Section */}
-      <section className='space-y-4 text-center'>
-        <h1 className='text-4xl font-bold text-primary'>
+      <section className='space-y-6 text-center'>
+        <h1
+          className={cn(
+            'mb-4 w-[20ch] mx-auto text-5xl text-center font-bold lowercase text-slate-700 sm:text-4xl lg:text-6xl',
+            littlepot.className
+          )}
+        >
           Life is Grape: Uncork a Memorable Gift
         </h1>
         <p className='mx-auto max-w-2xl text-lg text-muted-foreground'>
@@ -19,7 +25,12 @@ export default function GiftingContent() {
           personalised wine labels to elevate your wedding favors, corporate
           gifts, or any special celebration.
         </p>
+        <Suspense fallback={<div>Loading...</div>}>
+          <GiftsGrid />
+        </Suspense>
       </section>
+      {/* Hero Section */}
+      <section className='space-y-4 text-center'></section>
 
       {/* Feature Highlights */}
       <section className='grid gap-8 md:grid-cols-3'>
@@ -120,15 +131,6 @@ export default function GiftingContent() {
       </section>
 
       {/* Call to Action */}
-      <section className='space-y-6 text-center'>
-        <h2 className='text-2xl font-bold'>
-          Life is too short for ordinary gifts. Uncork something extraordinary
-          with Life is Grape.
-        </h2>
-       <Suspense fallback={<div>Loading...</div>}>
-        <GiftsGrid />
-       </Suspense>
-      </section>
     </div>
   )
 }
