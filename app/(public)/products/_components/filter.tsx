@@ -7,6 +7,9 @@ import { cn } from '@/lib/utils'
 import { littlepot } from '@/app/fonts'
 
 const Filter = async () => {
+
+
+
   const categories = await fetchQuery(
     api.categories.getParentCategoryiesWithChildren
   )
@@ -29,10 +32,9 @@ const Filter = async () => {
                 <Link
                   href={`/categories/${category.slug}`}
                   className={cn(
-                    'text-md w-full rounded px-2 py-2 font-semibold text-gray-800 hover:bg-slate-300'
-                  , littlepot.className,
-
-                )}
+                    'text-md w-full rounded px-2 py-1 font-semibold text-gray-800 hover:bg-slate-300',
+                    littlepot.className
+                  )}
                 >
                   {category.name}
                 </Link>
@@ -41,7 +43,7 @@ const Filter = async () => {
                     <Link
                       href={`/categories/${child.slug}`}
                       key={child._id}
-                      className='mb-1 text-sm text-gray-600'
+                      className={cn('mb-1 text-sm text-gray-600 py-0.5', littlepot.className)}
                     >
                       {child.name}
                     </Link>

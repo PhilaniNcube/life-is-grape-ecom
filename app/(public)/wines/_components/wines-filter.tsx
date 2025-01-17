@@ -1,5 +1,6 @@
 'use client'
 
+import { littlepot } from '@/app/fonts'
 import { api } from '@/convex/_generated/api'
 import { Doc } from '@/convex/_generated/dataModel'
 import { cn } from '@/lib/utils'
@@ -41,8 +42,9 @@ const WinesFilter = ({ categories }: { categories: Preloaded<typeof api.categori
                   })
                 }}
                 className={cn(
-                  'cursor-pointer text-slate-700 data-[pending=true]:animate-pulse',
-                  filter === category._id && 'font-bold'
+                  'cursor-pointer text-slate-700 data-[pending=true]:animate-pulse py-1',
+                  filter === category._id && 'font-bold',
+                  littlepot.className
                 )}
               >
                 <span className='flex cursor-pointer items-center gap-x-2'>
@@ -66,8 +68,9 @@ const WinesFilter = ({ categories }: { categories: Preloaded<typeof api.categori
                           })
                         }}
                         className={cn(
-                          'flex cursor-pointer items-center gap-x-2 text-sm text-slate-700 data-[pending=true]:animate-pulse',
-                          filter === child._id && 'font-semibold'
+                          'flex cursor-pointer items-center gap-x-2 text-sm text-slate-700 data-[pending=true]:animate-pulse py-0.5',
+                          filter === child._id && 'font-semibold bg-slate-100',
+                          littlepot.className
                         )}
                         key={child._id}
                       >
