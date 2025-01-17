@@ -1,7 +1,7 @@
 'use client'
 
+import { littlepot } from '@/app/fonts'
 import { api } from '@/convex/_generated/api'
-import { Doc } from '@/convex/_generated/dataModel'
 import { cn } from '@/lib/utils'
 import { Preloaded, usePreloadedQuery } from 'convex/react'
 import { CheckIcon } from 'lucide-react'
@@ -40,7 +40,8 @@ const SpiritFilter = ({ categories }: { categories: Preloaded<typeof api.categor
                 }}
                 className={cn(
                   'cursor-pointer text-slate-700 data-[pending=true]:animate-pulse',
-                  filter === category._id && 'font-bold'
+                  filter === category._id && 'font-bold',
+                  littlepot.className
                 )}
               >
                 <span className='flex cursor-pointer items-center gap-x-2'>

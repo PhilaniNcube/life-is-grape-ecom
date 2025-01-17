@@ -1,10 +1,8 @@
 import { api } from '@/convex/_generated/api'
-import { fetchQuery, preloadQuery } from 'convex/nextjs'
+import {  preloadQuery } from 'convex/nextjs'
 import { Suspense } from 'react'
-import ProductImage from '../_components/product-image'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { cn, formatPrice } from '@/lib/utils'
+
+import { cn } from '@/lib/utils'
 import SpiritsList from './_components/spirits-list'
 import { Id } from '@/convex/_generated/dataModel'
 import SpiritFilter from './_components/spirit-filter'
