@@ -13,9 +13,9 @@ export default function Home() {
   return (
     <section className=''>
       <HomePageHero />
-      {/* <GrapeDescisions /> */}
+
       <DeliveryInfo />
-      {/* <HomePageGrid /> */}
+      <HomePageGrid />
       {/* <WinesSection /> */}
       {/* <Brands /> */}
       <AboutUs />
