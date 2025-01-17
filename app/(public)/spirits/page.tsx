@@ -10,7 +10,7 @@ import { Id } from '@/convex/_generated/dataModel'
 import SpiritFilter from './_components/spirit-filter'
 import { littlepot } from '@/app/fonts'
 
-const WinesPage = async ({
+const SpritsPage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ filter?: Id<'categories'> | '' }>
@@ -34,7 +34,7 @@ const WinesPage = async ({
     </div>
   )
 }
-export default WinesPage
+export default SpritsPage
 
 
 const SpiritsListLoading = () => {
