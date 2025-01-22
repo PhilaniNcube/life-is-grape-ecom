@@ -11,6 +11,7 @@ import WineList from './_components/wine-list'
 import WineFilter from './_components/wines-filter'
 import { Id } from '@/convex/_generated/dataModel'
 import { littlepot } from '@/app/fonts'
+import ProductFilter from './[slug]/_components/product-filter'
 
 const WinesPage = async ({
   searchParams,
@@ -29,7 +30,7 @@ const WinesPage = async ({
 
   return (
     <div className='container flex flex-col md:flex-row gap-4 peer'>
-      <WineFilter categories={wineCategories} />
+      <ProductFilter slug={filter} />
       <Suspense fallback={<WineListLoading />}>
         <WineList filter={filter} />
       </Suspense>
