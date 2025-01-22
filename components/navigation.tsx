@@ -23,7 +23,7 @@ const routes = [
   { name: 'Spirits', href: '/spirits' },
   { name: 'Shop', href: '/products' },
   { name: 'Gifting', href: '/gifting' },
-  { name: 'Wine Tasting', href: '/wine-tasting' },
+  // { name: 'Wine Tasting', href: '/wine-tasting' },
 ]
 
 export default function Navigation({ user }: { user: Doc<'users'> | null }) {
