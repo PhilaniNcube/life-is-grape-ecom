@@ -7,6 +7,7 @@ import SpiritsList from './_components/spirits-list'
 import { Id } from '@/convex/_generated/dataModel'
 import SpiritFilter from './_components/spirit-filter'
 import { littlepot } from '@/app/fonts'
+import SpiritProductFilter from './[slug]/_components/spirit-product-filter'
 
 const SpritsPage = async ({
   searchParams,
@@ -24,8 +25,8 @@ const SpritsPage = async ({
       )
 
   return (
-    <div className='peer container flex flex-col md:flex-row gap-4'>
-      <SpiritFilter categories={spiritCategories} />
+    <div className='peer container flex flex-col gap-4 md:flex-row'>
+      <SpiritProductFilter slug={filter} />
       <Suspense fallback={<SpiritsListLoading />}>
         <SpiritsList filter={filter} />
       </Suspense>

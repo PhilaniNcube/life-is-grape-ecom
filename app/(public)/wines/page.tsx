@@ -1,14 +1,9 @@
 
-
-import { api } from '@/convex/_generated/api'
-import { fetchQuery, preloadQuery } from 'convex/nextjs'
 import { Suspense } from 'react'
-import ProductImage from '../_components/product-image'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { cn, formatPrice } from '@/lib/utils'
+
+import { cn } from '@/lib/utils'
 import WineList from './_components/wine-list'
-import WineFilter from './_components/wines-filter'
+
 import { Id } from '@/convex/_generated/dataModel'
 import { littlepot } from '@/app/fonts'
 import ProductFilter from './[slug]/_components/product-filter'
@@ -20,12 +15,6 @@ const WinesPage = async ({
 }) => {
 
   const filter = (await searchParams).filter ?? ''
-
-
-
-  const wineCategories = await preloadQuery(api.categories.getCategoriesByType, {
-    type: 'wine',
-  })
 
 
   return (
