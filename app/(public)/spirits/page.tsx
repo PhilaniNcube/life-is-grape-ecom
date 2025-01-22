@@ -24,7 +24,7 @@ const SpritsPage = async ({
       )
 
   return (
-    <div className='peer container flex gap-x-4'>
+    <div className='peer container flex flex-col md:flex-row gap-4'>
       <SpiritFilter categories={spiritCategories} />
       <Suspense fallback={<SpiritsListLoading />}>
         <SpiritsList filter={filter} />

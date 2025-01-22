@@ -28,7 +28,7 @@ const WinesPage = async ({
 
 
   return (
-    <div className='container flex gap-x-4 peer'>
+    <div className='container flex flex-col md:flex-row gap-4 peer'>
       <WineFilter categories={wineCategories} />
       <Suspense fallback={<WineListLoading />}>
         <WineList filter={filter} />

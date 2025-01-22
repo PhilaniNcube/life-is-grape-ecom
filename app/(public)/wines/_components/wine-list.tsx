@@ -26,7 +26,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
   // Handle the case where no wines are returned
   if (!filteredWines || filteredWines.length === 0) {
     return (
-      <section className='peer py-12'>
+      <section className='peer py-4'>
         <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
           <h2
             className={cn(
@@ -45,7 +45,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
   }
 
   return (
-    <section className='py-12 peer-has-[data-[pending=true]]:animate-pulse'>
+    <section className='py-4 peer-has-[data-[pending=true]]:animate-pulse'>
       <div className='mx-auto max-w-7xl'>
         {/* Section Heading */}
         <h2

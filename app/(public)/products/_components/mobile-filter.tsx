@@ -36,10 +36,10 @@ const MobileFilter = ({ categories }: { categories: Doc<'categories'>[] }) => {
   return (
     <div>
       {/* createt a mobile filter */}
-      <div className='flex md:hidden'>
+      <div className='flex md:hidden '>
         <div className='flex flex-1 flex-col'>
           <h2 className='text-lg font-semibold text-gray-800'>Filter</h2>
-          <Popover open={open} onOpenChange={setOpen}>
+          <Popover open={open} onOpenChange={setOpen} >
             <PopoverTrigger asChild>
               <Button
                 variant='outline'
@@ -54,19 +54,20 @@ const MobileFilter = ({ categories }: { categories: Doc<'categories'>[] }) => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className='w-full p-0'>
-              <Command>
+              <Command className='w-full'>
                 <CommandInput
                   placeholder='Search...'
                   value={value}
-                  className='h-9'
+                  className='h-9 w-full'
                 />
-                <CommandList>
+                <CommandList className='w-full'>
                   <CommandEmpty>No categories found</CommandEmpty>
                   <CommandGroup title='Categories'>
                     {categories.map(category => (
                       <CommandItem
                         key={category.name}
                         value={category.slug}
+                        className='w-full'
                         onSelect={currentValue => {
 
                           setOpen(false)
