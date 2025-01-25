@@ -79,7 +79,9 @@ const AddToCart = ({
           onClick={() => setSelectedVariantId(variant._id)}
           className={cn(
             'cursor-pointer',
-            selectedVariantId === variant._id ? 'bg-blue-800 text-white' : 'bg-slate-100 text-slate-600 mx-3',
+            selectedVariantId === variant._id
+              ? 'bg-blue-800 text-white'
+              : 'mx-3 bg-slate-100 text-slate-600',
             variant.stock_level > 0 ? '' : 'opacity-80'
           )}
         >
@@ -121,32 +123,46 @@ const AddToCart = ({
         </div>
       </div>
 
-      <Button
-        onClick={() => {
-          if (!selectedVariant) return
+      {selectedVariant && (
+        <Button
+          disabled={selectedVariant?.stock_level < 1}
+          onClick={() => {
+            if (!selectedVariant) return
 
-          if (!selectedGiftBox) {
-            addToCart(product, selectedVariant)
+            if (!selectedGiftBox) {
+              addToCart(product, selectedVariant)
+              toggleCart()
+              return
+            }
+
+            const wrappingOption = {
+              name: selectedGiftBox.name || '',
+              price: selectedGiftBox.price,
+              dimensions: selectedGiftBox.dimensions,
+              description: selectedGiftBox.description,
+              quantity: 1,
+            }
+
+            addToCart(product, selectedVariant, wrappingOption || undefined)
+
             toggleCart()
-            return
-          }
-
-          const wrappingOption = {
-            name: selectedGiftBox.name || '',
-            price: selectedGiftBox.price,
-            dimensions: selectedGiftBox.dimensions,
-            description: selectedGiftBox.description,
-            quantity: 1,
-          }
-
-          addToCart(product, selectedVariant, wrappingOption || undefined)
-
-          toggleCart()
-        }}
-        className='mt-4 w-full rounded-none'
-      >
-        <ShoppingCart className='mr-2' /> Add to Cart
-      </Button>
+          }}
+          className={cn(
+            'mt-4 w-full rounded-none',
+            selectedVariant.stock_level < 1
+              ? 'cursor-not-allowed bg-red-200 text-gray-800 hover:bg-red-300 hover:text-gray-800'
+              : 'bg-gray-700 text-white hover:text-white'
+          )}
+        >
+          {selectedVariant.stock_level < 1 ? (
+            'Out of Stock'
+          ) : (
+            <span className="flex items-center justify-center">
+              <ShoppingCart className='mr-2' /> Add to Cart
+            </span>
+          )}
+        </Button>
+      )}
     </div>
   )
 }
