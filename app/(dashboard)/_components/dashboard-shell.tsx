@@ -81,17 +81,8 @@ export default function DashboardShell({children}:{children:ReactNode}) {
             <Menu className='h-6 w-6' />
             <span className='sr-only'>Toggle sidebar</span>
           </Button>
-          <div className='flex flex-1 items-center justify-between gap-4'>
-            <form className='hidden md:block'>
-              <div className='relative'>
-                <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400' />
-                <Input
-                  type='search'
-                  placeholder='Search...'
-                  className='w-full appearance-none bg-white pl-8 dark:bg-gray-950 md:w-[300px]'
-                />
-              </div>
-            </form>
+          <div className='flex flex-1 items-center justify-end gap-4'>
+
 
             <UserButton />
           </div>
