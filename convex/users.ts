@@ -16,6 +16,14 @@ export const getUser = query({
 })
 
 
+export const getUsers = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query('users').collect()
+  },
+})
+
+
 export const upsertFromClerk = internalMutation({
   // @ts-ignore
   args: { data: v.any() as PropTypes.Validator<UserJSON> },
@@ -80,3 +88,4 @@ async function userByClerkUserId(ctx: QueryCtx, clerkUserId: string) {
     .withIndex('byClerkUserId', q => q.eq('clerkUserId', clerkUserId))
     .unique()
 }
+
