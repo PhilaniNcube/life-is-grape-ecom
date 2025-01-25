@@ -16,7 +16,7 @@ export default function Home() {
 
       <DeliveryInfo />
       <HomePageGrid />
-      {/* <WinesSection /> */}
+      <WinesSection />
       {/* <Brands /> */}
       <AboutUs />
       {/* <GiftBoxes /> */}

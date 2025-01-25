@@ -66,6 +66,8 @@ export type CartStore = {
   totalCartPrice: () => number
   isOpen: boolean
   toggleCart: () => void
+  openCart: () => void
+  closeCart: () => void
 }
 
 export const createCartStore = (initState: CartState = { cart: [] }) => {
@@ -86,6 +88,7 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
           // if the product is already in the cart, increment the quantity
           if (cartItem) {
             get().incrementQuantity(product._id, variant._id)
+            set({ isOpen: true })
             return
           }
 
@@ -105,6 +108,7 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
                   : undefined,
               },
             ],
+            isOpen: true,
           }))
         },
         // implement the remove from cart method that takes a product id and a variant id
@@ -244,6 +248,12 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
         isOpen: false,
         toggleCart: () => {
           set(state => ({ isOpen: !state.isOpen }))
+        },
+        openCart: () => {
+          set({ isOpen: true })
+        },
+        closeCart: () => {
+          set({ isOpen: false })
         },
       }),
       {

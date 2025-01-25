@@ -13,7 +13,7 @@ import { cn, formatPrice } from '@/lib/utils'
 import { GiftBox } from '@/store/cart'
 import { useCartStore } from '@/store/cart-store-provider'
 import { Check, ShoppingCart } from 'lucide-react'
-import { useState } from 'react'
+import { startTransition, useState } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Badge } from '@/components/ui/badge'
@@ -59,7 +59,7 @@ const AddToCart = ({
   variants: Doc<'product_variants'>[]
   product: Doc<'products'>
 }) => {
-  const { addToCart, toggleCart } = useCartStore(state => state)
+  const { addToCart, openCart } = useCartStore(state => state)
 
   const [selectedVariantId, setSelectedVariantId] =
     useState<Id<'product_variants'> | null>(variants[0]?._id)
@@ -131,7 +131,6 @@ const AddToCart = ({
 
             if (!selectedGiftBox) {
               addToCart(product, selectedVariant)
-              toggleCart()
               return
             }
 
@@ -144,8 +143,6 @@ const AddToCart = ({
             }
 
             addToCart(product, selectedVariant, wrappingOption || undefined)
-
-            toggleCart()
           }}
           className={cn(
             'mt-4 w-full rounded-none',
@@ -157,7 +154,7 @@ const AddToCart = ({
           {selectedVariant.stock_level < 1 ? (
             'Out of Stock'
           ) : (
-            <span className="flex items-center justify-center">
+            <span className='flex items-center justify-center'>
               <ShoppingCart className='mr-2' /> Add to Cart
             </span>
           )}
