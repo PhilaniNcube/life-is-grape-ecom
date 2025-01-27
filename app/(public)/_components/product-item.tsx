@@ -27,7 +27,7 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
   if (!product || !variants) return null
 
   return (
-    <article className='relative overflow-hidden rounded-lg bg-white shadow-md @container'>
+    <article className='relative overflow-hidden rounded-lg flex flex-col justify-between shadow-md @container'>
       <Link href={`/products/${product.slug}`} className='cursor-pointer'>
         <Image
           src={product.main_image}
@@ -39,18 +39,21 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
       </Link>
 
       {/* product Details */}
-      <div className='p-2 @md:p-6'>
-        <h3 className='line-clamp-2 text-xs text-gray-800 @sm:text-sm @md:line-clamp-1'>
+      <div className='p-2 @container @md:p-6'>
+        <h3 className='line-clamp-1 text-xs text-gray-800 sm:text-sm md:line-clamp-1 md:text-lg'>
           {product.name}
         </h3>
 
         {/* Price and Action Button */}
-        <span className='text-sm md:text-lg font-bold text-gray-900'>
+        <span className='text-sm font-bold text-gray-900 md:text-lg'>
           {formatPrice(product.price)}
         </span>
-        <div className='mt-4 flex items-center justify-between'>
+        <div className='mt-4 flex items-end justify-between '>
           <ListAddToCartButton product={product} variants={variants} />
-          <Link href={`/products/${product.slug}`} className=''>
+          <Link
+            href={`/products/${product.slug}`}
+            className='hidden @md:inline-block'
+          >
             <Button className='rounded-md bg-gray-700 text-white'>
               <span className='hidden text-xs lg:inline-block'>
                 View Details

@@ -23,15 +23,20 @@ const CategoryProducts = async ({ slug }: { slug: string }) => {
   const [category, products] = await Promise.all([categoryPromise, productsPromise])
 
   return (
-    <section className='py-12'>
-      <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
+    <section className='py-12 w-full'>
+      <div className='container mx-auto px-4 sm:px-6 lg:px-8 w-full'>
         {/* Section Heading */}
-        <h1 className={cn('mb-6 text-3xl font-extrabold text-gray-900', littlepot.className)}>
+        <h1
+          className={cn(
+            'mb-6 text-3xl font-extrabold text-gray-900',
+            littlepot.className
+          )}
+        >
           {category?.name}
         </h1>
-        <div className='flex w-full'>
+        <div className='flex w-full @container'>
           {/* 3-Column Grid */}
-          <div className='grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3 '>
             {products.map(product => (
               <ProductItem key={product._id} product_id={product._id} />
             ))}
