@@ -32,11 +32,11 @@ const ListAddToCartButton = ({
   return (
     <Button
       variant='outline'
-      className='text-xs font-medium text-slate-600 outline-4 outline-slate-600 border-slate-600'
+      className='border-slate-600 text-xs font-medium text-slate-600 outline-4 outline-slate-600'
       onClick={() => addToCart(product, variants[0])}
     >
-      Add To Cart
-      <ShoppingBagIcon className='ml-2 h-3 w-3' />
+      <span className="hidden lg:inline-block">Add To Cart</span>
+      <ShoppingBagIcon className='lg:ml-2 h-4 w-4' />
     </Button>
   )
 }

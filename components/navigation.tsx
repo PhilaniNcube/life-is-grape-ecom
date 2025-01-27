@@ -34,6 +34,18 @@ export default function Navigation({ user }: { user: Doc<'users'> | null }) {
           <div className='flex flex-1 flex-row justify-start'>
             <MainNav />
             <MobileNav />
+            <Link href='/' className='md:hidden flex items-center space-x-2'>
+              <Image
+                src='https://quiet-caterpillar-834.convex.cloud/api/storage/f73007fc-e4e4-4ab6-a05d-e21895641152'
+                width={500}
+                height={194}
+                className='w-[80px] object-cover'
+                alt='Life Is Grape'
+              />
+              <span className='sr-only hidden font-bold sm:inline-block'>
+                Life Is Grape
+              </span>
+            </Link>
           </div>
 
           <SignedOut>

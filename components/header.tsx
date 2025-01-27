@@ -15,7 +15,7 @@ export default async function PublicHeader() {
 
 
   return (
-    <header className='py-4 container'>
+    <header className='py-4 container sticky top-0 z-50 w-full bg-white shadow-sm'>
      <Navigation user={user} />
     </header>
   )

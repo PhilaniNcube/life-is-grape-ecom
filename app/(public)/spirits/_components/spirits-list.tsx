@@ -53,8 +53,8 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
   }
 
   return (
-    <section className='py-12'>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <section className='w-full py-4 @container peer-has-[data-[pending=true]]:animate-pulse'>
+      <div className='mx-auto max-w-7xl'>
         {/* Section Heading */}
 
         <h2 className={cn('mb-6 text-3xl text-gray-900', littlepot.className)}>
@@ -62,7 +62,7 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
         </h2>
 
         {/* 3-Column Grid */}
-        <div className='grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3'>
           {filteredSpirits.map(spirit => (
             <ProductItem key={spirit._id} product_id={spirit._id} />
           ))}

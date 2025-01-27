@@ -19,17 +19,17 @@ const ShopPage = async () => {
 
   return (
     <section className='py-12'>
-      <div className='mx-auto container px-4 sm:px-6 lg:px-8'>
+      <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
         {/* Section Heading */}
 
         <div className='flex w-full flex-col md:flex-row'>
-          <div className="">
-          <Filter />
+          <div className=''>
+            <Filter />
           </div>
 
           {/* 3-Column Grid */}
-          <div className="md:flex-1">
-            <div className='mt-3 grid flex-1 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='md:flex-1 @container'>
+            <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3'>
               {products.map(product => (
                 <ProductItem key={product._id} product_id={product._id} />
               ))}

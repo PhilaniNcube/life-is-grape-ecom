@@ -6,6 +6,7 @@ import { fetchQuery } from 'convex/nextjs'
 import Image from 'next/image'
 import ListAddToCartButton from '../products/_components/list-add-to-cart-button'
 import Link from 'next/link'
+import { EyeIcon } from 'lucide-react'
 
 const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
   const productPromise = fetchQuery(
@@ -26,29 +27,35 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
   if (!product || !variants) return null
 
   return (
-    <article className='relative overflow-hidden rounded-lg bg-white shadow-md'>
-      <Image
-        src={product.main_image}
-        alt={product.name}
-        width={500}
-        height={500}
-        className='aspect-square w-full'
-      />
+    <article className='relative overflow-hidden rounded-lg bg-white shadow-md @container'>
+      <Link href={`/products/${product.slug}`} className='cursor-pointer'>
+        <Image
+          src={product.main_image}
+          alt={product.name}
+          width={500}
+          height={500}
+          className='aspect-square w-full'
+        />
+      </Link>
 
       {/* product Details */}
-      <div className='p-6'>
-        <h3 className='line-clamp-1 text-sm text-gray-800'>{product.name}</h3>
-
+      <div className='p-2 @md:p-6'>
+        <h3 className='line-clamp-2 text-xs text-gray-800 @sm:text-sm @md:line-clamp-1'>
+          {product.name}
+        </h3>
 
         {/* Price and Action Button */}
-        <span className='text-lg font-bold text-gray-900'>
+        <span className='text-sm md:text-lg font-bold text-gray-900'>
           {formatPrice(product.price)}
         </span>
         <div className='mt-4 flex items-center justify-between'>
           <ListAddToCartButton product={product} variants={variants} />
-          <Link href={`/products/${product.slug}`}>
-            <Button className='rounded-md bg-gray-700 text-white' size='sm'>
-              View Details
+          <Link href={`/products/${product.slug}`} className=''>
+            <Button className='rounded-md bg-gray-700 text-white'>
+              <span className='hidden text-xs lg:inline-block'>
+                View Details
+              </span>
+              <EyeIcon className='h-4 w-4' />
             </Button>
           </Link>
         </div>

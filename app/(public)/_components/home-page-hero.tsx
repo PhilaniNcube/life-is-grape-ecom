@@ -6,9 +6,9 @@ import Link from 'next/link'
 
 const HomePageHero = () => {
   return (
-    <section className='relative flex h-[80vh] overflow-hidden lg:h-[75vh]'>
-      <div className='mx-auto grid container lg:grid-cols-3'>
-        <div className='relative z-10 flex flex-col justify-center col-span-1'>
+    <section className='relative flex overflow-hidden lg:h-[75vh]'>
+      <div className='container mx-auto grid grid-cols-2 lg:grid-cols-3'>
+        <div className='relative z-10 col-span-2 md:col-span-1 flex flex-col justify-center'>
           <h1
             className={cn(
               'mb-4 text-5xl font-bold lowercase text-slate-700 sm:text-4xl lg:text-6xl',
@@ -20,8 +20,9 @@ const HomePageHero = () => {
             grape descisions
           </h1>
           <p className='mb-8 max-w-[44ch] text-sm'>
-            Discover a wide range of fine wines and spirits tailored to develop
-            and satisfy every palate.
+            Uncover a rich tapestry of <strong>Proudly South African</strong>{' '}
+            fine wines and spirits, meticulously crafted to develop and satisfy
+            every palate.
           </p>
           <Link href='/products'>
             <Button
@@ -37,12 +38,12 @@ const HomePageHero = () => {
           alt='Elegant wine glass in a vineyard setting'
           width={1920}
           height={1400}
-          className='h-full w-full object-cover object-right hidden lg:flex lg:col-span-2'
+          className='h-full w-full object-cover md:object-right col-span-2 md:col-span-1 lg:col-span-2 lg:flex'
           priority
         />
       </div>
 
-      <div className='absolute inset-0 bg-white/40 lg:bg-transparent' />
+
     </section>
   )
 }

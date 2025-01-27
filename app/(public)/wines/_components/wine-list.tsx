@@ -45,7 +45,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
   }
 
   return (
-    <section className='py-4 peer-has-[data-[pending=true]]:animate-pulse'>
+    <section className='py-4 peer-has-[data-[pending=true]]:animate-pulse w-full @container'>
       <div className='mx-auto max-w-7xl'>
         {/* Section Heading */}
         <h2
@@ -58,7 +58,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
         </h2>
 
         {/* 3-Column Grid */}
-        <div className='grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid w-full grid-cols-2 @lg:grid-cols-3 gap-8'>
           {filteredWines.map(wine => (
             <ProductItem key={wine._id} product_id={wine._id} />
           ))}

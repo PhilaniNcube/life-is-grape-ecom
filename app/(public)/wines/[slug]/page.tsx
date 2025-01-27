@@ -18,11 +18,11 @@ const WineCategoryPage = async ({params}:{params:Promise<{slug:string}>}) => {
   console.log(products);
 
   return (
-    <div className='container mx-auto flex flex-col md:flex-row gap-4 peer'>
+    <div className='peer container mx-auto flex flex-col gap-4 md:flex-row'>
       <div>
-       <ProductFilter slug={slug} />
+        <ProductFilter slug={slug} />
       </div>
-      <section className='py-4 peer-has-[data-[pending=true]]:animate-pulse'>
+      <section className='w-full py-4 @container peer-has-[data-[pending=true]]:animate-pulse'>
         <div className='mx-auto max-w-7xl'>
           {/* Section Heading */}
           <h2
@@ -35,7 +35,7 @@ const WineCategoryPage = async ({params}:{params:Promise<{slug:string}>}) => {
           </h2>
 
           {/* 3-Column Grid */}
-          <div className='grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3'>
             {products.map(wine => (
               <ProductItem key={wine._id} product_id={wine._id} />
             ))}
