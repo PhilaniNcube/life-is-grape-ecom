@@ -13,7 +13,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { Doc } from '@/convex/_generated/dataModel'
-import { ThemeToggle } from './theme-toggle'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import Cart from './cart'
 import Image from 'next/image'
@@ -28,7 +27,7 @@ const routes = [
 
 export default function Navigation({ user }: { user: Doc<'users'> | null }) {
   return (
-    <header className='sticky top-0 z-50 w-full flex-1 lg:px-0'>
+    <header className='sticky top-0 z-50 w-full flex-1 lg:px-0 container'>
       <div className='flex h-16 items-center lg:px-0'>
         <div className='flex flex-1 items-center justify-end gap-6'>
           <div className='flex flex-1 flex-row justify-start'>
@@ -49,7 +48,7 @@ export default function Navigation({ user }: { user: Doc<'users'> | null }) {
           </div>
 
           <SignedOut>
-            <SignInButton mode='modal'>
+            <SignInButton >
               <Button size='sm'>Sign in</Button>
             </SignInButton>
           </SignedOut>
