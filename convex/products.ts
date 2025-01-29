@@ -434,13 +434,15 @@ export const addProductVariant = mutation({
     price: v.number(),
     stock_level: v.number(),
     barcode: v.optional(v.string()),
+    is_on_sale: v.optional(v.boolean()),
+    sale_price: v.optional(v.number()),
+    sale_start_date: v.optional(v.number()),
+    sale_end_date: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     // Verify product exists
     const product = await ctx.db.get(args.product_id)
     if (!product) throw new Error('Product not found')
-
-
 
     return await ctx.db.insert('product_variants', args)
   },
@@ -455,6 +457,10 @@ export const updateProductVariant = mutation({
     price: v.optional(v.number()),
     stock_level: v.optional(v.number()),
     barcode: v.optional(v.string()),
+    is_on_sale: v.optional(v.boolean()),
+    sale_price: v.optional(v.number()),
+    sale_start_date: v.optional(v.number()),
+    sale_end_date: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args
@@ -507,6 +513,35 @@ export const updateVariantPrice = mutation({
     return args.id
   },
 })
+
+export const updateVariantSalePrice = mutation({
+  args: {
+    id: v.id('product_variants'),
+    sale_price: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const variant = await ctx.db.get(args.id)
+
+    if (!variant) throw new Error('Product variant not found')
+
+    await ctx.db.patch(args.id, { sale_price: args.sale_price })
+    return args.id
+  },
+})
+
+
+export const toggleVariantIsOnSale = mutation({
+  args: {
+    id: v.id('product_variants'),
+  },
+  handler: async (ctx, args) => {
+    const variant = await ctx.db.get(args.id)
+
+    if (!variant) throw new Error('Product variant not found')
+
+    await ctx.db.patch(args.id, { is_on_sale: !variant.is_on_sale })
+  }
+});
 
 
 export const updateVariantStockLevel = mutation({

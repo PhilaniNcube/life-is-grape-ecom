@@ -58,6 +58,10 @@ export default defineSchema({
     price: v.number(),
     stock_level: v.number(),
     barcode: v.optional(v.string()),
+    is_on_sale: v.optional(v.boolean()),
+    sale_price: v.optional(v.number()),
+    sale_start_date: v.optional(v.number()),
+    sale_end_date: v.optional(v.number()),
   }).index('byProduct', ['product_id']),
   // Producers (replaces wineries/brands)
   producers: defineTable({
