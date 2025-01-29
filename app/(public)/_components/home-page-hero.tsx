@@ -8,7 +8,7 @@ const HomePageHero = () => {
   return (
     <section className='relative flex overflow-hidden lg:h-[75vh]'>
       <div className='container mx-auto grid grid-cols-2 lg:grid-cols-3'>
-        <div className='relative z-10 col-span-2 md:col-span-1 flex flex-col justify-center'>
+        <div className='relative z-10 col-span-2 flex flex-col justify-center md:col-span-1'>
           <h1
             className={cn(
               'mb-4 text-5xl font-bold lowercase text-slate-700 sm:text-4xl lg:text-6xl',
@@ -19,10 +19,13 @@ const HomePageHero = () => {
             <br />
             grape descisions
           </h1>
+          <p className='max-w-[44ch] text-sm'>
+            Discover a wide range of proudly South African wines and spirits
+            tailored to develop and satisfy every palate.
+          </p>
           <p className='mb-8 max-w-[44ch] text-sm'>
-            Uncover a rich tapestry of <strong>Proudly South African</strong>{' '}
-            fine wines and spirits, meticulously crafted to develop and satisfy
-            every palate.
+            Or make any occasion extra special and thoughtful with one of our{' '}
+            <strong>personalised wine gifts.</strong>
           </p>
           <Link href='/products'>
             <Button
@@ -38,12 +41,10 @@ const HomePageHero = () => {
           alt='Elegant wine glass in a vineyard setting'
           width={1920}
           height={1400}
-          className='h-full w-full object-cover md:object-right col-span-2 md:col-span-1 lg:col-span-2 lg:flex'
+          className='col-span-2 h-full w-full object-cover md:col-span-1 md:object-right lg:col-span-2 lg:flex'
           priority
         />
       </div>
-
-
     </section>
   )
 }
