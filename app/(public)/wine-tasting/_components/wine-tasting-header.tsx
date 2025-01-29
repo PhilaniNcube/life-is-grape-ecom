@@ -29,11 +29,7 @@ const WineTastingHeader = () => {
             every client has different needs and budgets, which is why we stay
             as flexible as possible.
           </p>
-          <Link href='/wine-tasting#experiences'>
-            <Button className='mt-4 rounded-none' size='lg'>
-              Explore Experiences
-            </Button>
-          </Link>
+
         </div>
       </div>
     </section>

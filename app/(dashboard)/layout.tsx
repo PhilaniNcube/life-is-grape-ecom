@@ -3,7 +3,7 @@ import DashboardShell from './_components/dashboard-shell'
 import { auth } from '@clerk/nextjs/server'
 import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
-import { redirect } from 'next/navigation'
+
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 

@@ -29,11 +29,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { UserButton } from '@clerk/nextjs'
 import NavItems from './nav-items'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import Image from 'next/image'
 
-export default function DashboardShell({children}:{children:ReactNode}) {
+export default function DashboardShell({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
-
 
   return (
     <div className='flex h-screen overflow-hidden bg-gray-100 dark:bg-gray-900'>
@@ -42,8 +41,16 @@ export default function DashboardShell({children}:{children:ReactNode}) {
         <div className='flex h-full flex-col'>
           <div className='flex h-14 items-center border-b px-4'>
             <Link href='/' className='flex items-center gap-2 font-semibold'>
-              <ShoppingBag className='h-6 w-6' />
-              <span>Life Is Grape</span>
+              <Image
+                src='https://quiet-caterpillar-834.convex.cloud/api/storage/f73007fc-e4e4-4ab6-a05d-e21895641152'
+                width={500}
+                height={194}
+                className='w-[100px] md:w-[150px] object-cover'
+                alt='Life Is Grape'
+              />
+              <span className='sr-only hidden font-bold sm:inline-block'>
+                Life Is Grape
+              </span>
             </Link>
           </div>
           <nav className='flex-1 space-y-2 px-2 py-4'>
@@ -82,17 +89,15 @@ export default function DashboardShell({children}:{children:ReactNode}) {
             <span className='sr-only'>Toggle sidebar</span>
           </Button>
           <div className='flex flex-1 items-center justify-end gap-4'>
-
-
             <UserButton />
           </div>
         </header>
 
         {/* Main content */}
         <main className='flex-1 overflow-y-auto p-4'>
-          <ScrollArea className="h-[calc(100dvh-100px)] pr-8">
-          {children}
-          <ScrollBar className="" />
+          <ScrollArea className='h-[calc(100dvh-100px)] pr-8'>
+            {children}
+            <ScrollBar className='' />
           </ScrollArea>
         </main>
       </div>

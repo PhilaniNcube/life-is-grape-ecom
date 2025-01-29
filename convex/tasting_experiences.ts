@@ -44,10 +44,36 @@ export const createExperience = mutation({
     servings: v.string(),
     duration: v.string(),
     image: v.id('_storage'),
+    type: v.optional(v.string())
   },
-  handler: async (ctx, {description, price, servings, duration, image, name}) => {
+  handler: async (ctx, {description, price, servings, duration, image, name, type}) => {
 
 
-    return await ctx.db.insert('tasting_experiences', {description, price, servings, duration, image, name});
+    return await ctx.db.insert('tasting_experiences', {description, price, servings, duration, image, name, type});
+  }
+})
+
+export const updateExperience = mutation({
+  args: {
+    id: v.id('tasting_experiences'),
+    description: v.optional(v.string()),
+    name: v.optional(v.string()),
+    price: v.optional(v.number()),
+    servings: v.optional(v.string()),
+    duration: v.optional(v.string()),
+    image: v.optional(v.id('_storage')),
+    type: v.optional(v.string())
+  },
+  handler: async (ctx, {id, description, price, servings, duration, image, name, type}) => {
+
+    const experience = await await ctx.db.get(id)
+
+    if (!experience) {
+      throw new Error(
+        `Tasting experience with ID ${id} not found`
+      )
+    }
+
+    return await ctx.db.patch( id, {description, price, servings, duration, image, name, type});
   }
 })

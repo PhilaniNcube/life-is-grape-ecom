@@ -110,6 +110,7 @@ export default defineSchema({
     servings: v.string(),
     duration: v.string(),
     image: v.id('_storage'),
+    type: v.optional(v.string()),
   }),
   bookings: defineTable({
     tasting_experience_id: v.id('tasting_experiences'),
