@@ -1,23 +1,24 @@
 import { Truck, Clock, DollarSign, Package } from 'lucide-react'
+import Image from 'next/image'
 
 export default function DeliveryInfo() {
   const deliveryInfo = [
     {
-      icon: <Truck className='h-4 w-4 md:h-5 md:w-5' />,
+      image: '/images/delivery_truck.webp',
       description: 'Delivery in 2-3 working days',
     },
     {
-      icon: <Clock className='h-4 w-4 md:h-5 md:w-5' />,
+      image: '/images/clock.webp',
       description: 'Transit times are 3-5 working days',
     },
     {
-      icon: <Package className='h-4 w-4 md:h-5 md:w-5' />,
-      description: 'FREE delivery for orders R1500+',
+      image: '/images/free_delivery.webp',
+      description: 'FREE delivery for orders R2000+',
     },
   ]
 
   return (
-    <div className='bg-slate-500 text-white'>
+    <div className='bg-black text-white'>
       <div className='container mx-auto px-4 py-2 md:py-6'>
         <div className='-mx-2 flex flex-wrap items-center justify-between'>
           {deliveryInfo.map((info, index) => (
@@ -25,10 +26,14 @@ export default function DeliveryInfo() {
               key={index}
               className='flex w-1/2 items-center px-2 py-1 md:w-auto md:py-0'
             >
-              <div className='mr-2 text-white'>{info.icon}</div>
-              <p className='text-xs md:text-sm'>
-                {info.description}
-              </p>
+              <p className='text-xs md:text-sm'>{info.description}</p>{' '}
+              <Image
+                src={info.image}
+                width={155}
+                height={88}
+                alt='Delivery'
+                className='w-16 object-cover'
+              />
             </div>
           ))}
         </div>
