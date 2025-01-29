@@ -38,7 +38,7 @@ const HomePageGrid = () => {
           </div>
         </Link>
         <Link
-          href='/experiences'
+          href='/wine-tasting'
           className='relative flex cursor-pointer flex-col items-center justify-center text-balance rounded-md text-center shadow-sm hover:shadow-lg'
         >
           <Image
