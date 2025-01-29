@@ -22,7 +22,7 @@ import {
 import { Doc } from '@/convex/_generated/dataModel'
 import { cn, formatPrice } from '@/lib/utils'
 import { EnvelopeIcon } from '@sanity/icons'
-import { PhoneCall } from 'lucide-react'
+import { Phone, PhoneCall } from 'lucide-react'
 import { useState } from 'react'
 
 const BookingDialog = ({
@@ -88,7 +88,7 @@ const BookingDialog = ({
             <a href='mailto:wine@lifeisgrape.co.za'>wine@lifeisgrape.co.za</a>
           </div>
           <div className='flex mt-2 items-center gap-x-2'>
-            <PhoneCall className='h-6 w-6' />
+            <Phone className='h-5 w-5' />
             <a href='tel:0027829311253'>082 9311 253</a>
           </div>
         </div>
