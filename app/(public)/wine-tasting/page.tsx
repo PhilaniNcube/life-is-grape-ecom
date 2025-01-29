@@ -7,20 +7,8 @@ const WineTastingPage = () => {
   return (
     <div>
       <WineTastingHeader />
-      <section className='container mx-auto mt-12 grid gap-10 lg:grid-cols-2'>
-        <TastingEventDescription />
-        <Suspense
-          fallback={
-            <div className='w-full'>
-              <h2 className='mb-6 text-2xl font-bold text-gray-900'>
-                Book A Tasting Experience
-              </h2>
-              <p>Loading...</p>
-            </div>
-          }
-        >
-          <ExperienceOptions />
-        </Suspense>
+      <section className='container mx-auto mt-12'>
+        <ExperienceOptions />
       </section>
     </div>
   )
