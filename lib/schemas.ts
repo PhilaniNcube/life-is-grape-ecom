@@ -40,6 +40,10 @@ const ProductVariantSchema = z.object({
   price: z.coerce.number().positive(),
   stock_level: z.coerce.number().min(0),
   barcode: z.string().optional(),
+  is_on_sale: z.boolean().optional(),
+  sale_price: z.coerce.number().optional(),
+  sale_start_date: z.coerce.number().optional(),
+  sale_end_date: z.coerce.number().optional(),
 })
 
 // Create schemas
@@ -69,6 +73,12 @@ export const UpdateProductVariantSchema = ProductVariantSchema.partial().extend(
 export const UpdateVariantPriceSchema = z.object({
   id: z.string(),
   price: z.coerce.number().positive(),
+})
+
+export const UpdateVariantSaleStatusSchema = z.object({
+  id: z.string(),
+  is_on_sale: z.boolean(),
+  sale_price: z.coerce.number(),
 })
 
 export const UpdateVariantVolumeSchema = z.object({

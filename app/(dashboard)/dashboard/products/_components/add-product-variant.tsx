@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,6 +31,7 @@ import { CreateProductVariantSchema } from '@/lib/schemas'
 import { revalidatePath } from 'next/cache'
 import { useRouter } from 'next/navigation'
 import { addVariantAction } from '@/actions/products'
+import { Switch } from '@/components/ui/switch'
 
 // Infer the TypeScript type from the Zod schema
 type FormSchema = z.infer<typeof CreateProductVariantSchema>
@@ -50,31 +52,6 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
       volume: 750,
     },
   })
-
-  // Handle form submission
-  const onSubmit = async (data: FormSchema) => {
-    setIsLoading(true)
-    try {
-      const result = await addVariant({
-        product_id: productId,
-        volume: data.volume,
-        price: data.price,
-        sku: data.sku || productId,
-        stock_level: data.stock_level,
-      })
-      // toast.success('Product variant added successfully')
-      form.reset()
-      // onVariantAdded()
-      revalidatePath(`/dashboard/products/${productId}`)
-      router.refresh()
-      setIsLoading(false)
-    } catch (error) {
-      // toast.error('Failed to add product variant')
-      console.error('Add Variant Error:', error)
-      router.refresh()
-      setIsLoading(false)
-    }
-  }
 
   return (
     <Dialog>
@@ -123,7 +100,6 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
                   <FormControl>
                     <Input type='hidden' defaultValue={productId} {...field} />
                   </FormControl>
-
                 </FormItem>
               )}
             />
@@ -168,6 +144,46 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
                   <FormLabel>SKU (Optional)</FormLabel>
                   <FormControl>
                     <Input placeholder='e.g., SKU12345' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='is_on_sale'
+              render={({ field }) => (
+                <FormItem className='flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm'>
+                  <div className='space-y-0.5'>
+                    <FormLabel>On Sale</FormLabel>
+                    <FormDescription>
+                      Set this variant as on sale
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='sale_price'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Sale Price</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      min={0}
+                      placeholder='e.g., 10'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

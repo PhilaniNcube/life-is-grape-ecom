@@ -10,6 +10,7 @@ import { formatPrice } from '@/lib/utils'
 import UpdateVolumeDialog from './update-variant-volume'
 import UpdatePriceDialog from './update-varaint-price'
 import UpdateStockDialog from './update-variant-stock'
+import UpdateSaleDialog from './update-variant-sale-status'
 
 type VariantListProps = {
   product_id: Id<'products'>
@@ -37,6 +38,9 @@ const VariantList = async ({ product_id }: VariantListProps) => {
               <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
                 Stock
               </th>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
+                Sale
+              </th>
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200 bg-white'>
@@ -55,9 +59,16 @@ const VariantList = async ({ product_id }: VariantListProps) => {
                   />
                 </td>
                 <td className='whitespace-nowrap px-6 py-4'>
-                 <UpdateStockDialog
+                  <UpdateStockDialog
                     variantId={variant._id}
                     stock_level={variant.stock_level}
+                  />
+                </td>
+                <td className='whitespace-nowrap px-6 py-4'>
+                  <UpdateSaleDialog
+                    variantId={variant._id}
+                    is_on_sale={variant.is_on_sale || false}
+                    initialSalePrice={variant.sale_price || 0}
                   />
                 </td>
               </tr>

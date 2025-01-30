@@ -3,7 +3,7 @@ import "server-only"
 
 import { revalidatePath } from 'next/cache'
 
-import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateProductSchema, UpdateProductVariantSchema, UpdateVariantPriceSchema, UpdateVariantStockSchema, UpdateVariantVolumeSchema } from '@/lib/schemas'
+import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateProductSchema, UpdateProductVariantSchema, UpdateVariantPriceSchema, UpdateVariantSaleStatusSchema, UpdateVariantStockSchema, UpdateVariantVolumeSchema } from '@/lib/schemas'
 import { fetchMutation, fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
@@ -179,6 +179,10 @@ export async function addVariantAction(prevState:unknown, formData:FormData) {
     price: formData.get('price'),
     sku: formData.get('sku'),
     stock_level: formData.get('stock_level'),
+    is_on_sale: formData.get('is_on_sale') === 'on' ? true : false,
+    sale_price: formData.get('sale_price'),
+    sale_start_date: formData.get('sale_start_date'),
+    sale_end_date: formData.get('sale_end_date'),
   })
 
   if (!validatedFields.success) {
@@ -197,6 +201,10 @@ export async function addVariantAction(prevState:unknown, formData:FormData) {
       price: validatedFields.data.price,
       sku: validatedFields.data.sku || validatedFields.data.product_id,
       stock_level: validatedFields.data.stock_level,
+      is_on_sale: validatedFields.data.is_on_sale,
+      sale_price: validatedFields.data.sale_price,
+      sale_start_date: validatedFields.data.sale_start_date,
+      sale_end_date: validatedFields.data.sale_end_date,
     })
 
     console.log(result)
@@ -328,6 +336,51 @@ export async function updateStockAction(prevState: unknown, formData: FormData) 
       error: 'Failed to add product variant',
     }
   }
+}
+
+
+export async function updateSaleStatusAction(prevState: unknown, formData: FormData) {
+
+  const validatedFields = UpdateVariantSaleStatusSchema.safeParse({
+    id: formData.get('id'),
+    is_on_sale: formData.get('is_on_sale') === 'on' ? true : false,
+    sale_price: formData.get('sale_price'),
+  })
+
+  if (!validatedFields.success) {
+    console.log(validatedFields.error)
+    return {
+      success: false,
+      error: 'Invalid form data',
+    }
+  }
+
+  const variantId = validatedFields.data.id as Id<"product_variants">
+
+  try {
+    const result = await fetchMutation(
+      api.products.updateProductVariantSaleStatus,
+      {
+        id: variantId,
+        is_on_sale: validatedFields.data.is_on_sale,
+        sale_price: validatedFields.data.sale_price,
+      }
+    )
+
+    if (!result) {
+      throw new Error('Failed to add product variant')
+    }
+
+    revalidatePath(`/dashboard/products`, 'layout')
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to add product variant',
+    }
+  }
+
 }
 
 

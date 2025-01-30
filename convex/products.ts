@@ -530,6 +530,23 @@ export const updateVariantSalePrice = mutation({
 })
 
 
+export const updateProductVariantSaleStatus = mutation({
+  args: {
+    id: v.id('product_variants'),
+    is_on_sale: v.boolean(),
+    sale_price: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const variant = await ctx.db.get(args.id)
+
+    if (!variant) throw new Error('Product variant not found')
+
+    await ctx.db.patch(args.id, { is_on_sale: args.is_on_sale, sale_price: args.sale_price })
+    return args.id
+  },
+})
+
+
 export const toggleVariantIsOnSale = mutation({
   args: {
     id: v.id('product_variants'),
