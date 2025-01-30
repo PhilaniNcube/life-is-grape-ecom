@@ -1,4 +1,5 @@
 import { api } from './_generated/api'
+import { Id } from './_generated/dataModel'
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
 
@@ -30,7 +31,6 @@ export const getShallowProductWithMainImage = query({
   },
 })
 
-
 // get shallow product by id and include the main image and product vaiants
 export const getProductWithVairants = query({
   args: { id: v.id('products') },
@@ -54,35 +54,69 @@ export const getProductWithVairants = query({
       main_image: mainImage
         ? mainImage
         : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
-        variants
+      variants,
     }
   },
 })
 
 export const getProducts = query({
   args: {},
-  handler: async (ctx) => {
+  handler: async ctx => {
     return await ctx.db.query('products').collect()
   },
 })
 
 export const getShallowProducts = query({
   args: {},
-  handler: async (ctx) => {
+  handler: async ctx => {
     const products = await ctx.db.query('products').collect()
 
-    return Promise.all(products.map(async product => {
-      const mainImage = await ctx.storage.getUrl(product.main_image)
+    return Promise.all(
+      products.map(async product => {
+        const mainImage = await ctx.storage.getUrl(product.main_image)
+        return {
+          ...product,
+          main_image: mainImage
+            ? mainImage
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+        }
+      })
+    )
+  },
+})
 
+// get products by producer id
+export const getProductsByProducer = query({
+  args: { producer_id: v.id('producers') },
+  handler: async (ctx, args) => {
+    const products = await ctx.db
+      .query('products')
+      .filter(q => q.eq(q.field('producer_id'), args.producer_id))
+      .collect()
 
+    return Promise.all(
+      products.map(async product => {
+        const mainImage = await ctx.storage.getUrl(product.main_image)
+        return {
+          ...product,
+          main_image: mainImage
+            ? mainImage
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+        }
+      })
+    )
+  },
+})
 
-      return {
-        ...product,
-        main_image: mainImage
-          ? mainImage
-          : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52'
-      }
-    }))
+export const getUnlabelledProducts = query({
+  args: {},
+  handler: async (ctx, args) => {
+    const producerId = 'kh7ek0c19zrajw48060jtckqe979crzw' as Id<'producers'>
+
+    return await ctx.db
+      .query('products')
+      .filter(q => q.eq(q.field('producer_id'), producerId))
+      .collect()
   },
 })
 
@@ -100,30 +134,34 @@ export const getShallowProductsByType = query({
 
 // get shallow products by type and includ the main image
 export const getShallowProductsWithMainImage = query({
-  args: { type: v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift')) },
+  args: {
+    type: v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift')),
+  },
   handler: async (ctx, args) => {
     const products = await ctx.db
       .query('products')
       .filter(q => q.eq(q.field('product_type'), args.type))
       .collect()
 
-    return Promise.all(products.map(async product => {
-      const mainImage = await ctx.storage.getUrl(product.main_image)
+    return Promise.all(
+      products.map(async product => {
+        const mainImage = await ctx.storage.getUrl(product.main_image)
 
-      // fetch the product variants
-      const variants = await ctx.db
-        .query('product_variants')
-        .filter(q => q.eq(q.field('product_id'), product._id))
-        .collect()
+        // fetch the product variants
+        const variants = await ctx.db
+          .query('product_variants')
+          .filter(q => q.eq(q.field('product_id'), product._id))
+          .collect()
 
-      return {
-        ...product,
-        main_image: mainImage
-          ? mainImage
-          : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
-          variants
-      }
-    }))
+        return {
+          ...product,
+          main_image: mainImage
+            ? mainImage
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+          variants,
+        }
+      })
+    )
   },
 })
 
@@ -133,7 +171,6 @@ export const getFilteredProducts = query({
     name: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-
     let q = ctx.db.query('products')
 
     // Handler logic
@@ -148,8 +185,6 @@ export const getFilteredProducts = query({
         queryBuilder.eq(queryBuilder.field('name'), args.name)
       )
     }
-
-
 
     return await q.collect()
   },
@@ -183,9 +218,8 @@ export const getProductBySlug = query({
 })
 
 export const getProductBySlugWithMainImage = query({
-  args:{ slug: v.string() },
+  args: { slug: v.string() },
   handler: async (ctx, args) => {
-
     const product = await ctx.db
       .query('products')
       .withIndex('bySlug', q => q.eq('slug', args.slug))
@@ -199,10 +233,9 @@ export const getProductBySlugWithMainImage = query({
       ...product,
       main_image: mainImage
         ? mainImage
-        : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52'
+        : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
     }
-
-  }
+  },
 })
 
 // Get product by ID
@@ -243,7 +276,6 @@ export const getProductsByType = query({
   },
 })
 
-
 // get first 3 products by type
 export const getFeaturedProducts = query({
   args: {
@@ -257,9 +289,6 @@ export const getFeaturedProducts = query({
       .filter(q => q.eq(q.field('product_type'), args.type))
       // .filter(q => q.eq(q.field('featured'), true))
       .take(args.limit ?? 3) // Use nullish coalescing for default limit
-
-
-
 
     return products
   },
@@ -276,7 +305,11 @@ export const addProduct = mutation({
     main_image: v.id('_storage'),
     images: v.array(v.id('_storage')),
     in_stock: v.boolean(),
-    product_type: v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift')),
+    product_type: v.union(
+      v.literal('wine'),
+      v.literal('spirit'),
+      v.literal('gift')
+    ),
     slug: v.string(),
     meta_description: v.optional(v.string()),
     featured: v.boolean(),
@@ -309,7 +342,9 @@ export const updateProduct = mutation({
     main_image: v.optional(v.id('_storage')),
     images: v.optional(v.array(v.id('_storage'))),
     in_stock: v.optional(v.boolean()),
-    product_type: v.optional(v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift'))),
+    product_type: v.optional(
+      v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift'))
+    ),
     slug: v.optional(v.string()),
     meta_description: v.optional(v.string()),
     featured: v.optional(v.boolean()),
@@ -344,13 +379,13 @@ export const deleteProduct = mutation({
 
     if (!product) throw new Error('Product not found')
 
-  // delete product attributes based on product id
+    // delete product attributes based on product id
     const attributes = await ctx.db
       .query('product_attributes')
       .filter(q => q.eq(q.field('product_id'), args.id))
       .collect()
 
-     for (const attribute of attributes) {
+    for (const attribute of attributes) {
       await ctx.db.delete(attribute._id)
     }
 
@@ -529,7 +564,6 @@ export const updateVariantSalePrice = mutation({
   },
 })
 
-
 export const updateProductVariantSaleStatus = mutation({
   args: {
     id: v.id('product_variants'),
@@ -541,11 +575,13 @@ export const updateProductVariantSaleStatus = mutation({
 
     if (!variant) throw new Error('Product variant not found')
 
-    await ctx.db.patch(args.id, { is_on_sale: args.is_on_sale, sale_price: args.sale_price })
+    await ctx.db.patch(args.id, {
+      is_on_sale: args.is_on_sale,
+      sale_price: args.sale_price,
+    })
     return args.id
   },
 })
-
 
 export const toggleVariantIsOnSale = mutation({
   args: {
@@ -557,9 +593,8 @@ export const toggleVariantIsOnSale = mutation({
     if (!variant) throw new Error('Product variant not found')
 
     await ctx.db.patch(args.id, { is_on_sale: !variant.is_on_sale })
-  }
-});
-
+  },
+})
 
 export const updateVariantStockLevel = mutation({
   args: {
@@ -612,14 +647,12 @@ export const getProductAttributes = query({
       .query('product_attributes')
       .filter(q => q.eq(q.field('product_id'), args.product_id))
       .collect()
-
   },
 })
 
 export const generateUploadUrl = mutation(async ctx => {
   return await ctx.storage.generateUploadUrl()
 })
-
 
 export const getMainImage = query({
   args: { id: v.id('_storage') },
@@ -628,11 +661,9 @@ export const getMainImage = query({
   },
 })
 
-
 export const uploadProductImages = mutation({
   args: { files: v.array(v.bytes()) },
   handler: async (ctx, args) => {
-
     // Upload files to storage from the array of bytes
     const files = args.files
     const urls = await Promise.all(
@@ -652,16 +683,12 @@ export const uploadProductImages = mutation({
         console.log('Uploaded file:', result.body)
       })
     )
-
-
   },
 })
-
 
 export const setProductImages = mutation({
   args: { id: v.id('products'), image_id: v.id('_storage') },
   handler: async (ctx, args) => {
-
     // get the images array from the product
     const product = await ctx.db.get(args.id)
     const images = product?.images
@@ -677,7 +704,6 @@ export const setProductImages = mutation({
   },
 })
 
-
 export const getProductImages = query({
   args: { id: v.id('products') },
   handler: async (ctx, args) => {
@@ -689,35 +715,38 @@ export const getProductImages = query({
 
     if (!images) return []
 
-    return Promise.all(images.map(async imageId => {
-      return await ctx.storage.getUrl(imageId)
-    }))
-
+    return Promise.all(
+      images.map(async imageId => {
+        return await ctx.storage.getUrl(imageId)
+      })
+    )
   },
 })
-
 
 // write a query to return a list of products based on a search term
 export const searchProducts = query({
   args: { term: v.string() },
   handler: async (ctx, args) => {
     const results = await ctx.db
-      .query('products').withSearchIndex('name', (q) => q.search('name', args.term)).take(20)
+      .query('products')
+      .withSearchIndex('name', q => q.search('name', args.term))
+      .take(20)
 
-      if (!results) return null
+    if (!results) return null
 
-
-      // fetch the main image for each product
-      const products = await Promise.all(results.map(async product => {
+    // fetch the main image for each product
+    const products = await Promise.all(
+      results.map(async product => {
         const mainImage = await ctx.storage.getUrl(product.main_image)
 
         return {
           ...product,
           main_image: mainImage
             ? mainImage
-            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52'
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
         }
-      }))
+      })
+    )
 
     return products
   },

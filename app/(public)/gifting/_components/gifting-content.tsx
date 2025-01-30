@@ -38,58 +38,7 @@ export default function GiftingContent() {
 
       {/* Feature Highlights */}
       <section className='grid gap-8 md:grid-cols-3'>
-        <Card>
-          <CardContent className='space-y-4 p-6'>
-            <GrapeIcon className='mx-auto h-12 w-12 text-primary' />
-            <h2 className='text-center text-xl font-semibold'>
-              Personalized Labels
-            </h2>
-            <ul className='list-disc space-y-2 pl-5'>
-              <li>
-                Their name or a heartfelt message for a truly personal touch.
-              </li>
-              <li>Your company logo for impactful corporate branding.</li>
-              <li>
-                A unique design celebrating a wedding, anniversary, or special
-                milestone.
-              </li>
-            </ul>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className='space-y-4 p-6'>
-            <PaintbrushIcon className='mx-auto h-12 w-12 text-primary' />
-            <h2 className='text-center text-xl font-semibold'>
-              Hand-Painted Boxes
-            </h2>
-            <ul className='list-disc space-y-2 pl-5'>
-              <li>
-                Choose the perfect size: Available for one, two, or three
-                bottles.
-              </li>
-              <li>
-                Extra space for added treats: Include chocolates, gourmet
-                snacks, or personalized trinkets.
-              </li>
-              <li>
-                Elegant finishing touch: Each box is wrapped with a beautiful
-                ribbon to complement your gift.
-              </li>
-            </ul>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className='space-y-4 p-6'>
-            <TicketIcon className='mx-auto h-12 w-12 text-primary' />
-            <h2 className='text-center text-xl font-semibold'>Gift Vouchers</h2>
-            <p>
-              Not sure what wine they&apos;d prefer? No problem! Give the gift
-              of choice with a Life is Grape gift voucher. They can browse our
-              curated selection of high-quality wines and create their own
-              perfect present.
-            </p>
-          </CardContent>
-        </Card>
+
       </section>
 
       {/* Why Choose Us Section */}
