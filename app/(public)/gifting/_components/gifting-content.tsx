@@ -9,21 +9,25 @@ import { littlepot } from '@/app/fonts'
 export default function GiftingContent() {
   return (
     <div className='container mx-auto space-y-12 px-4 py-8'>
-      <section className='space-y-6 text-center'>
+      <section className='space-y-6'>
         <h1
           className={cn(
-            'mb-4 w-[20ch] mx-auto text-5xl text-center font-bold lowercase text-slate-700 sm:text-4xl lg:text-6xl',
+            'mb-4 w-[20ch]  text-5xl font-bold lowercase text-slate-700 sm:text-4xl lg:text-6xl',
             littlepot.className
           )}
         >
-          Life is Grape: Uncork a Memorable Gift
+         Grape Packaging
         </h1>
-        <p className='mx-auto max-w-2xl text-lg text-muted-foreground'>
-          Looking for a unique and thoughtfully presented gift that&apos;s
-          guaranteed to please? At Life is Grape, we believe the perfect present
-          should be as special as the occasion. That&apos;s why we offer
-          personalised wine labels to elevate your wedding favors, corporate
-          gifts, or any special celebration.
+        <p className='text-lg text-muted-foreground'>
+          Life is Grape is truly the ideal online shop to buy gifts for boutique
+          wine and craft spirit lovers. There are many reasons to
+          celebrate...birthdays, buying a new house, weddings, graduations, job
+          promotions and welcoming a child into the world. There’s no better way
+          to say congratulations than presenting the lucky receiver with a
+          bottle of their favourite Sip! A high-quality, crowd-pleasing bottle
+          of wine or spirits shows that you’ve got taste. It can be added to
+          your client’s collection, re-gifted or most likely, consumed on the
+          spot!
         </p>
         <Suspense fallback={<div>Loading...</div>}>
           <GiftsGrid />
