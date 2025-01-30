@@ -138,7 +138,7 @@ export default function GiftProductForm() {
           <div className='pl-10'>
             <Label>Type</Label>
             <RadioGroup name='type' defaultValue='box'>
-              {['box', 'label', 'bag'].map(type => (
+              {['box', 'label', 'bag', 'voucher'].map(type => (
                 <div key={type} className='flex items-center space-x-2'>
                   <RadioGroupItem
                     value={type}
