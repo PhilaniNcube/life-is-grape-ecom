@@ -53,6 +53,7 @@ export const createGift = mutation({
     main_image: v.id('_storage'),
     // images: v.optional(v.array(v.id('_storage'))),
     in_stock: v.boolean(),
+    dimensions: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const giftId = await ctx.db.insert('gifts', args)
@@ -101,7 +102,6 @@ export const updateGift = mutation({
   },
 })
 
-
 // fetch the main image url
 export const fetchGiftImage = query({
   args: { image: v.id('_storage') },
@@ -111,5 +111,17 @@ export const fetchGiftImage = query({
       throw new Error('Image not found')
     }
     return image
+  },
+})
+
+export const generateGiftUploadUrl = mutation(async ctx => {
+  return await ctx.storage.generateUploadUrl()
+})
+
+
+export const deleteGift = mutation({
+  args: { gift_id: v.id('gifts') },
+  handler: async (ctx, { gift_id }) => {
+    await ctx.db.delete(gift_id)
   },
 })

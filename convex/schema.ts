@@ -139,6 +139,7 @@ export default defineSchema({
     main_image: v.id('_storage'),
     images: v.optional(v.array(v.id('_storage'))),
     in_stock: v.boolean(),
+    dimensions: v.optional(v.string())
   }),
   gift_customizations: defineTable({
     gift_id: v.id('gifts'),

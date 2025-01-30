@@ -117,6 +117,7 @@ export const giftSchema = z.object({
   main_image: z.string(),
   images: z.array(z.string()).optional(),
   in_stock: z.boolean(),
+  dimensions: z.string().optional(),
 })
 
 // Create Gift Schema

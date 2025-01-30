@@ -11,6 +11,9 @@ import { Package, ShoppingBag, Tag, Wine } from 'lucide-react'
 import { cn, formatPrice } from '@/lib/utils'
 import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
+import { Button } from '@/components/ui/button'
+import { deleteGiftAction } from '@/actions/gifts'
+import DeleteGiftDialog from './delete-gift-dialog'
 
 // Sample gift data based on the previous schema
 
@@ -29,6 +32,7 @@ export default async function GiftTable() {
               <TableHead>Customization</TableHead>
               <TableHead>Compatible Wines</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Delete</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -36,7 +40,6 @@ export default async function GiftTable() {
               <TableRow key={gift._id}>
                 <TableCell className='font-medium'>
                   <div className='flex items-center space-x-2'>
-
                     <span>{gift.name}</span>
                   </div>
                 </TableCell>
@@ -88,6 +91,9 @@ export default async function GiftTable() {
                   >
                     {gift.in_stock ? 'In Stock' : 'Out of Stock'}
                   </Badge>
+                </TableCell>
+                <TableCell>
+                  <DeleteGiftDialog id={gift._id} />
                 </TableCell>
               </TableRow>
             ))}

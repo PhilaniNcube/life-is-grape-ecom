@@ -35,7 +35,8 @@ export const createGiftAction = async (
     compatible_wine_types: formData.getAll('compatible_wine_types'),
     main_image: formData.get('main_image'),
     // images: formData.getAll('images'),
-    in_stock: formData.get('in_stock') === 'true' ? true : false,
+    in_stock: formData.get('in_stock') === 'on' ? true : false,
+    dimensions: formData.get('dimensions'),
   })
 
   if (!validatedFields.success) {
@@ -66,6 +67,7 @@ export const createGiftAction = async (
     main_image: mainImage,
     // images: images,
     in_stock: validatedFields.data.in_stock,
+    dimensions: validatedFields.data.dimensions,
   })
 
   console.log(JSON.stringify(createdGift, null, 2))
@@ -78,4 +80,22 @@ export const createGiftAction = async (
   revalidatePath(`/gifts`, "page")
 
   return { data: createdGift, status: 200 }
+}
+
+
+export async function deleteGiftAction(id: Id<"gifts">) {
+
+  const deletedGift = await fetchMutation(api.gifts.deleteGift, {
+    gift_id: id,
+  })
+
+  if (!deletedGift) {
+    return { error: 'Gift not deleted', status: 400 }
+  }
+
+  revalidatePath('/dashboard/gifts')
+  revalidatePath(`/gifts`, "page")
+
+  return { data: deletedGift, status: 200 }
+
 }
