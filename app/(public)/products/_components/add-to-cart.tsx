@@ -19,6 +19,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
 import { add } from 'date-fns'
+import { format } from 'path'
 
 type GiftWrappingOption = {
   name: string
@@ -85,7 +86,7 @@ const AddToCart = ({
             variant.stock_level > 0 ? '' : 'opacity-80'
           )}
         >
-          {variant.volume}ml - {formatPrice(variant.price)}
+          {variant.volume}ml - {variant.is_on_sale ? formatPrice(variant.sale_price!) : formatPrice(variant.price)}
           {selectedVariantId === variant._id && (
             <Check className='ml-2' size={12} />
           )}

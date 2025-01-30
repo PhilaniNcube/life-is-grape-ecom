@@ -5,6 +5,7 @@ import { cn, formatPrice } from '@/lib/utils'
 import ProductImage from '../../_components/product-image'
 import AddToCart from './add-to-cart'
 import { littlepot } from '@/app/fonts'
+import { Badge } from '@/components/ui/badge'
 
 const ProductDetail = async ({ slug }: { slug: string }) => {
   const product = await fetchQuery(api.products.getProductBySlug, { slug })
@@ -49,7 +50,7 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
 
   return (
     <div className='container mx-auto px-4 py-8'>
-      <div className='grid gap-8 md:grid-cols-2'>
+      <div className='grid gap-8 md:grid-cols-2 relative'>
         {product === null ? (
           <div className='aspect-square w-full bg-slate-200'>
             Product image not found
@@ -65,8 +66,26 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
               <h1 className={cn('text-3xl font-bold', littlepot.className)}>
                 {product.product.name}
               </h1>
-              <p className='text-xl font-bold'>
-                {formatPrice(product.product.price)}
+              {product.variants[0].is_on_sale && (
+                <Badge className='absolute right-0 top-0 rounded-full bg-red-600 text-xs text-white'>
+                  Sale
+                </Badge>
+              )}
+              <p className={cn('text-2xl font-semibold')}>
+                {product.variants[0].is_on_sale ? (
+                  <div className='flex flex-col items-start'>
+                    <span className='text-sm font-semibold text-gray-500 line-through'>
+                      {formatPrice(product.variants[0].price)}
+                    </span>
+                    <span className=''>
+                      {formatPrice(product.variants[0].sale_price!)}
+                    </span>
+                  </div>
+                ) : (
+                  <span className=''>
+                    {formatPrice(product.variants[0].price)}
+                  </span>
+                )}
               </p>
               <p className='text-sm text-gray-600 dark:text-gray-50'>
                 {product.product.description}
