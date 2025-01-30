@@ -40,7 +40,7 @@ export const createGift = mutation({
     name: v.string(),
     description: v.string(),
     price: v.number(),
-    type: v.union(v.literal('box'), v.literal('label'), v.literal('bag')),
+    type: v.union(v.literal('box'), v.literal('label'), v.literal('bag'), v.literal('voucher')),
     customization_options: v.object({
       allows_message: v.boolean(),
       message_max_length: v.optional(v.number()),
