@@ -12,11 +12,11 @@ export default function GiftingContent() {
       <section className='space-y-6'>
         <h1
           className={cn(
-            'mb-4 w-[20ch]  text-5xl font-bold lowercase text-slate-700 sm:text-4xl lg:text-6xl',
+            'mb-4 w-[20ch] text-5xl font-bold lowercase text-slate-700 sm:text-4xl lg:text-6xl',
             littlepot.className
           )}
         >
-         Grape Packaging
+          Grape Packaging
         </h1>
         <p className='text-lg text-muted-foreground'>
           Life is Grape is truly the ideal online shop to buy gifts for boutique
@@ -37,9 +37,7 @@ export default function GiftingContent() {
       <section className='space-y-4 text-center'></section>
 
       {/* Feature Highlights */}
-      <section className='grid gap-8 md:grid-cols-3'>
-
-      </section>
+      <section className='grid gap-8 md:grid-cols-3'></section>
 
       {/* Why Choose Us Section */}
       <section className='rounded-lg bg-secondary p-8'>
@@ -84,6 +82,7 @@ export default function GiftingContent() {
       </section>
 
       {/* Call to Action */}
+
     </div>
   )
 }

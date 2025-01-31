@@ -28,9 +28,9 @@ export default function AboutUs() {
               distinctive wines and spirits in an environmentally sensitive and
               ethically responsible manner.
             </p>
-
           </div>
         </div>
+
       </div>
     </section>
   )
