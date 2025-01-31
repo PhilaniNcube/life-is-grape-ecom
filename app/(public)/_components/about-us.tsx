@@ -18,18 +18,17 @@ export default function AboutUs() {
               The Grape Story
             </h2>
           </div>
-          <div className='relative  lg:h-full'>
+          <div className='relative lg:h-full'>
             <p className='text-lg text-gray-700'>
               Established on 1 April 2016, our purpose is to introduce proudly
               South African brands of hand-crafted wines and spirits to those
               operating in the trade, and to consumers. These products are
-              produced in South Africa with quality and passion
+              produced in South Africa with quality and passion. South Africa is
+              recognised worldwide as producing premium quality, interesting and
+              distinctive wines and spirits in an environmentally sensitive and
+              ethically responsible manner.
             </p>
-            <p className='text-lg text-gray-700 mt-2'>
-              South Africa is recognised worldwide as producing premium quality,
-              interesting and distinctive wines and spirits in an
-              environmentally sensitive and ethically responsible manner.
-            </p>
+
           </div>
         </div>
       </div>
