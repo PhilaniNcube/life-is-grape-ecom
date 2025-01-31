@@ -30,22 +30,22 @@ type GiftWrappingOption = {
 
 // Add gift wrapping/box options to add to the cart along with the product
 const giftWrappingOptions: GiftWrappingOption[] = [
+  // {
+  //   name: 'Single gift bag',
+  //   price: 25,
+  //   description:
+  //     'A beautiful brown kraft bottle bag with strong rope handles. Hand-Painted for your celebration. Perfect for gifts',
+  //   dimensions: '36cm x 12cm',
+  // },
   {
-    name: 'Single gift bag',
-    price: 25,
-    description:
-      'A beautiful brown kraft bottle bag with strong rope handles. Hand-Painted for your celebration. Perfect for gifts',
-    dimensions: '36cm x 12cm',
-  },
-  {
-    name: 'Single gift box',
-    price: 35,
+    name: 'Brown Kraft Single Bottle Gift Box',
+    price: 45,
     description:
       'A beautiful brown kraft bottle box with black vinyl lettering of your choice for your celebration.',
     dimensions: '(L)325mm x (W)120mm x (H)85mm',
   },
   {
-    name: 'Double gift box',
+    name: 'Brown Kraft Double Bottle Gift Box',
     price: 55,
     description:
       'A beautiful brown kraft bottle box, hand-painted for your celebration. Perfect for gifts.',
@@ -86,43 +86,15 @@ const AddToCart = ({
             variant.stock_level > 0 ? '' : 'opacity-80'
           )}
         >
-          {variant.volume}ml - {variant.is_on_sale ? formatPrice(variant.sale_price!) : formatPrice(variant.price)}
+          {variant.volume}ml -{' '}
+          {variant.is_on_sale
+            ? formatPrice(variant.sale_price!)
+            : formatPrice(variant.price)}
           {selectedVariantId === variant._id && (
             <Check className='ml-2' size={12} />
           )}
         </Badge>
       ))}
-
-      {/* Add gift wrapping/box options to add to the cart along with the product */}
-      <div className='mt-4 flex flex-col gap-3'>
-        <h3 className='text-md font-semibold'>Gift Wrapping Options</h3>
-        {giftWrappingOptions.map(giftBox => (
-          <div
-            key={giftBox.name}
-            onClick={() => setSelectedGiftBox(giftBox)}
-            className={cn(
-              'relative cursor-pointer rounded-md border p-3',
-              selectedGiftBox?.name === giftBox.name
-                ? 'bg-blue-200'
-                : 'bg-slate-50'
-            )}
-          >
-            <h4 className='font-semibold text-black'>{giftBox.name}</h4>
-            <Badge className='text-xs text-white dark:text-slate-700 lg:absolute lg:right-2 lg:top-2'>
-              {giftBox.dimensions}
-            </Badge>
-            <p className='text-xs text-gray-500'>{giftBox.description}</p>
-            <span>{formatPrice(giftBox.price)}</span>
-          </div>
-        ))}
-        <div
-          onClick={() => setSelectedGiftBox(null)}
-          className='flex items-center gap-2'
-        >
-          <Checkbox checked={selectedGiftBox === null} />
-          <Label>No Gift Wrapping</Label>
-        </div>
-      </div>
 
       {selectedVariant && (
         <Button
@@ -160,6 +132,39 @@ const AddToCart = ({
             </span>
           )}
         </Button>
+      )}
+
+      {/* Add gift wrapping/box options to add to the cart along with the product */}
+      {product.product_type === 'wine' && (
+        <div className='mt-4 flex flex-col gap-3'>
+          <h3 className='text-md font-semibold'>Gift Wrapping Options</h3>
+          {giftWrappingOptions.map(giftBox => (
+            <div
+              key={giftBox.name}
+              onClick={() => setSelectedGiftBox(giftBox)}
+              className={cn(
+                'relative cursor-pointer rounded-md border p-3',
+                selectedGiftBox?.name === giftBox.name
+                  ? 'bg-blue-200'
+                  : 'bg-slate-50'
+              )}
+            >
+              <h4 className='font-semibold text-black'>{giftBox.name}</h4>
+              <Badge className='text-xs text-white dark:text-slate-700 lg:absolute lg:right-2 lg:top-2'>
+                {giftBox.dimensions}
+              </Badge>
+              <p className='text-xs text-gray-500'>{giftBox.description}</p>
+              <span>{formatPrice(giftBox.price)}</span>
+            </div>
+          ))}
+          <div
+            onClick={() => setSelectedGiftBox(null)}
+            className='flex items-center gap-2'
+          >
+            <Checkbox checked={selectedGiftBox === null} />
+            <Label>No Gift Wrapping</Label>
+          </div>
+        </div>
       )}
     </div>
   )
