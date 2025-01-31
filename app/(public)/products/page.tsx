@@ -11,6 +11,7 @@ import Image from "next/image"
 import ListAddToCartButton from "./_components/list-add-to-cart-button"
 import ProductItem from "../_components/product-item"
 import { littlepot } from "@/app/fonts"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const ShopPage = async () => {
 
@@ -19,7 +20,7 @@ const ShopPage = async () => {
 
   return (
     <section className='py-12'>
-      <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
+      <div className='max-w-7xl mx-auto '>
         {/* Section Heading */}
 
         <div className='flex w-full flex-col md:flex-row'>
@@ -28,13 +29,13 @@ const ShopPage = async () => {
           </div>
 
           {/* 3-Column Grid */}
-          <div className='md:flex-1 @container'>
-            <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3'>
+          <ScrollArea className='md:flex-1 @container h-[calc(100dvh-14rem)]'>
+            <div className='grid w-full grid-cols-2 gap-8 @lg:gap-16 @lg:grid-cols-3'>
               {products.map(product => (
                 <ProductItem key={product._id} product_id={product._id} />
               ))}
             </div>
-          </div>
+          </ScrollArea>
         </div>
 
         {/* Optional: Link to View All Wines */}

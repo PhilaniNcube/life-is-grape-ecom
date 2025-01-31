@@ -40,7 +40,7 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
 
       {/* product Details */}
       <div className='p-2 @container @md:p-6'>
-        <h3 className='line-clamp-1 text-xs text-gray-800 sm:text-sm md:line-clamp-1 md:text-lg'>
+        <h3 className='line-clamp-1 text-xs text-gray-800 sm:text-sm md:line-clamp-1 lg:text-lg'>
           {product.name}
         </h3>
 

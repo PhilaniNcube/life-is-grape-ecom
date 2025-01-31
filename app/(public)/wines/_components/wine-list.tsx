@@ -4,6 +4,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import ProductItem from "../../_components/product-item";
 import { cn } from "@/lib/utils";
 import { littlepot } from "@/app/fonts";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
 
@@ -46,7 +47,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
 
   return (
     <section className='py-4 peer-has-[data-[pending=true]]:animate-pulse w-full @container'>
-      <div className='mx-auto max-w-7xl'>
+      <ScrollArea className='mx-auto max-w-7xl h-[calc(100dvh-12rem)]'>
         {/* Section Heading */}
         <h2
           className={cn(
@@ -63,7 +64,7 @@ const WineList = async ({filter}:{filter:Id<"categories"> | ''}) => {
             <ProductItem key={wine._id} product_id={wine._id} />
           ))}
         </div>
-      </div>
+      </ScrollArea>
     </section>
   )
 };

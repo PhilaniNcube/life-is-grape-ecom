@@ -1,15 +1,12 @@
 import { fetchQuery } from 'convex/nextjs'
-
 import { api } from '@/convex/_generated/api'
-import { Suspense } from 'react'
-import { cn, formatPrice } from '@/lib/utils'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import Filter from '@/app/(public)/products/_components/filter'
-import ProductImage from '@/app/(public)/_components/product-image'
-import Image from 'next/image'
+import { cn } from '@/lib/utils'
 import ProductItem from '@/app/(public)/_components/product-item'
 import { littlepot } from '@/app/fonts'
+import { ScrollArea } from '@/components/ui/scroll-area'
+
+
+
 
 const CategoryProducts = async ({ slug }: { slug: string }) => {
   // const category = await fetchQuery(api.categories.getCategoryBySlug, { slug })
@@ -20,11 +17,14 @@ const CategoryProducts = async ({ slug }: { slug: string }) => {
     slug,
   })
 
-  const [category, products] = await Promise.all([categoryPromise, productsPromise])
+  const [category, products] = await Promise.all([
+    categoryPromise,
+    productsPromise,
+  ])
 
   return (
-    <section className='py-12 w-full'>
-      <div className='container mx-auto px-4 sm:px-6 lg:px-8 w-full'>
+    <section className='w-full py-12'>
+      <ScrollArea className='mx-auto h-[calc(100dvh-16rem)] w-full max-w-7xl'>
         {/* Section Heading */}
         <h1
           className={cn(
@@ -36,7 +36,7 @@ const CategoryProducts = async ({ slug }: { slug: string }) => {
         </h1>
         <div className='flex w-full @container'>
           {/* 3-Column Grid */}
-          <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3 '>
+          <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3'>
             {products.map(product => (
               <ProductItem key={product._id} product_id={product._id} />
             ))}
@@ -44,7 +44,7 @@ const CategoryProducts = async ({ slug }: { slug: string }) => {
         </div>
 
         {/* Optional: Link to View All Wines */}
-      </div>
+      </ScrollArea>
     </section>
   )
 }
