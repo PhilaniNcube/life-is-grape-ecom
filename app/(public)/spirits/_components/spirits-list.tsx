@@ -10,6 +10,7 @@ import Image from 'next/image'
 import ListAddToCartButton from '../../products/_components/list-add-to-cart-button'
 import ProductItem from '../../_components/product-item'
 import { littlepot } from '@/app/fonts'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
   const spirits = await fetchQuery(
@@ -54,7 +55,7 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
 
   return (
     <section className='w-full py-4 @container peer-has-[data-[pending=true]]:animate-pulse'>
-      <div className='mx-auto max-w-7xl'>
+      <ScrollArea className='mx-auto max-w-7xl h-[calc(100dvh-12rem)]'>
         {/* Section Heading */}
 
         <h2 className={cn('mb-6 text-3xl text-gray-900', littlepot.className)}>
@@ -67,7 +68,7 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
             <ProductItem key={spirit._id} product_id={spirit._id} />
           ))}
         </div>
-      </div>
+      </ScrollArea>
     </section>
   )
 }
