@@ -98,7 +98,7 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
               ...state.cart,
               {
                 product,
-                quantity: 1,
+                quantity: product.product_type === 'custom_label' ? 6 : 1,
                 variant,
                 giftBox: giftBox
                   ? {
@@ -204,7 +204,13 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
           }
 
           // if the item quantity is 1, remove the item from the cart
-          if (cartItem.quantity === 1) {
+          if (cartItem.quantity === 1 ) {
+            get().removeFromCart(id, variantId)
+            return
+          }
+
+
+          if(cartItem.product.product_type === 'custom_label' && cartItem.quantity <= 6) {
             get().removeFromCart(id, variantId)
             return
           }

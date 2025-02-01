@@ -47,6 +47,7 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
     resolver: zodResolver(CreateProductVariantSchema),
     defaultValues: {
       product_id: productId,
+      label_dimensions: '120mm W x 100mm H',
       price: 0,
       stock_level: 0,
       volume: 750,
@@ -84,6 +85,25 @@ const AddProductVariant = ({ productId }: { productId: Id<'products'> }) => {
                     <Input
                       type='number'
                       placeholder='e.g., 750ml Bottle'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+
+            <FormField
+              control={form.control}
+              name='label_dimensions'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Volume in ml</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='text'
+                      placeholder='Label Dimensions'
                       {...field}
                     />
                   </FormControl>
