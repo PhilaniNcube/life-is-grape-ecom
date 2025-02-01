@@ -37,7 +37,7 @@ type FormSchema = z.infer<typeof CreateAttributesSchema>
 
 interface AddProductAttributeDialogProps {
   productId: Id<'products'> // ID of the product to which the attribute will be added
-  productType: 'wine' | 'spirit' | 'gift' // Type of the product
+  productType: 'wine' | 'spirit' | 'gift' | 'custom_label' // Type of the product
 }
 
 const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({

@@ -107,6 +107,8 @@ const AddToCart = ({
               return
             }
 
+            // if the product has the type of custom_label, do not add a wrapping option and the product can only be added in multiples of 6
+
             const wrappingOption = {
               name: selectedGiftBox.name || '',
               price: selectedGiftBox.price,

@@ -15,13 +15,13 @@ export type GiftBox = {
   quantity: number
 }
 
-type ProductWithImage =  Omit<Doc<"products">, 'main_image'> & {
+type ProductWithImage = Omit<Doc<'products'>, 'main_image'> & {
   main_image: string
 }
 
 // create an interface of the cart item that constains the product and the quantity of that product in the cart and the the product variant the cart item should also contain a gift box option that is potentially undefined
 export interface CartItem {
-  product:  ProductWithImage
+  product: ProductWithImage
   quantity: number
   variant: ProductVariant
   giftBox: GiftBox | undefined
@@ -35,7 +35,7 @@ export type CartStore = {
   cart: CartItem[]
   // add a product to the cart
   addToCart: (
-    product:  ProductWithImage,
+    product: ProductWithImage,
     variant: ProductVariant,
     giftBox?: GiftBox
   ) => void
@@ -171,7 +171,10 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
               if (item.product._id === id && item.variant._id === variantId) {
                 return {
                   ...item,
-                  quantity: item.quantity + 1,
+                  quantity:
+                    item.product.product_type === 'custom_label'
+                      ? item.quantity + 6
+                      : item.quantity + 1,
                   giftBox: item.giftBox
                     ? {
                         ...item.giftBox,
@@ -212,7 +215,10 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
               if (item.product._id === id && item.variant._id === variantId) {
                 return {
                   ...item,
-                  quantity: item.quantity - 1,
+                  quantity:
+                    item.product.product_type === 'custom_label'
+                      ? item.quantity - 6
+                      : item.quantity - 1,
                   giftBox: item.giftBox
                     ? {
                         ...item.giftBox,
