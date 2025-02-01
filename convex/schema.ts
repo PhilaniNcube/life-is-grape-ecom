@@ -207,7 +207,7 @@ export default defineSchema({
     ),
     variant: v.object({
       id: v.id('product_variants'),
-      volume: v.number(),
+      volume: v.optional(v.number()),
       price: v.number(),
     }),
   })
