@@ -18,6 +18,7 @@ import { api } from '@/convex/_generated/api'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { redirect, useRouter } from 'next/navigation'
+import { Textarea } from '@/components/ui/textarea'
 
 interface CheckoutFormInputs {
   first_name: string
@@ -46,6 +47,11 @@ export default function CheckoutForm() {
   const addOrder = useMutation(api.orders.createOrder)
 
   const router = useRouter()
+
+  // check if the cart items include a custom label product
+  const customLabelProduct = cart.find(
+    item => item.product.product_type === 'custom_label'
+  )
 
   const onSubmit: SubmitHandler<CheckoutFormInputs> = async data => {
     const orderItems = cart.map(item => ({
@@ -87,14 +93,11 @@ export default function CheckoutForm() {
 
       console.log('Creating order:', order)
 
-
-
       toast.success('Order placed successfully!')
       router.push(`/checkout/payment/${order}`)
       // Optionally, redirect or reset the form here
     } catch (error) {
       console.error('Error creating order:', error)
-
     } finally {
       // Clear the cart
       // clearCart()
@@ -222,7 +225,6 @@ export default function CheckoutForm() {
                     {...register('province', {
                       required: 'Province is required',
                     })}
-
                   />
                   {errors.province && (
                     <span className='text-sm text-red-500'>
@@ -246,6 +248,20 @@ export default function CheckoutForm() {
                   )}
                 </div>
               </div>
+
+              {customLabelProduct && (
+                <div>
+                  <Separator className='my-3' />
+                  <h3 className='text-md font-semibold'>
+                    Custom Label Information
+                  </h3>
+                  <p className='text-sm text-muted-foreground'>
+                    Please note that custom label orders have a minimum order
+                    quantity of 6.
+                  </p>
+                  <Textarea rows={4} maxLength={100} id="custom_label_message" placeholder="Enter your custom label message" />
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

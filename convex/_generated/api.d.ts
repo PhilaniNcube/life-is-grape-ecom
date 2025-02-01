@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as bookings from "../bookings.js";
 import type * as categories from "../categories.js";
+import type * as custom_label_messages from "../custom_label_messages.js";
 import type * as gifts from "../gifts.js";
 import type * as http from "../http.js";
 import type * as orders from "../orders.js";
@@ -35,6 +36,7 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   bookings: typeof bookings;
   categories: typeof categories;
+  custom_label_messages: typeof custom_label_messages;
   gifts: typeof gifts;
   http: typeof http;
   orders: typeof orders;

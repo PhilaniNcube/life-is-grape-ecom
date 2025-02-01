@@ -188,6 +188,11 @@ export default defineSchema({
   })
     .index('byUserId', ['userId'])
     .index('byStatus', ['status']),
+  custom_label_messages: defineTable({
+    order_id: v.id('orders'),
+    message: v.string(),
+    image: v.optional(v.id('_storage')),
+  }),
   order_items: defineTable({
     order_id: v.id('orders'),
     product: v.object({
@@ -215,3 +220,4 @@ export default defineSchema({
     .index('byProduct', ['product.id'])
     .index('byVariant', ['variant.id']),
 })
+
