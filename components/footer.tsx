@@ -49,17 +49,25 @@ export default function Footer() {
         <p>
           Life Is Grape &copy;{new Date().getFullYear()}. All rights reserved.
         </p>
-        <p className='text-xs'>
-          Developed by{' '}
+        <div>
           <Link
-            target='_blank'
-            rel='noopener noreferrer'
             className='text-primary transition-colors hover:text-accent-foreground'
-            href='https://www.yellowlizard.co.za'
+            href='/terms'
           >
-            Yellow Lizard
+            Terms and Conditions
           </Link>
-        </p>
+          <p className='text-xs'>
+            Developed by{' '}
+            <Link
+              target='_blank'
+              rel='noopener noreferrer'
+              className='text-primary transition-colors hover:text-accent-foreground'
+              href='https://www.yellowlizard.co.za'
+            >
+              Yellow Lizard
+            </Link>
+          </p>
+        </div>
       </div>
     </footer>
   )
