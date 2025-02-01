@@ -67,43 +67,7 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
     }
   })
 
-  // // Handle form submission
-  // const onSubmit = async (data: FormSchema) => {
-  //   setIsLoading(true)
-  //   try {
-  //     const payload =
-  //       productType === 'wine'
-  //         ? {
-  //             product_id: productId,
-  //             variety: data.variety,
-  //             vintage: data.vintage,
-  //             region: data.region,
-  //             tasting_notes: data.tasting_notes,
-  //             alcohol_content: data.alcohol_content,
-  //           }
-  //         : {
-  //             product_id: productId,
-  //             aging: data.aging,
-  //             distillation_method: data.distillation_method,
-  //             region: data.region,
-  //             tasting_notes: data.tasting_notes,
-  //             alcohol_content: data.alcohol_content,
-  //           }
 
-  //     const result = await addAttribute(payload)
-  //     console.log('result', result)
-  //     toast.success('Product attribute added successfully')
-  //     form.reset()
-  //     router.refresh()
-  //     setIsLoading(false)
-
-  //   } catch (error) {
-  //     toast.error('Failed to add product attribute')
-  //     console.error('Add Attribute Error:', error)
-  //     router.refresh()
-  //     setIsLoading(false)
-  //   }
-  // }
 
   return (
     <Dialog>
