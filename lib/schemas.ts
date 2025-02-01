@@ -220,3 +220,38 @@ export const DeleteProducerSchema = z.object({
     required_error: 'Producer ID is required',
   }),
 })
+
+
+const GiftVoucherSchema = z.object({
+  recipient_email: z.string().email(),
+  purchaser_email: z.string().email(),
+  value: z.coerce.number().positive(),
+  code: z.string(),
+  paid: z.boolean().optional(),
+  redeemed: z.boolean().optional(),
+  redeemed_at: z.number().optional(),
+  redeemed_order_id: z.string().optional(),
+  redeemed_by: z.string().optional(),
+  payment_reference: z.string().optional(),
+})
+
+export const CreateGiftVoucherSchema = GiftVoucherSchema.partial({
+  paid: true,
+  redeemed: true,
+  redeemed_at: true,
+  redeemed_order_id: true,
+  redeemed_by: true,
+  payment_reference: true,
+})
+
+export const RedeemGiftVoucherSchema = z.object({
+  code: z.string(),
+  order_id: z.string(),
+  redeemed_by: z.string(),
+})
+
+
+
+export type GiftVoucher = z.infer<typeof GiftVoucherSchema>
+
+

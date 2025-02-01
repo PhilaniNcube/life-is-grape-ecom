@@ -128,7 +128,12 @@ export default defineSchema({
     name: v.string(),
     description: v.string(),
     price: v.number(),
-    type: v.union(v.literal('box'), v.literal('label'), v.literal('bag'), v.literal('voucher')),
+    type: v.union(
+      v.literal('box'),
+      v.literal('label'),
+      v.literal('bag'),
+      v.literal('voucher')
+    ),
     customization_options: v.object({
       allows_message: v.boolean(),
       message_max_length: v.optional(v.number()),
@@ -141,7 +146,7 @@ export default defineSchema({
     main_image: v.id('_storage'),
     images: v.optional(v.array(v.id('_storage'))),
     in_stock: v.boolean(),
-    dimensions: v.optional(v.string())
+    dimensions: v.optional(v.string()),
   }),
   gift_customizations: defineTable({
     gift_id: v.id('gifts'),
@@ -200,6 +205,18 @@ export default defineSchema({
     tel: v.string(),
     message: v.string(),
   }),
+  gift_vouchers: defineTable({
+    code: v.string(),
+    payment_reference: v.optional(v.string()),
+    purchaser_email: v.string(),
+    recipient_email: v.string(),
+    paid: v.boolean(),
+    value: v.number(),
+    redeemed: v.boolean(),
+    redeemed_at: v.optional(v.number()),
+    redeemed_order_id: v.optional(v.id('orders')),
+    redeemed_by: v.optional(v.string()),
+  }).index('byCode', ['code']).index('byRecipient', ['recipient_email']).index('byPurchaser', ['purchaser_email']),
   order_items: defineTable({
     order_id: v.id('orders'),
     product: v.object({

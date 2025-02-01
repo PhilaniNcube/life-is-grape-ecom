@@ -18,6 +18,7 @@ import type * as categories from "../categories.js";
 import type * as contact_form_submissions from "../contact_form_submissions.js";
 import type * as custom_label_messages from "../custom_label_messages.js";
 import type * as gifts from "../gifts.js";
+import type * as gift_vouchers from "../gift_vouchers.js";
 import type * as http from "../http.js";
 import type * as orders from "../orders.js";
 import type * as order_items from "../order_items.js";
@@ -40,6 +41,7 @@ declare const fullApi: ApiFromModules<{
   contact_form_submissions: typeof contact_form_submissions;
   custom_label_messages: typeof custom_label_messages;
   gifts: typeof gifts;
+  gift_vouchers: typeof gift_vouchers;
   http: typeof http;
   orders: typeof orders;
   order_items: typeof order_items;

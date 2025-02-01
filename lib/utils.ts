@@ -29,3 +29,16 @@ export function formatPrice(price: number): string {
     currency: 'ZAR',
   }).format(price)
 }
+
+export function generateGiftVoucherCode(): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  const codeLength = 7
+  let voucherCode = ''
+
+  for (let i = 0; i < codeLength; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length)
+    voucherCode += characters.charAt(randomIndex)
+  }
+
+  return voucherCode
+}
