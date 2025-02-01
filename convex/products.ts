@@ -308,7 +308,8 @@ export const addProduct = mutation({
     product_type: v.union(
       v.literal('wine'),
       v.literal('spirit'),
-      v.literal('gift')
+      v.literal('gift'),
+      v.literal('custom_label')
     ),
     slug: v.string(),
     meta_description: v.optional(v.string()),
@@ -343,7 +344,7 @@ export const updateProduct = mutation({
     images: v.optional(v.array(v.id('_storage'))),
     in_stock: v.optional(v.boolean()),
     product_type: v.optional(
-      v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift'))
+      v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift'), v.literal('custom_label'))
     ),
     slug: v.optional(v.string()),
     meta_description: v.optional(v.string()),
@@ -470,6 +471,7 @@ export const addProductVariant = mutation({
     stock_level: v.number(),
     barcode: v.optional(v.string()),
     is_on_sale: v.optional(v.boolean()),
+    label_dimensions: v.optional(v.string()),
     sale_price: v.optional(v.number()),
     sale_start_date: v.optional(v.number()),
     sale_end_date: v.optional(v.number()),
@@ -492,6 +494,7 @@ export const updateProductVariant = mutation({
     price: v.optional(v.number()),
     stock_level: v.optional(v.number()),
     barcode: v.optional(v.string()),
+    label_dimensions: v.optional(v.string()),
     is_on_sale: v.optional(v.boolean()),
     sale_price: v.optional(v.number()),
     sale_start_date: v.optional(v.number()),

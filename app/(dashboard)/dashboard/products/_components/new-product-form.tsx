@@ -234,6 +234,7 @@ const NewProductForm = ({
                       <SelectItem value='wine'>Wine</SelectItem>
                       <SelectItem value='spirit'>Spirit</SelectItem>
                       <SelectItem value='gift'>Gift</SelectItem>
+                      <SelectItem value='custom_label'>Custom Label</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

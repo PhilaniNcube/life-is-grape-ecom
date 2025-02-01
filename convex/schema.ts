@@ -34,7 +34,8 @@ export default defineSchema({
     product_type: v.union(
       v.literal('wine'),
       v.literal('spirit'),
-      v.literal('gift')
+      v.literal('gift'),
+      v.literal('custom_label')
     ),
     // SEO and display
     slug: v.string(),
@@ -54,7 +55,8 @@ export default defineSchema({
   product_variants: defineTable({
     product_id: v.id('products'),
     sku: v.string(),
-    volume: v.number(), // in ml
+    volume: v.optional(v.number()), // in ml
+    label_dimensions: v.optional(v.string()), // in mm
     price: v.number(),
     stock_level: v.number(),
     barcode: v.optional(v.string()),
