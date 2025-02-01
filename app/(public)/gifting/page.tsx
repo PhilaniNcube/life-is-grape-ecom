@@ -1,6 +1,7 @@
 import { fetchQuery } from 'convex/nextjs'
 import GiftingContent from './_components/gifting-content'
 import CustomWineLabels from './_components/custom-wine-labels'
+import WhyChooseUs from './_components/why-choose-us'
 
 const GiftingPage =  () => {
 
@@ -10,6 +11,7 @@ const GiftingPage =  () => {
     <div>
       <GiftingContent />
       <CustomWineLabels />
+      <WhyChooseUs />
     </div>
   )
 }

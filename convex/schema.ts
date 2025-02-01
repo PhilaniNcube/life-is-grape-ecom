@@ -193,6 +193,13 @@ export default defineSchema({
     message: v.string(),
     image: v.optional(v.id('_storage')),
   }),
+  contact_form_submissions: defineTable({
+    name: v.string(),
+    email: v.string(),
+    subject: v.string(),
+    tel: v.string(),
+    message: v.string(),
+  }),
   order_items: defineTable({
     order_id: v.id('orders'),
     product: v.object({
