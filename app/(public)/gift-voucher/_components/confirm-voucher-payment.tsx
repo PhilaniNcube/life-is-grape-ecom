@@ -8,14 +8,14 @@ const ConfirmVoucherPayment = async ({ id }: { id: Id<'gift_vouchers'> }) => {
 
   if (!voucher) {
     return (
-      <div className='container mx-auto'>
+      <div className='container mx-auto '>
         <h1 className='text-2xl font-bold'>Voucher not found</h1>
       </div>
     )
   }
 
   return (
-    <div>
+    <div className='my-8'>
       <GiftVoucherConfirmation voucher={voucher} />
     </div>
   )

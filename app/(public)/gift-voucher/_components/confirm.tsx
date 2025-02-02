@@ -29,9 +29,9 @@ export default function GiftVoucherConfirmation({
 
 
   return (
-    <Card className='mx-auto w-full max-w-md py-16'>
+    <Card className='mx-auto w-full max-w-md my-16'>
       <CardHeader>
-        <CardTitle>Gift Voucher Confirmation</CardTitle>
+        <CardTitle>Gift Voucher Confirmation:</CardTitle>
       </CardHeader>
       <CardContent>
         <dl className='space-y-2'>
