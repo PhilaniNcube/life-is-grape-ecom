@@ -29,9 +29,7 @@ export default function GiftingContent() {
           your client’s collection, re-gifted or most likely, consumed on the
           spot!
         </p>
-        <Suspense fallback={<div>Loading...</div>}>
           <GiftsGrid />
-        </Suspense>
       </section>
 
 

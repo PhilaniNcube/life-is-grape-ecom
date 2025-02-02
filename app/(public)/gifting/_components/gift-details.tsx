@@ -134,7 +134,7 @@ export default function GiftDetails({ gift, wines }: { gift: GiftWrappingOption,
               <Button
                 onClick={() => updateCart(selectedWineId)}
                 size='lg'
-                className='rounded-none'
+                className='rounded-none bg-slate-700 text-white'
               >
                 Add to Cart
               </Button>

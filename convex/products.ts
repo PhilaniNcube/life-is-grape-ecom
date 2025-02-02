@@ -115,7 +115,7 @@ export const getUnlabelledProducts = query({
 
     return await ctx.db
       .query('products')
-      .filter(q => q.eq(q.field('producer_id'), producerId))
+      .filter(q => q.eq(q.field('producer_id'), producerId)).filter(q => q.eq(q.field('product_type'), 'wine'))
       .collect()
   },
 })
