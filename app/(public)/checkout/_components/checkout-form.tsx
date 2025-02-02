@@ -36,12 +36,28 @@ export default function CheckoutForm() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    watch,
   } = useForm<CheckoutFormInputs>()
+
+
 
   const { cart, totalCartPrice, clearCart } = useCartStore(state => state)
   const totalPrice = totalCartPrice()
 
-  const shipping = totalPrice > 1500 ? 0 : 150
+   const streetAddress = watch('street') || ''
+   const city = watch('city') || ''
+
+  const shipping =
+    totalPrice > 2000
+      ? 0
+      : streetAddress.toLowerCase().includes('seaview') ||
+          streetAddress.toLowerCase().includes('chelsea') ||
+          streetAddress.toLowerCase().includes('rowallan park')
+        ? 65
+        : city.toLowerCase() === 'port elizabeth' ||
+            city.toLowerCase() === 'gqeberha'
+          ? 35
+          : 150
   const total = totalPrice + shipping
 
   const addOrder = useMutation(api.orders.createOrder)

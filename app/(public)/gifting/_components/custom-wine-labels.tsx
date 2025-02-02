@@ -72,12 +72,14 @@ export default function CustomWineLabels() {
                 showcasing your company logo and event details.
               </p>
             </div>
-            <Link href='/custom-labels'>
-              <Button size='lg' className="bg-slate-700 rounded-none">Get Custom Labels</Button>
+            <Link href='/products/personalised-labels'>
+              <Button size='lg' className='rounded-none bg-slate-700'>
+                Get Custom Labels
+              </Button>
             </Link>
           </div>
         </div>
-        <p className="text-center text-gray-600 text-sm font-semibold max-w-4xl mx-auto">
+        <p className='mx-auto max-w-4xl text-center text-sm font-semibold text-gray-600'>
           NB: please note the maximum dimensions possible for the label is 120mm
           W x 100mm H with the most common label size that fits most claret and
           burgundy 750ml bottles being 100mm H x 90mm W and we strongly
