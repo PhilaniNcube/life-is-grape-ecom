@@ -28,56 +28,59 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { set } from 'sanity'
 
-export default function GiftDetails({ gift, wines }: { gift: GiftWrappingOption, wines: Doc<'products'>[] }) {
+export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
   const { cart, addToCart, toggleCart } = useCartStore(state => state)
 
+  const wines = useQuery(api.products.getUnlabelledProducts)
 
-
-  const [selectedWineId, setSelectedWineId] = useState<
-    string
-  >(wines?.[0]?._id as string)
-
-
-
-  // Fetch variants based on selectedWineId
-  const variants = useQuery(api.products.getProductVariants, {
-    product_id: selectedWineId as Id<'products'>,
-  })
-
-  console.log('variants', variants)
-
-  if(!variants) {
+  if (!wines) {
     return
   }
 
-  const updateCart = (wineId:string) => {
+  const [selectedWineId, setSelectedWineId] = useState<
+    Id<'products'> | undefined
+  >(wines[0]._id)
 
-   console.log('updateCart', wineId)
+  if (!selectedWineId) {
+    return
+  }
+
+  // Fetch variants based on selectedWineId
+  const variants = wines.map(wine => wine.variants).flat()
+
+  console.log('variants', variants)
+
+  if (!variants) {
+    return
+  }
+
+  const updateCart = (wineId: Id<'products'>) => {
+    console.log('updateCart', wineId)
+
+    setSelectedWineId(wineId)
 
     if (selectedWineId === undefined) {
       return
     }
 
-    const variant = variants?.[0]
-
-    if (variant === undefined) {
-      return
-    }
+    const selectedWine = wines?.find(wine => wine._id === selectedWineId)
 
     // get the product from the selected wine id
-    const selectedWine = wines?.find(wine => wineId === wine._id)
 
     if (selectedWine === undefined) {
       return
     }
+
+    const variant = selectedWine.variants[0]
 
     addToCart(selectedWine, variant, {
       name: gift.name,
       description: gift.description,
       price: gift.price,
       dimensions: '',
-      quantity:  1,
+      quantity: 1,
     })
 
     toggleCart()
@@ -106,12 +109,15 @@ export default function GiftDetails({ gift, wines }: { gift: GiftWrappingOption,
                 <p className='text-2xl font-bold'>{formatPrice(gift.price)}</p>
               </div>
 
-
-
               {/* list available wines */}
               <div>
                 <h3 className='text-lg font-semibold'>Select a wine</h3>
-                <Select onValueChange={setSelectedWineId}>
+                <Select
+                  onValueChange={value => {
+                    console.log('value', value)
+                    setSelectedWineId(value as Id<'products'>)
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder='Select a wine' />
                   </SelectTrigger>

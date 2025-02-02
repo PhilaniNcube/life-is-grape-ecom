@@ -113,10 +113,31 @@ export const getUnlabelledProducts = query({
   handler: async (ctx, args) => {
     const producerId = 'kh7ek0c19zrajw48060jtckqe979crzw' as Id<'producers'>
 
-    return await ctx.db
+    const unlabbledWines = await ctx.db
       .query('products')
       .filter(q => q.eq(q.field('producer_id'), producerId)).filter(q => q.eq(q.field('product_type'), 'wine'))
       .collect()
+
+
+       return Promise.all(
+         unlabbledWines.map(async product => {
+           const mainImage = await ctx.storage.getUrl(product.main_image)
+
+           // fetch the product variants
+           const variants = await ctx.db
+             .query('product_variants')
+             .filter(q => q.eq(q.field('product_id'), product._id))
+             .collect()
+
+           return {
+             ...product,
+             main_image: mainImage
+               ? mainImage
+               : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+             variants,
+           }
+         })
+       )
   },
 })
 

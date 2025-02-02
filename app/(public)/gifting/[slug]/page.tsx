@@ -4,16 +4,12 @@ import { fetchQuery } from 'convex/nextjs'
 import GiftDetails from '../_components/gift-details'
 import { giftWrappingOptions } from '@/lib/utils'
 
-const GiftPage = async ({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) => {
+const GiftPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params
 
-  const gift = giftWrappingOptions.find((gift) => gift.slug === slug)
+  const gift = giftWrappingOptions.find(gift => gift.slug === slug)
 
-    const wines = await fetchQuery(api.products.getUnlabelledProducts)
+
 
   if (!gift) {
     return (
@@ -25,7 +21,7 @@ const GiftPage = async ({
 
   return (
     <div>
-      <GiftDetails gift={gift} wines={wines} />
+      <GiftDetails gift={gift} />
     </div>
   )
 }

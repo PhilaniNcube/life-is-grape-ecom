@@ -47,6 +47,10 @@ const ProductVariantSchema = z.object({
   sale_end_date: z.coerce.number().optional(),
 })
 
+export type Product = z.infer<typeof BaseProductSchema>
+export type Attributes = z.infer<typeof AttributesSchema>
+export type ProductVariant = z.infer<typeof ProductVariantSchema>
+
 // Create schemas
 export const CreateProductSchema = BaseProductSchema
 
