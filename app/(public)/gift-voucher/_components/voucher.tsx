@@ -46,8 +46,8 @@ export function GiftVoucherForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
-      try {
 
+      try {
         const actionData = await formAction(values)
         toast({
           title: 'Success',
@@ -183,30 +183,7 @@ export function GiftVoucherForm() {
         </Button>
       </form>
 
-      {state?.success && (
-        <div className='mt-8'>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className='bg-slate-800 text-white'>
-                Confirm Purchase
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <div className='space-y-4'>
-                <h3 className='text-lg font-semibold'>Voucher Created</h3>
-                <p>
-                  Your gift voucher has been successfully created. Please proceed to make the payment to complete the purchase. You will receive an email with the voucher details.
-                </p>
-              </div>
-              <Button onClick={() => {
-                giftVoucherPayment(state.voucher_id!)
-              }}>
-                Proceed to Payment
-              </Button>
-            </DialogContent>
-          </Dialog>
-        </div>
-      )}
+
     </Form>
   )
 }

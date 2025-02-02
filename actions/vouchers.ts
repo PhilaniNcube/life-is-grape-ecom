@@ -36,7 +36,7 @@ export async function createGiftVoucher(
   })
 
 
-
+  redirect(`/gift-voucher/${voucherId}`)
 
   return { success: true, voucher_id: voucherId }
 }
