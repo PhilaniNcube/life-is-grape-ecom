@@ -141,6 +141,8 @@ export const getUnlabelledProducts = query({
   },
 })
 
+
+
 export const getShallowProductsByType = query({
   args: {
     type: v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift')),
@@ -156,7 +158,7 @@ export const getShallowProductsByType = query({
 // get shallow products by type and includ the main image
 export const getShallowProductsWithMainImage = query({
   args: {
-    type: v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift')),
+    type: v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift'), v.literal('custom_label')),
   },
   handler: async (ctx, args) => {
     const products = await ctx.db

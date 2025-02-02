@@ -12,7 +12,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { Package, Tag, Wine, Check, X } from 'lucide-react'
 import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { Doc, Id } from '@/convex/_generated/dataModel'
@@ -28,63 +27,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { set } from 'sanity'
 
 export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
   const { cart, addToCart, toggleCart } = useCartStore(state => state)
 
-  const wines = useQuery(api.products.getUnlabelledProducts)
-
-  if (!wines) {
-    return
-  }
+  const wines =
+    useQuery(api.products.getShallowProductsWithMainImage, { type: 'wine' }) ||
+    []
 
   const [selectedWineId, setSelectedWineId] = useState<
     Id<'products'> | undefined
-  >(wines[0]._id)
+  >()
 
-  if (!selectedWineId) {
-    return
-  }
+  // if (!wines) {
+  //   return
+  // }
 
-  // Fetch variants based on selectedWineId
-  const variants = wines.map(wine => wine.variants).flat()
+  // const [selectedWineId, setSelectedWineId] = useState<
+  //   Id<'products'> | undefined
+  // >(wines[0]._id)
 
-  console.log('variants', variants)
+  // if (!selectedWineId) {
+  //   return
+  // }
 
-  if (!variants) {
-    return
-  }
+  // // Fetch variants based on selectedWineId
+  // const variants = wines.map(wine => wine.variants).flat()
 
-  const updateCart = (wineId: Id<'products'>) => {
-    console.log('updateCart', wineId)
+  // console.log('variants', variants)
 
-    setSelectedWineId(wineId)
-
-    if (selectedWineId === undefined) {
-      return
-    }
-
-    const selectedWine = wines?.find(wine => wine._id === selectedWineId)
-
-    // get the product from the selected wine id
-
-    if (selectedWine === undefined) {
-      return
-    }
-
-    const variant = selectedWine.variants[0]
-
-    addToCart(selectedWine, variant, {
-      name: gift.name,
-      description: gift.description,
-      price: gift.price,
-      dimensions: '',
-      quantity: 1,
-    })
-
-
-  }
+  // if (!variants) {
+  //   return
+  // }
 
   return (
     <div className='container mx-auto py-10'>
@@ -114,8 +88,9 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
                 <h3 className='text-lg font-semibold'>Select a wine</h3>
                 <Select
                   onValueChange={value => {
-                    console.log('value', value)
-                    setSelectedWineId(value as Id<'products'>)
+                    const wineId = value as Id<'products'>
+
+                    setSelectedWineId(wineId)
                   }}
                 >
                   <SelectTrigger>
@@ -129,7 +104,7 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
 
                       {wines?.map(wine => (
                         <SelectItem value={wine._id} key={wine._id}>
-                          {wine.name}
+                          {wine.name} - {wine.variants[0].is_on_sale ? formatPrice(wine.variants[0].sale_price!) : formatPrice(wine.variants[0].price)}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -138,9 +113,27 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
               </div>
 
               <Button
-                onClick={() => updateCart(selectedWineId)}
                 size='lg'
                 className='rounded-none bg-slate-700 text-white'
+                onClick={() => {
+
+                   const selectedWine = wines.find(wine => wine._id === selectedWineId)
+                   if(!selectedWine) {
+                    alert('Please select a wine')
+                    return
+                   }
+                    const variant = selectedWine?.variants[0]
+
+                   addToCart(selectedWine, variant, {
+
+                     name: gift.name,
+                     price: gift.price,
+                     description: gift.description,
+                     dimensions: gift.dimensions,
+                     quantity: 1,
+                   })
+
+                }}
               >
                 Add to Cart
               </Button>
