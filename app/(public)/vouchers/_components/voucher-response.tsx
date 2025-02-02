@@ -1,7 +1,8 @@
 import { updatePaymentStatus } from "@/actions/vouchers";
+import { littlepot } from "@/app/fonts";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { fetchQuery } from "convex/nextjs";
 
 const VoucherResponse = async ({id}:{id:Id<"gift_vouchers">}) => {
@@ -12,8 +13,8 @@ const VoucherResponse = async ({id}:{id:Id<"gift_vouchers">}) => {
    })
 
   return (
-    <div className='container mx-auto'>
-      <h1 className='mb-4 text-2xl font-bold'>Payment Status</h1>
+    <div className='container mx-auto py-10'>
+      <h1 className={cn('mb-4 text-2xl font-bold', littlepot.className)}>Payment Status</h1>
       {voucher && (
         <div>
           <h2 className='mb-4 text-lg font-bold'>Gift Voucher</h2>
