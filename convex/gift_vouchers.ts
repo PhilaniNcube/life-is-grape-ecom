@@ -25,13 +25,13 @@ export const createGiftVoucher = mutation({
 
     // if the code does not exist, create the gift voucher
     const giftVoucherId = await ctx.db.insert('gift_vouchers', {
-      paid: true,
+      paid: false,
       redeemed: false,
       recipient_email: args.recipient_email,
       purchaser_email: args.purchaser_email,
       value: args.value,
       code: args.code,
-      payment_reference: 'manual',
+      payment_reference: '',
     })
 
     return giftVoucherId

@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { GiftVoucherForm } from "./_components/voucher";
+import { cn } from "@/lib/utils";
+import { littlepot } from "@/app/fonts";
 
 
 export default function GiftVoucherPage() {
@@ -14,7 +16,9 @@ export default function GiftVoucherPage() {
           className='aspect-square w-full object-cover'
         />
         <div>
-          <h1 className='mb-6 text-3xl font-bold'>Purchase a Gift Voucher</h1>
+          <h1 className={cn('mb-6 text-3xl font-bold', littlepot.className)}>
+            Purchase a Gift Voucher
+          </h1>
           <GiftVoucherForm />
         </div>
       </div>

@@ -1,20 +1,25 @@
 'use server'
 
 import { api } from '@/convex/_generated/api'
-import { fetchMutation } from 'convex/nextjs'
+import { Id } from '@/convex/_generated/dataModel'
+import { fetchMutation, fetchQuery } from 'convex/nextjs'
+import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
-const purchaseSchema = z.object({
+import 'server-only'
+
+const createVoucherSchema = z.object({
   voucherCode: z.string().min(1),
   buyerEmail: z.string().email(),
   recipientEmail: z.string().email(),
   voucherValue: z.number().min(100),
 })
 
-export async function purchaseGiftVoucher(
-  data: z.infer<typeof purchaseSchema>
+export async function createGiftVoucher(
+  prevState: unknown,
+  data: z.infer<typeof createVoucherSchema>
 ) {
-  const validatedData = purchaseSchema.safeParse(data)
+  const validatedData = createVoucherSchema.safeParse(data)
 
   if (!validatedData.success) {
     return { success: false, errors: validatedData.error.errors }
@@ -23,21 +28,67 @@ export async function purchaseGiftVoucher(
   const { voucherCode, buyerEmail, recipientEmail, voucherValue } =
     validatedData.data
 
-  const voucher = await fetchMutation(api.gift_vouchers.createGiftVoucher, {
+  const voucherId = await fetchMutation(api.gift_vouchers.createGiftVoucher, {
     code: voucherCode,
     recipient_email: recipientEmail,
     purchaser_email: buyerEmail,
     value: voucherValue,
   })
 
-  // Simulate storing the voucher in a database
-  console.log('Purchased voucher:', validatedData)
 
-  // In a real application, you would:
-  // 1. Store the voucher details in your database
-  // 2. Send confirmation emails to the buyer and recipient
-  // 3. Generate a unique voucher code if not provided
-  // 4. Handle payment processing
 
-  return { success: true, data: validatedData.data }
+
+  return { success: true, voucher_id: voucherId }
+}
+
+
+export async function giftVoucherPayment(voucherId:Id<'gift_vouchers'>) {
+
+  const voucher = await fetchQuery(api.gift_vouchers.getGiftVoucher, { id: voucherId })
+
+  if (!voucher) {
+    throw new Error('Gift voucher not found')
+  }
+
+  if (voucher.paid) {
+    throw new Error('Gift voucher has already been paid for')
+  }
+
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
+    },
+  }
+
+  const response = await fetch(
+    `https://api.paystack.co/transaction/initialize`,
+    {
+      ...options,
+      body: JSON.stringify({
+        amount: voucher.value * 100,
+        email: voucher.purchaser_email,
+        reference: voucher._id,
+        currency: 'ZAR',
+      }),
+    }
+  )
+
+  const data: {
+    status: boolean
+    message: string
+    data: {
+      authorization_url: string
+      access_code: string
+      reference: string
+    }
+  } = await response.json()
+
+  if (!data.status) {
+    throw new Error(data.message)
+  }
+
+   redirect(data.data.authorization_url)
+
 }
