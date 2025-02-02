@@ -257,9 +257,10 @@ export default function CheckoutForm() {
                   </h3>
                   <p className='text-sm text-muted-foreground'>
                     Please note that custom label orders have a minimum order
-                    quantity of 6.
+                    quantity of 6. On completion of your order, you will be
+                    contacted by a member of our team to confirm your custom
+                    label details.
                   </p>
-                  <Textarea rows={4} maxLength={100} id="custom_label_message" placeholder="Enter your custom label message" />
                 </div>
               )}
             </CardContent>
