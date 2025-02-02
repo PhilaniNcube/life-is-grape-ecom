@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     if (giftVoucher) {
       await fetchMutation(api.gift_vouchers.updateGiftVoucherPaymentReference, {
         id: event.data.reference as Id<'gift_vouchers'>,
-        payment_reference: event.data.request_code,
+        payment_reference: event.data.id.toString(),
       })
     }
   }
