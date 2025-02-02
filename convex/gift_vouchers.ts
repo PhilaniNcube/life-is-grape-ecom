@@ -38,6 +38,21 @@ export const createGiftVoucher = mutation({
   },
 })
 
+// update gift voucher payment reference and status
+export const updateGiftVoucherPaymentReference = mutation({
+  args: {
+    id: v.id('gift_vouchers'),
+    payment_reference: v.string(),
+  },
+  handler: async (ctx, args) => {
+    // update the gift voucher
+    await ctx.db.patch(args.id, {
+      paid: true,
+      payment_reference: args.payment_reference,
+    })
+  },
+})
+
 
 // redeem a gift voucher
 export const redeemGiftVoucher = mutation({

@@ -71,6 +71,7 @@ export async function giftVoucherPayment(voucherId:Id<'gift_vouchers'>) {
         email: voucher.purchaser_email,
         reference: voucher._id,
         currency: 'ZAR',
+        callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/gift-voucher/${voucher._id}/payment/callback`,
       }),
     }
   )
