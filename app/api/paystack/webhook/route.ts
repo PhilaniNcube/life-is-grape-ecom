@@ -47,6 +47,16 @@ export async function POST(req: NextRequest) {
         payment_reference: event.data.reference as Id<'orders'>,
         status: 'paid',
       })
+
+        return NextResponse.json(
+          { status: 200 },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            status: 200,
+          }
+        )
     }
 
     // check if gift voucher exists
@@ -60,6 +70,16 @@ export async function POST(req: NextRequest) {
         payment_reference: event.data.id.toString(),
       })
     }
+
+      return NextResponse.json(
+        { status: 200 },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          status: 200,
+        }
+      )
   }
 
   return NextResponse.json(
