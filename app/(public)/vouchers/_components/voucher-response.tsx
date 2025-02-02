@@ -16,6 +16,7 @@ const VoucherResponse = async ({id}:{id:Id<"gift_vouchers">}) => {
     <div className='container mx-auto py-10'>
       <h1 className={cn('mb-4 text-2xl font-bold', littlepot.className)}>Payment Status</h1>
       {voucher && (
+        <div className="grid md:grid-cols-2 gap-6">
         <div>
           <h2 className='mb-4 text-lg font-bold'>Gift Voucher</h2>
           <p>
@@ -29,6 +30,16 @@ const VoucherResponse = async ({id}:{id:Id<"gift_vouchers">}) => {
           <p>
             <span className='font-bold'>Voucher:</span> {voucher.code}
           </p>
+        </div>
+        <div>
+          <h2 className='mb-4 text-lg font-bold'>Payment Status</h2>
+          <p>
+            <span className='font-bold'>Status:</span> {voucher.paid}
+          </p>
+          <p>
+            <span className='font-bold'>Redeemed:</span> {voucher.redeemed ? 'Yes' : 'No'}
+          </p>
+          </div>
         </div>
       )}
     </div>
