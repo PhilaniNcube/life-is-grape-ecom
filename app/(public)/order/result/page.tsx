@@ -32,7 +32,7 @@ export default async function PaymentCallbackPage(props:{searchParams:SearchPara
     <div className='container mx-auto px-4 py-8'>
       <h1 className='mb-4 text-2xl font-bold'>Payment Status</h1>
       {order && (
-        <Suspense fallback={<div>Loading payment status...</div>}>
+        <Suspense fallback={<div>Loading gift voucher...</div>}>
           <PaymentStatus status={paymentStatus} order={order} />
         </Suspense>
       )}
