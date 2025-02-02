@@ -93,3 +93,61 @@ export async function giftVoucherPayment(voucherId:Id<'gift_vouchers'>) {
    redirect(data.data.authorization_url)
 
 }
+
+
+export async function updatePaymentStatus(id:Id<"gift_vouchers">) {
+
+    const voucher = await fetchQuery(api.gift_vouchers.getGiftVoucher, {
+      id: id,
+    })
+
+    if (!voucher) {
+      return
+    }
+
+    if (voucher.paid) {
+     return
+    }
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
+      },
+    }
+
+
+    const response = await fetch(
+      `https://api.paystack.co/transaction/verify/${voucher._id}`,
+      options
+    )
+
+
+
+    const data: {
+      status: boolean
+      message: string
+      data: {
+        status: string
+        domain: string
+        id: number
+        reference: string
+        amount: number
+        paid_at: string
+        channel: string
+      }
+    } = await response.json()
+
+    if (data.status) {
+      await fetchMutation(api.gift_vouchers.updateGiftVoucherPaymentReference, {
+        id: voucher._id,
+        payment_reference: data.data.id.toString(),
+      })
+
+      return data.data.id
+    }
+
+
+
+}

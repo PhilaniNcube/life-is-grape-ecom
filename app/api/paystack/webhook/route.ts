@@ -48,29 +48,6 @@ export async function POST(req: NextRequest) {
         status: 'paid',
       })
 
-        return NextResponse.json(
-          { status: 200 },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            status: 200,
-          }
-        )
-    }
-
-    // check if gift voucher exists
-    const giftVoucher = await fetchQuery(api.gift_vouchers.getGiftVoucher, {
-      id: event.data.reference as Id<'gift_vouchers'>,
-    })
-
-    if (giftVoucher) {
-      await fetchMutation(api.gift_vouchers.updateGiftVoucherPaymentReference, {
-        id: event.data.reference as Id<'gift_vouchers'>,
-        payment_reference: event.data.id.toString(),
-      })
-    }
-
       return NextResponse.json(
         { status: 200 },
         {
@@ -80,6 +57,17 @@ export async function POST(req: NextRequest) {
           status: 200,
         }
       )
+    }
+
+       return NextResponse.json(
+         { status: 200 },
+         {
+           headers: {
+             'Content-Type': 'application/json',
+           },
+           status: 200,
+         }
+       )
   }
 
   return NextResponse.json(
