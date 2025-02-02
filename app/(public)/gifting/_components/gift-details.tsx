@@ -45,8 +45,10 @@ export default function GiftDetails({ gift, wines }: { gift: GiftWrappingOption,
     product_id: selectedWineId as Id<'products'>,
   })
 
+  console.log('variants', variants)
+
   if(!variants) {
-    return null
+    return
   }
 
   const updateCart = (wineId:string) => {
@@ -104,12 +106,7 @@ export default function GiftDetails({ gift, wines }: { gift: GiftWrappingOption,
                 <p className='text-2xl font-bold'>{formatPrice(gift.price)}</p>
               </div>
 
-              <div>
-                <h3 className='text-lg font-semibold'>Compatible Wine Types</h3>
-              </div>
-              <div>
-                <h3 className='text-lg font-semibold'>Customization Options</h3>
-              </div>
+
 
               {/* list available wines */}
               <div>
