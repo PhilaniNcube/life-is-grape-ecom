@@ -83,7 +83,7 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
       quantity: 1,
     })
 
-    toggleCart()
+
   }
 
   return (
