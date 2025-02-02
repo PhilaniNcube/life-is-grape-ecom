@@ -42,3 +42,28 @@ export function generateGiftVoucherCode(): string {
 
   return voucherCode
 }
+
+export const giftWrappingOptions = [
+  {
+    name: 'Brown Kraft Single Bottle Gift Box',
+    price: 45,
+    description:
+      'A beautiful brown kraft bottle box with black vinyl lettering of your choice for your celebration.',
+    dimensions: '(L)325mm x (W)120mm x (H)85mm',
+    image:
+      'https://fabulous-peacock-233.convex.cloud/api/storage/d42f5ba4-7278-41a2-a317-90051fcedcae',
+    slug: 'brown-kraft-single-bottle-gift-box',
+  },
+  {
+    name: 'Brown Kraft Double Bottle Gift Box',
+    price: 55,
+    description:
+      'A beautiful brown kraft bottle box, hand-painted for your celebration. Perfect for gifts.',
+    dimensions: '(L)325mm x (W)240mm x (H)85mm',
+    image:
+      'https://fabulous-peacock-233.convex.cloud/api/storage/27ccc147-0ca4-4dbd-8333-be1f8cda5559',
+    slug: 'brown-kraft-double-bottle-gift-box',
+  },
+]
+
+export type GiftWrappingOption = typeof giftWrappingOptions[number]

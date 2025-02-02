@@ -2,17 +2,17 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { fetchQuery } from 'convex/nextjs'
 import GiftDetails from '../_components/gift-details'
-
-type GiftPageParams = Promise<{ id: Id<'gifts'> }>
+import { giftWrappingOptions } from '@/lib/utils'
 
 const GiftPage = async ({
   params,
 }: {
-  params: Promise<{ id: Id<'gifts'> }>
+  params: Promise<{ slug: string }>
 }) => {
-  const { id } = await params
+  const { slug } = await params
 
-  const gift = await fetchQuery(api.gifts.getGift, { gift_id: id })
+  const gift = giftWrappingOptions.find((gift) => gift.slug === slug)
+
     const wines = await fetchQuery(api.products.getUnlabelledProducts)
 
   if (!gift) {
