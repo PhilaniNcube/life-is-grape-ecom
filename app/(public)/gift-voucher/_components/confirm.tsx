@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/card'
 import { Doc } from '@/convex/_generated/dataModel';
 import { giftVoucherPayment } from '@/actions/vouchers';
+import { formatPrice } from '@/lib/utils';
 
 
 interface GiftVoucherConfirmationProps {
@@ -28,7 +29,7 @@ export default function GiftVoucherConfirmation({
 
 
   return (
-    <Card className='mx-auto w-full max-w-md'>
+    <Card className='mx-auto w-full max-w-md py-16'>
       <CardHeader>
         <CardTitle>Gift Voucher Confirmation</CardTitle>
       </CardHeader>
@@ -40,7 +41,7 @@ export default function GiftVoucherConfirmation({
           </div>
           <div className='flex justify-between'>
             <dt className='font-semibold'>Value:</dt>
-            <dd>${voucher.value.toFixed(2)}</dd>
+            <dd>{formatPrice(voucher.value)}</dd>
           </div>
           <div className='flex justify-between'>
             <dt className='font-semibold'>Purchaser Email:</dt>
