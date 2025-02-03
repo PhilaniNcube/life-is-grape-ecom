@@ -16,13 +16,18 @@ const SpecialsBanner = () => {
       />
       <div className='absolute inset-0 flex items-center justify-center'>
         <div className='container'>
-          <h1 className={cn('text-4xl font-bold sm:text-5xl lg:text-6xl', littlepot.className)}>
-          Would you be my Valentine?
+          <h1
+            className={cn(
+              'text-4xl font-bold sm:text-5xl lg:text-6xl',
+              littlepot.className
+            )}
+          >
+            Would you be my Valentine?
           </h1>
           <p className='mt-4 text-xl'>The perfect gift for your loved one</p>
           <Link href='/specials'>
             <Button className='mt-3 w-[200px] rounded-none bg-red-700 text-white'>
-              Wines
+              Shop
             </Button>
           </Link>
         </div>
