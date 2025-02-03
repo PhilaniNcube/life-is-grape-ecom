@@ -41,6 +41,7 @@ export default defineSchema({
     slug: v.string(),
     meta_description: v.optional(v.string()),
     featured: v.boolean(),
+    sort_order: v.optional(v.number()),
   })
     .searchIndex('name', {
       searchField: 'name',

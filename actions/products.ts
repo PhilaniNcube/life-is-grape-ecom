@@ -481,3 +481,28 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
   }
 
 }
+
+
+export const updateSortOrderAction = async (id: Id<'products'>, sortOrder: number) => {
+
+  try {
+    const result = await fetchMutation(api.products.updateSortOrder, {
+      id,
+      sort_order: sortOrder,
+    })
+
+    if (!result) {
+      throw new Error('Failed to update sort order')
+    }
+
+    revalidatePath('/dashboard/products', 'layout')
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to update sort order',
+    }
+  }
+
+}

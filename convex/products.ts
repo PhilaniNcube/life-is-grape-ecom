@@ -34,6 +34,8 @@ export const getShallowProductWithMainImage = query({
 
 
 
+
+
 // get shallow product by id and include the main image and product vaiants
 export const getProductWithVairants = query({
   args: { id: v.id('products') },
@@ -400,6 +402,22 @@ export const updateProduct = mutation({
 
     await ctx.db.patch(id, { ...updates, categories })
     return id
+  },
+})
+
+
+export const updateSortOrder = mutation({
+  args: {
+    id: v.id('products'),
+    sort_order: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const product = await ctx.db.get(args.id)
+
+    if (!product) throw new Error('Product not found')
+
+    await ctx.db.patch(args.id, { sort_order: args.sort_order })
+    return args.id
   },
 })
 

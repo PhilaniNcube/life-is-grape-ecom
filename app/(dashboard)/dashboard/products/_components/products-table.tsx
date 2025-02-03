@@ -41,6 +41,10 @@ import { useRouter } from 'next/navigation'
 import DeleteProductDialog from './delete-product'
 import { Pencil1Icon } from '@radix-ui/react-icons'
 import Link from 'next/link'
+import { updateSortOrder } from '@/convex/products'
+import { updateSortOrderAction } from '@/actions/products'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import SortDialog from './sort-dialog'
 
 type Product = {
   name: string
@@ -127,6 +131,19 @@ const columns: ColumnDef<Doc<'products'>>[] = [
         {row.getValue('featured') ? 'Yes' : 'No'}
       </div>
     ),
+  },
+  {
+    accessorKey: 'sort_order',
+    header: 'Sort Order',
+    cell: ({ row }) => {
+      const { sort_order, _id } = row.original
+
+      return (
+        <div>
+          <SortDialog id={_id} sort_order={sort_order} />
+        </div>
+      )
+    },
   },
 
   {
