@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { useMutation } from 'convex/react'
+import { CircleDashed } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 
 const SortDialog = ({
@@ -21,10 +23,12 @@ const SortDialog = ({
 
   const [sortValue, setSortValue] = useState(sort_order)
 
+  const router = useRouter()
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size='sm' variant='outline'>
+        <Button size='sm' variant='outline' className='min-w-5'>
           {sort_order}
         </Button>
       </DialogTrigger>
@@ -38,13 +42,19 @@ const SortDialog = ({
             className='flex-1'
           />
           <Button
-            className='max-w-lg'
+            className='relative max-w-lg'
             onClick={() => {
               startTransition(() => {
                 updateSortOrder({ id, sort_order: sortValue ?? 10 })
+                router.refresh()
               })
             }}
           >
+            {isPending && (
+              <div className='absolute inset-0 flex items-center justify-center'>
+                <CircleDashed className='animate-spin' />
+              </div>
+            )}
             Update Order
           </Button>
         </div>
