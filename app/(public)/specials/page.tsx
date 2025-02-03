@@ -10,7 +10,7 @@ const page = async () => {
   })
 
   return (
-    <div>
+    <div className='py-12'>
       <SpecialsBanner />
       <ScrollArea className='mt flex w-full @container h-[calc(100dvh-16rem)]'>
         {/* 3-Column Grid */}
