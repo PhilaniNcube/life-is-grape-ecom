@@ -29,21 +29,23 @@ const SortDialog = ({
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <div className='flex flex-col gap-2'>
+        <div className='flex gap-2'>
           <Input
             type='number'
             value={sortValue}
             onChange={e => setSortValue(Number(e.target.value))}
             name='sort_order'
+            className='flex-1'
           />
           <Button
+            className='max-w-lg'
             onClick={() => {
               startTransition(() => {
                 updateSortOrder({ id, sort_order: sortValue ?? 10 })
               })
             }}
           >
-            Remove Sort Order
+            Update Order
           </Button>
         </div>
       </DialogContent>
