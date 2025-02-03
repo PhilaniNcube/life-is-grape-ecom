@@ -14,7 +14,7 @@ const page = async () => {
       <SpecialsBanner />
       <ScrollArea className='mt flex w-full @container h-[calc(100dvh-16rem)]'>
         {/* 3-Column Grid */}
-        <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3'>
+        <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3 max-w-7xl mx-auto'>
           {products.map(product => (
             <ProductItem key={product._id} product_id={product._id} />
           ))}
