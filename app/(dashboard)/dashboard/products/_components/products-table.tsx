@@ -35,7 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Doc } from '@/convex/_generated/dataModel'
+import { Doc, Id } from '@/convex/_generated/dataModel'
 import { formatPrice } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import DeleteProductDialog from './delete-product'
@@ -45,12 +45,13 @@ import { updateSortOrder } from '@/convex/products'
 import { updateSortOrderAction } from '@/actions/products'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import SortDialog from './sort-dialog'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 type Product = {
   name: string
   description: string // Kept in the type but not displayed in the table
   producer_id: string
-  categories: string[]
+  categories: Id<'categories'>[]
   price: number
   main_image: string
   images: string[]
@@ -109,6 +110,24 @@ const columns: ColumnDef<Doc<'products'>>[] = [
     cell: ({ row }) => (
       <div className='capitalize'>{row.getValue('product_type')}</div>
     ),
+  },
+  {
+    accessorKey: 'categories',
+    accessorFn: (row: any) => row.categories,
+    filterFn: (row: any, columnId: string, filterValue: string) => {
+    return row.getValue(columnId).includes(filterValue)
+    },
+    header: 'Categories',
+    cell: ({ row }) => {
+      const { categories } = row.original
+
+      return (
+        <div className='text-center text-xs'>
+          {categories.length}
+          <span className='hidden'>{categories}</span>
+        </div>
+      )
+    },
   },
   {
     accessorKey: 'in_stock',
@@ -171,8 +190,10 @@ const columns: ColumnDef<Doc<'products'>>[] = [
 
 export default function ProductTable({
   products,
+  categories,
 }: {
   products: Doc<'products'>[]
+  categories: Doc<'categories'>[]
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -204,14 +225,59 @@ export default function ProductTable({
   return (
     <div className='w-full'>
       <div className='flex items-center py-4'>
-        <Input
-          placeholder='Filter products...'
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-          onChange={event =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
-          }
-          className='max-w-sm'
-        />
+        <div className='flex items-center gap-x-3'>
+          <Input
+            placeholder='Filter products...'
+            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+            onChange={event =>
+              table.getColumn('name')?.setFilterValue(event.target.value)
+            }
+            className='max-w-sm'
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline' className='ml-2'>
+                Filter <ChevronDown className='ml-2 h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end' className='w-64'>
+              <DropdownMenuLabel>Category</DropdownMenuLabel>
+              <ScrollArea className='h-60'>
+                {categories.map(category => (
+                  <DropdownMenuItem
+                    className='text-left'
+                    key={category._id}
+                    onClick={() => {
+                      try {
+                        const column = table.getColumn('categories')
+                        console.log('column', column)
+                        if (!column) {
+                          console.error('Categories column not found')
+                          return
+                        }
+                        column.setFilterValue(category._id)
+                      } catch (error) {
+                        console.error('Failed to set filter:', error)
+                      }
+                    }}
+                  >
+                    {category.name}
+                  </DropdownMenuItem>
+                ))}
+              </ScrollArea>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className='bg-slate-300'
+                onClick={() =>
+                  table.getColumn('categories')?.setFilterValue('')
+                }
+              >
+                Clear Filter
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant='outline' className='ml-auto'>
