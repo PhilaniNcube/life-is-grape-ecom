@@ -17,7 +17,7 @@ const HomePageGrid = () => {
             width={200}
             height={200}
             alt='Wine'
-            className='z-0 w-full object-cover'
+            className='z-0 w-full object-cover opacity-35'
           />
           <div className='absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-200/80 p-6'>
             <div className='text-2xl font-bold '>
@@ -46,7 +46,7 @@ const HomePageGrid = () => {
             width={200}
             height={200}
             alt='Wine'
-            className='z-0 w-full object-cover'
+            className='z-0 w-full object-cover opacity-35'
           />
           <div className='absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-200/80 p-6'>
             <div className='text-2xl font-bold '>
@@ -74,7 +74,7 @@ const HomePageGrid = () => {
             width={200}
             height={200}
             alt='Wine'
-            className='z-0 w-full object-cover'
+            className='z-0 w-full object-cover opacity-35'
           />
           <div className='absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-200/80 p-6'>
             <div className='text-2xl font-bold '>
