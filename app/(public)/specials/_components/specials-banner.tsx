@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const SpecialsBanner = () => {
   return (
-    <section className='relative mt-6'>
+    <section className='relative'>
       <Image
         src='https://fabulous-peacock-233.convex.cloud/api/storage/8c74297f-099e-4518-b87b-547dff692e60'
         alt='Sugarbird Fynbos Gin'
