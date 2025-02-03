@@ -1,4 +1,10 @@
+import SpecialsBanner from './_components/specials-banner'
+
 const page = () => {
-  return <div>page</div>;
-};
-export default page;
+  return (
+    <div>
+      <SpecialsBanner />
+    </div>
+  )
+}
+export default page
