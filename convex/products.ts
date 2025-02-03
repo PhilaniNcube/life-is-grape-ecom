@@ -76,8 +76,13 @@ export const getShallowProducts = query({
   handler: async ctx => {
     const products = await ctx.db.query('products').collect()
 
+    // order the products by the sort_order field
+    const sortedProducts = products.sort(
+      (a: Doc<'products'>, b: Doc<'products'>) => a.sort_order! - b.sort_order!
+    )
+
     return Promise.all(
-      products.map(async product => {
+      sortedProducts.map(async product => {
         const mainImage = await ctx.storage.getUrl(product.main_image)
         return {
           ...product,
