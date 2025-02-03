@@ -1,5 +1,5 @@
 import { api } from './_generated/api'
-import { Id } from './_generated/dataModel'
+import { Doc, Id } from './_generated/dataModel'
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
 import { getProductsByCategoryId } from './categories'
@@ -173,7 +173,7 @@ export const getShallowProductsWithMainImage = query({
 
       // order the products by the first item in the categories array
      const sortedProducts = products.sort(
-       (a: any, b: any) => b.categories[0] - a.categories[0]
+       (a:Doc<'products'>, b: Doc<'products'>) => a.sort_order! - b.sort_order!
      )
 
     return Promise.all(

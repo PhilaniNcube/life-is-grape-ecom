@@ -43,6 +43,7 @@ const SortDialog = ({
           />
           <Button
             className='relative max-w-lg'
+            disabled={isPending}
             onClick={() => {
               startTransition(() => {
                 updateSortOrder({ id, sort_order: sortValue ?? 10 })
@@ -51,7 +52,7 @@ const SortDialog = ({
             }}
           >
             {isPending && (
-              <div className='absolute inset-0 flex items-center justify-center'>
+              <div className='absolute inset-0 flex items-center justify-center bg-slate-50/25'>
                 <CircleDashed className='animate-spin' />
               </div>
             )}
