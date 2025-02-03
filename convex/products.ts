@@ -169,8 +169,11 @@ export const getShallowProductsWithMainImage = query({
       .filter(q => q.eq(q.field('product_type'), args.type))
       .collect()
 
+      // order the products by the first item in the categories array
+     const sortedProducts = products.sort((a:any, b:any) => a.categories[0] - b.categories[0])
+
     return Promise.all(
-      products.map(async product => {
+      sortedProducts.map(async product => {
         const mainImage = await ctx.storage.getUrl(product.main_image)
 
         // fetch the product variants
