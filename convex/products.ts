@@ -170,7 +170,9 @@ export const getShallowProductsWithMainImage = query({
       .collect()
 
       // order the products by the first item in the categories array
-     const sortedProducts = products.sort((a:any, b:any) => a.categories[0] - b.categories[0])
+     const sortedProducts = products.sort(
+       (a: any, b: any) => b.categories[0] - a.categories[0]
+     )
 
     return Promise.all(
       sortedProducts.map(async product => {
