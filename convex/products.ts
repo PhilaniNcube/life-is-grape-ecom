@@ -2,6 +2,7 @@ import { api } from './_generated/api'
 import { Id } from './_generated/dataModel'
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
+import { getProductsByCategoryId } from './categories'
 
 export const getShallowProduct = query({
   args: { id: v.id('products') },
@@ -30,6 +31,8 @@ export const getShallowProductWithMainImage = query({
     }
   },
 })
+
+
 
 // get shallow product by id and include the main image and product vaiants
 export const getProductWithVairants = query({
