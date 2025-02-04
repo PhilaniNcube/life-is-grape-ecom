@@ -47,6 +47,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import SortDialog from './sort-dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ProductSaleToggle } from './toggle-on-sale'
+import { ProductPriceEdit } from './product-price-edit'
 
 type Product = {
   name: string
@@ -102,7 +103,10 @@ const columns: ColumnDef<Doc<'products'>>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className='text-left'>{formatPrice(row.getValue('price'))}</div>
+      <ProductPriceEdit
+        productId={row.original._id}
+        initialPrice={row.original.price}
+      />
     ),
   },
   {
@@ -148,7 +152,6 @@ const columns: ColumnDef<Doc<'products'>>[] = [
       <ProductSaleToggle
         productId={row.original._id}
         initialOnSale={row.original.on_sale ?? false}
-
       />
     ),
   },

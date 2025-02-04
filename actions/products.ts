@@ -120,6 +120,45 @@ export async function toggleOnSaleAction(prevState:unknown , id: Id<"products">)
 
 }
 
+export async function updatePriceAction(prevState:unknown, formData:FormData) {
+
+  const values = Object.fromEntries(formData.entries())
+
+  const { id, price } = values
+
+  if (!id || !price) {
+    console.log('Invalid form data')
+    return {
+      success: false,
+      error: 'Invalid form data',
+    }
+  }
+
+  try {
+    const product = await fetchMutation(api.products.updateProductPrice, {
+      id: id as Id<"products">,
+      price: Number(price),
+    })
+
+
+
+    if (!product) {
+      throw new Error('Failed to update product price')
+    }
+
+    revalidatePath('/dashboard/products', 'layout')
+
+    return { success: true, price: price }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to update product price',
+    }
+  }
+
+}
+
+
 export async function updateProductAction(
   prevState: unknown,
   formData: FormData

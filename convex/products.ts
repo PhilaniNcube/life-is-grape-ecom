@@ -487,6 +487,26 @@ export const updateProduct = mutation({
   },
 })
 
+export const updateProductPrice = mutation({
+  args: {
+    id: v.id('products'),
+    price: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const product = await ctx.db.get(args.id)
+
+    if (!product) {
+
+      throw new Error('Product not found')
+    }
+
+     console.log('product', product)
+
+   const updatedProduct = await ctx.db.patch(args.id, { price: args.price })
+    return updatedProduct
+  },
+})
+
 export const toggleOnSale = mutation({
   args: { id: v.id('products') },
   handler: async (ctx, args) => {
