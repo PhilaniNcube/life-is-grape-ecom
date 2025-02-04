@@ -94,11 +94,21 @@ export async function updateCategoryAction(
   }
 }
 
-export async function deleteCategoryAction(prevState:unknown,id: Id<"categories">): Promise<ActionResponse> {
+export async function deleteCategoryAction(prevState:unknown,formData:FormData): Promise<ActionResponse> {
+
+  const id = formData.get('id') as Id<"categories">
+
+  if(!id){
+    return {
+      success: false,
+      error: 'Invalid form data',
+    }
+  }
+
   try {
     await fetchMutation(api.categories.deleteCategory, { id })
 
-    revalidatePath('/admin/categories')
+    revalidatePath('/dashboard/categories')
     return { success: true }
   } catch (error) {
     return {

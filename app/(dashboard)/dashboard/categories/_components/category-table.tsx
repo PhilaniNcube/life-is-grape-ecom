@@ -46,6 +46,10 @@ const CategoryTable = ({categories}:{categories:Doc<"categories">[]}) => {
        columnFilters,
        columnVisibility,
        rowSelection,
+       pagination: {
+          pageSize:80,
+          pageIndex:0
+       }
      },
    })
 

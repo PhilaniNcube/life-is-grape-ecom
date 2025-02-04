@@ -13,6 +13,7 @@ import { Doc } from '@/convex/_generated/dataModel'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
+import DeleteCategory from './delete-category';
 
 export const columns: ColumnDef<Doc<'categories'>>[] = [
   {
@@ -65,23 +66,26 @@ export const columns: ColumnDef<Doc<'categories'>>[] = [
       const item = row.original
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
-              <span className='sr-only'>Open menu</span>
-              <MoreHorizontal className='h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <div className='flex items-center space-x-2'>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='ghost' className='h-8 w-8 p-0'>
+                <span className='sr-only'>Open menu</span>
+                <MoreHorizontal className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <DropdownMenuItem>
-              <Link href={`/dashboard/categories/${item._id}`}>
-                View category
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <DropdownMenuItem>
+                <Link href={`/dashboard/categories/${item._id}`}>
+                  View category
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DeleteCategory id={row.original._id} slug={row.original.slug} />
+        </div>
       )
     },
   },
