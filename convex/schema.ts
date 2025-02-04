@@ -31,6 +31,10 @@ export default defineSchema({
     main_image: v.id('_storage'),
     images: v.array(v.id('_storage')),
     in_stock: v.boolean(),
+    on_sale: v.optional(v.boolean()),
+    sale_price: v.optional(v.number()),
+    volume: v.optional(v.number()), // in ml
+    dimensions: v.optional(v.string()), // in mm
     product_type: v.union(
       v.literal('wine'),
       v.literal('spirit'),

@@ -2,7 +2,7 @@ import { api } from './_generated/api'
 import { Doc, Id } from './_generated/dataModel'
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
-import { getProductsByCategoryId } from './categories'
+
 
 export const getShallowProduct = query({
   args: { id: v.id('products') },
@@ -413,6 +413,10 @@ export const addProduct = mutation({
       v.literal('gift'),
       v.literal('custom_label')
     ),
+    on_sale: v.optional(v.boolean()),
+    sale_price: v.optional(v.number()),
+    volume: v.optional(v.number()),
+    dimensions: v.optional(v.string()),
     slug: v.string(),
     meta_description: v.optional(v.string()),
     featured: v.boolean(),
@@ -445,6 +449,10 @@ export const updateProduct = mutation({
     main_image: v.optional(v.id('_storage')),
     images: v.optional(v.array(v.id('_storage'))),
     in_stock: v.optional(v.boolean()),
+    on_sale: v.optional(v.boolean()),
+    sale_price: v.optional(v.number()),
+    volume: v.optional(v.number()),
+    dimensions: v.optional(v.string()),
     product_type: v.optional(
       v.union(
         v.literal('wine'),
@@ -476,6 +484,17 @@ export const updateProduct = mutation({
 
     await ctx.db.patch(id, { ...updates, categories })
     return id
+  },
+})
+
+export const toggleOnSale = mutation({
+  args: { id: v.id('products') },
+  handler: async (ctx, args) => {
+    const product = await ctx.db.get(args.id)
+
+    if (!product) throw new Error('Product not found')
+
+    await ctx.db.patch(args.id, { on_sale: !product.on_sale })
   },
 })
 

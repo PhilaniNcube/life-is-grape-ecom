@@ -30,6 +30,7 @@ export async function createProductAction(
     const cats = formData.get('categories') as string
 
     console.log(formData.get("in_stock"))
+    console.log(formData.get("on_sale"))
 
     const validatedFields = CreateProductSchema.safeParse({
       name: formData.get('name'),
@@ -39,6 +40,10 @@ export async function createProductAction(
       price: formData.get('price'),
       in_stock: formData.get('in_stock') === 'on' ? true : false,
       featured: formData.get('featured') === 'on' ? true : false,
+      on_sale: formData.get('on_sale') === 'on' ? true : false,
+      sale_price: formData.get('sale_price'),
+      volume: formData.get('volume'),
+      dimensions: formData.get('dimensions'),
       main_image: formData.get('main_image'),
       images: [],
       slug: '',
@@ -73,6 +78,10 @@ export async function createProductAction(
       categories: categories,
       price: validatedFields.data.price,
       main_image: main_image,
+      on_sale: validatedFields.data.on_sale,
+      sale_price: validatedFields.data.sale_price,
+      volume: validatedFields.data.volume,
+      dimensions: validatedFields.data.dimensions,
       images: [],
       in_stock: validatedFields.data.in_stock,
       product_type: validatedFields.data.product_type,
@@ -91,6 +100,24 @@ export async function createProductAction(
       error: 'Failed to create product',
     }
   }
+}
+
+export async function toggleOnSaleAction(prevState:unknown , id: Id<"products">){
+
+  try {
+    const product = await fetchMutation(api.products.toggleOnSale, { id })
+
+    if (!product) {
+      throw new Error('Failed to toggle on sale')
+    }
+
+    revalidatePath('/dashboard/products', 'layout')
+
+    return true
+  } catch (error) {
+    return false
+  }
+
 }
 
 export async function updateProductAction(
@@ -113,6 +140,10 @@ export async function updateProductAction(
       price: formData.get('price'),
       in_stock: formData.get('in_stock') === 'on' ? true : false,
       featured: formData.get('featured') === 'on' ? true : false,
+      on_sale: formData.get('on_sale') === 'on' ? true : false,
+      sale_price: formData.get('sale_price'),
+      volume: formData.get('volume'),
+      dimensions: formData.get('dimensions'),
       main_image: formData.get('main_image'),
       // images: [],
       slug: '',
@@ -141,6 +172,10 @@ export async function updateProductAction(
         main_image: validatedFields.data.main_image as Id<"_storage">,
         product_type: validatedFields.data.product_type,
         in_stock: validatedFields.data.in_stock,
+        on_sale: validatedFields.data.on_sale,
+        sale_price: validatedFields.data.sale_price,
+        volume: validatedFields.data.volume,
+        dimensions: validatedFields.data.dimensions,
         meta_description: validatedFields.data.meta_description,
         featured: validatedFields.data.featured,
       }

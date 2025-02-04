@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { JSONContent } from 'novel'
+import { on } from 'events'
 // define zod schemas for form actions
 
 // Base product schema
@@ -13,6 +14,10 @@ export const BaseProductSchema = z.object({
   images: z.array(z.string()),
   in_stock: z.boolean(),
   product_type: z.enum(['wine', 'spirit', 'gift', 'custom_label']),
+  on_sale: z.boolean().optional(),
+  sale_price: z.coerce.number().optional(),
+  volume: z.coerce.number().positive().optional(),
+  dimensions: z.string().optional(),
   slug: z.string(),
   meta_description: z.string().optional(),
   featured: z.boolean(),

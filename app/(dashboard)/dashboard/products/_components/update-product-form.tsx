@@ -50,10 +50,16 @@ const UpdateProductForm = ({
   product: Doc<'products'>
 }) => {
   const generateUploadUrl = useMutation(api.products.generateUploadUrl)
-  const mainImageUrl = useQuery(api.products.getMainImage, {id: product.main_image})
+  const mainImageUrl = useQuery(api.products.getMainImage, {
+    id: product.main_image,
+  })
   const [productId, setProductId] = useState<string | null>(null)
-  const [preview, setPreview] = useState<string>(mainImageUrl ? mainImageUrl : '')
-  const [mainImageId, setMainImageId] = useState<string | null>(product.main_image)
+  const [preview, setPreview] = useState<string>(
+    mainImageUrl ? mainImageUrl : ''
+  )
+  const [mainImageId, setMainImageId] = useState<string | null>(
+    product.main_image
+  )
   const [state, formAction, isPending] = useActionState(
     updateProductAction,
     null
@@ -90,8 +96,6 @@ const UpdateProductForm = ({
     }
   }
 
-
-
   const form = useForm<FormSchema>({
     resolver: zodResolver(UpdateProductSchema),
     defaultValues: {
@@ -101,12 +105,18 @@ const UpdateProductForm = ({
       product_type: product.product_type,
       price: product.price,
       in_stock: product.in_stock,
+      on_sale: product.on_sale || false,
+      sale_price: product.sale_price || 0,
+      volume: product.volume || 0,
+      dimensions: product.dimensions || '',
       featured: product.featured,
       main_image: product.main_image,
       producer_id: product.producer_id,
       categories: product.categories,
     },
   })
+
+  const onSale = form.watch('on_sale')
 
   return (
     <div className='space-y-6 px-2'>
@@ -117,17 +127,14 @@ const UpdateProductForm = ({
           }}
           className='space-y-4'
         >
-
           <FormField
             control={form.control}
             name='id'
             render={({ field }) => (
               <FormItem>
-
                 <FormControl>
-                  <Input type="hidden" {...field} />
+                  <Input type='hidden' {...field} />
                 </FormControl>
-
               </FormItem>
             )}
           />
@@ -293,6 +300,25 @@ const UpdateProductForm = ({
             />
             <FormField
               control={form.control}
+              name='on_sale'
+              render={({ field }) => (
+                <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4'>
+                  <div className='space-y-0.5'>
+                    <FormLabel className='text-base'>On Sale</FormLabel>
+                    <FormDescription>Is the product a on sale?</FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      name='on_sale'
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name='featured'
               render={({ field }) => (
                 <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4'>
@@ -311,6 +337,53 @@ const UpdateProductForm = ({
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
+                </FormItem>
+              )}
+            />
+            {onSale && (
+              <FormField
+                control={form.control}
+                name='sale_price'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sale Price</FormLabel>
+                    <FormControl>
+                      <Input
+                        min={onSale ? 1 : 0}
+                        max={product.price}
+                        type='number'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            <FormField
+              control={form.control}
+              name='volume'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Volume (ml)</FormLabel>
+                  <FormControl>
+                    <Input type='number' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='dimensions'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Dimensions</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -391,7 +464,11 @@ const UpdateProductForm = ({
             )}
           />
 
-          <Button className='rounded-none w-1/3' disabled={isPending} type='submit'>
+          <Button
+            className='w-1/3 rounded-none'
+            disabled={isPending}
+            type='submit'
+          >
             {isPending ? 'Updating...' : 'Update Product'}
           </Button>
         </form>

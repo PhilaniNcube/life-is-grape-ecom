@@ -40,6 +40,7 @@ import { api } from '@/convex/_generated/api'
 import { useRouter } from 'next/navigation'
 import Link  from 'next/link'
 
+
 type FormSchema = z.infer<typeof CreateProductSchema>
 
 const NewProductForm = ({
@@ -52,13 +53,14 @@ const NewProductForm = ({
   const generateUploadUrl = useMutation(api.products.generateUploadUrl)
   const router = useRouter()
 
-  const [productId, setProductId] = useState<string | null>(null)
   const [preview, setPreview] = useState<string>('')
   const [mainImageId, setMainImageId] = useState<string | null>(null)
   const [state, formAction, isPending] = useActionState(
     createProductAction,
     null
   )
+
+
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -104,6 +106,11 @@ const NewProductForm = ({
       main_image: mainImageId || '',
     },
   })
+
+   const onSale = form.watch('on_sale')
+   const price = form.watch('price')
+
+   console.log('onSale', onSale)
 
   return (
     <div className='space-y-6 px-2'>
@@ -256,7 +263,7 @@ const NewProductForm = ({
             />
           </div>
 
-          <div className='grid grid-cols-2 gap-3'>
+          <div className='grid grid-cols-2 gap-3 md:grid-cols-3'>
             <FormField
               control={form.control}
               name='in_stock'
@@ -271,6 +278,25 @@ const NewProductForm = ({
                   <FormControl>
                     <Switch
                       name='in_stock'
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='on_sale'
+              render={({ field }) => (
+                <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4'>
+                  <div className='space-y-0.5'>
+                    <FormLabel className='text-base'>On Sale</FormLabel>
+                    <FormDescription>Is the product a on sale?</FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      name='on_sale'
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
@@ -298,6 +324,53 @@ const NewProductForm = ({
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
+                </FormItem>
+              )}
+            />
+            {onSale && (
+              <FormField
+                control={form.control}
+                name='sale_price'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sale Price</FormLabel>
+                    <FormControl>
+                      <Input
+                        min={onSale ? 1 : 0}
+                        max={price}
+                        type='number'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            <FormField
+              control={form.control}
+              name='volume'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Volume (ml)</FormLabel>
+                  <FormControl>
+                    <Input type='number' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='dimensions'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Dimensions</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

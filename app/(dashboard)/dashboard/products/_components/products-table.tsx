@@ -46,6 +46,7 @@ import { updateSortOrderAction } from '@/actions/products'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import SortDialog from './sort-dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { ProductSaleToggle } from './toggle-on-sale'
 
 type Product = {
   name: string
@@ -115,7 +116,7 @@ const columns: ColumnDef<Doc<'products'>>[] = [
     accessorKey: 'categories',
     accessorFn: (row: any) => row.categories,
     filterFn: (row: any, columnId: string, filterValue: string) => {
-    return row.getValue(columnId).includes(filterValue)
+      return row.getValue(columnId).includes(filterValue)
     },
     header: 'Categories',
     cell: ({ row }) => {
@@ -138,6 +139,17 @@ const columns: ColumnDef<Doc<'products'>>[] = [
       >
         {row.getValue('in_stock') ? 'Yes' : 'No'}
       </div>
+    ),
+  },
+  {
+    accessorKey: 'on_sale',
+    header: 'On Sale',
+    cell: ({ row }) => (
+      <ProductSaleToggle
+        productId={row.original._id}
+        initialOnSale={row.original.on_sale ?? false}
+
+      />
     ),
   },
   {
