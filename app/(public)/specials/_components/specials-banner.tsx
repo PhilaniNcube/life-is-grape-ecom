@@ -21,7 +21,7 @@ const SpecialsBanner = () => {
               littlepot.className
             )}
           >
-            Would you be my Valentine?
+            Be my Valentine
           </h1>
           <p className='mt-4 text-xl'>The perfect gift for your loved one</p>
 
