@@ -98,7 +98,7 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
               </Card>
               <Card>
                 <CardContent className='p-3'>
-                  <h3 className='mb-2 font-semibold'>Product Variants</h3>
+
                   <AddToCart
 
                     product={product.product}
