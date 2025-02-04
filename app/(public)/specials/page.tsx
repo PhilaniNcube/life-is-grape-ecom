@@ -6,7 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 
 const page = async () => {
   const products = await fetchQuery(api.categories.getProductsByCategorySlug, {
-    slug: 'specials',
+    slug: 'valentines',
   })
 
   return (
