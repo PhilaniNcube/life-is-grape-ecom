@@ -141,8 +141,8 @@ export async function updateProductAction(
       in_stock: formData.get('in_stock') === 'on' ? true : false,
       featured: formData.get('featured') === 'on' ? true : false,
       on_sale: formData.get('on_sale') === 'on' ? true : false,
-      sale_price: formData.get('sale_price'),
-      volume: formData.get('volume'),
+      sale_price: formData.get('sale_price') || undefined,
+      volume: formData.get('volume') || undefined,
       dimensions: formData.get('dimensions'),
       main_image: formData.get('main_image'),
       // images: [],
@@ -151,12 +151,14 @@ export async function updateProductAction(
     })
 
     if (!validatedFields.success) {
+      console.log(validatedFields.error.flatten().fieldErrors)
       return {
         success: false,
         error: 'Invalid form data',
       }
     }
 
+    console.log("Sale Price", formData.get('sale_price'))
 
 
     const product = await fetchMutation(

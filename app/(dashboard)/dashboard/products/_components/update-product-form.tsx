@@ -106,8 +106,8 @@ const UpdateProductForm = ({
       price: product.price,
       in_stock: product.in_stock,
       on_sale: product.on_sale || false,
-      sale_price: product.sale_price || 0,
-      volume: product.volume || 0,
+      sale_price: product.sale_price || undefined,
+      volume: product.volume || undefined,
       dimensions: product.dimensions || '',
       featured: product.featured,
       main_image: product.main_image,
@@ -148,6 +148,7 @@ const UpdateProductForm = ({
                   <Input placeholder='Product name' {...field} />
                 </FormControl>
                 <FormMessage />
+
               </FormItem>
             )}
           />
