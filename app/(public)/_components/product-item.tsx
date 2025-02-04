@@ -38,6 +38,13 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
         />
       </Link>
 
+      {/* Sales Badge */}
+      {variants[0].is_on_sale && (
+        <div className='absolute top-0 right-0 bg-red-500 text-white font-bold text-xs p-2'>
+          Sale
+        </div>
+      )}
+
       {/* product Details */}
       <div className='p-2 @container @md:p-6'>
         <h3 className='line-clamp-1 text-xs text-gray-800 sm:text-sm md:line-clamp-1 lg:text-lg'>
@@ -46,7 +53,7 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
 
         {/* Price and Action Button */}
         <span className='text-sm font-bold text-gray-900 md:text-lg'>
-          {formatPrice(product.price)}
+          {variants && variants[0].is_on_sale ? formatPrice(variants[0].sale_price!) :  formatPrice(product.price)}
         </span>
         <div className='mt-4 flex items-end justify-between '>
           <ListAddToCartButton product={product} variants={variants} />
