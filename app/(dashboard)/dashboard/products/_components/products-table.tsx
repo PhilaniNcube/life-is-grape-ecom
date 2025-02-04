@@ -37,7 +37,7 @@ import {
 } from '@/components/ui/table'
 import { Doc, Id } from '@/convex/_generated/dataModel'
 import { formatPrice } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import DeleteProductDialog from './delete-product'
 import { Pencil1Icon } from '@radix-ui/react-icons'
 import Link from 'next/link'
@@ -49,20 +49,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { ProductSaleToggle } from './toggle-on-sale'
 import { ProductPriceEdit } from './product-price-edit'
 
-type Product = {
-  name: string
-  description: string // Kept in the type but not displayed in the table
-  producer_id: string
-  categories: Id<'categories'>[]
-  price: number
-  main_image: string
-  images: string[]
-  in_stock: boolean
-  product_type: 'wine' | 'spirit'
-  slug: string
-  meta_description?: string
-  featured: boolean
-}
+
 
 const columns: ColumnDef<Doc<'products'>>[] = [
   {
@@ -218,6 +205,11 @@ export default function ProductTable({
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
+  const searchParams = useSearchParams()
+
+  const page = searchParams.get('page') ?? '1'
+  const nameFilter = searchParams.get('name') ?? ''
+
   const table = useReactTable({
     data: products,
     columns,
@@ -233,7 +225,12 @@ export default function ProductTable({
       sorting,
       columnFilters,
       columnVisibility,
+      globalFilter: nameFilter,
       rowSelection,
+      pagination: {
+        pageIndex: 0,
+        pageSize: 100,
+      },
     },
   })
 
@@ -372,6 +369,7 @@ export default function ProductTable({
         <div className='flex-1 text-sm text-muted-foreground'>
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
+
         </div>
         <div className='space-x-2'>
           <Button
