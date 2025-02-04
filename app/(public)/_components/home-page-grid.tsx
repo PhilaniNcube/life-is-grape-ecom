@@ -26,12 +26,12 @@ const HomePageGrid = () => {
                 Wines & Spirits
               </p>
             </div>
-            <p className='mt-3 text-gray-700'>
+            <p className='mt-3 text-gray-700 text-xs md:text-sm'>
               Want to descover the world of crafted beverages? Looking to
               diversify your collection or simply want to feel more confident in
               your choice of beverage?
             </p>
-            <p className='mt-2 text-gray-700'>
+            <p className='mt-2 text-gray-700 text-xs md:text-sm'>
               We have a selection of proudly South African, hand-crafted wines
               and spirits for consumers who like diversity and uniqueness.
             </p>
@@ -53,11 +53,11 @@ const HomePageGrid = () => {
               <p className={cn(littlepot.className, 'font-bold text-3xl md:text-4xl')}>Book</p>
               <p className={cn(ibm_sans.className, 'uppercase')}>Experiences</p>
             </div>
-            <p className='mt-3 text-gray-700'>
+            <p className='mt-3 text-gray-700 text-xs md:text-sm'>
               Looking for something different to celebrate your special
               occasion? We are creators of tasting experiences.
             </p>
-            <p className='mt-2 text-gray-700'>
+            <p className='mt-2 text-gray-700 text-xs md:text-sm'>
               Choose your own venue or we will source a venue and catering
               solutions to fit within your budget and make the tasting a
               memorable event.
@@ -83,12 +83,12 @@ const HomePageGrid = () => {
                 Personalised Gifting
               </p>
             </div>
-            <p className='mt-3 text-gray-700'>
+            <p className='mt-3 text-gray-700 text-xs md:text-sm'>
               There are many reasons to celebrate and no better way to say
               congratulations than presenting the lucky receiver with a bottle
               of their favourite Sip!
             </p>
-            <p className='mt-2 text-gray-700'>
+            <p className='mt-2 text-gray-700 text-xs md:text-sm'>
               Select from our range of gift boxes, personalised labels or bags,
               complimented with our "attention to detail" ribbon wrapping.
             </p>
