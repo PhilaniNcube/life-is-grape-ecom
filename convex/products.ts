@@ -32,10 +32,6 @@ export const getShallowProductWithMainImage = query({
   },
 })
 
-
-
-
-
 // get shallow product by id and include the main image and product vaiants
 export const getProductWithVairants = query({
   args: { id: v.id('products') },
@@ -95,6 +91,30 @@ export const getShallowProducts = query({
   },
 })
 
+export const getShallowOneSaleProducts = query({
+  args: {},
+  handler: async ctx => {
+    const products = await ctx.db.query('products').collect()
+
+    // order the products by the sort_order field
+    const sortedProducts = products.sort(
+      (a: Doc<'products'>, b: Doc<'products'>) => a.sort_order! - b.sort_order!
+    )
+
+    return Promise.all(
+      sortedProducts.map(async product => {
+        const mainImage = await ctx.storage.getUrl(product.main_image)
+        return {
+          ...product,
+          main_image: mainImage
+            ? mainImage
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+        }
+      })
+    )
+  },
+})
+
 // get products by producer id
 export const getProductsByProducer = query({
   args: { producer_id: v.id('producers') },
@@ -125,33 +145,31 @@ export const getUnlabelledProducts = query({
 
     const unlabbledWines = await ctx.db
       .query('products')
-      .filter(q => q.eq(q.field('producer_id'), producerId)).filter(q => q.eq(q.field('product_type'), 'wine'))
+      .filter(q => q.eq(q.field('producer_id'), producerId))
+      .filter(q => q.eq(q.field('product_type'), 'wine'))
       .collect()
 
+    return Promise.all(
+      unlabbledWines.map(async product => {
+        const mainImage = await ctx.storage.getUrl(product.main_image)
 
-       return Promise.all(
-         unlabbledWines.map(async product => {
-           const mainImage = await ctx.storage.getUrl(product.main_image)
+        // fetch the product variants
+        const variants = await ctx.db
+          .query('product_variants')
+          .filter(q => q.eq(q.field('product_id'), product._id))
+          .collect()
 
-           // fetch the product variants
-           const variants = await ctx.db
-             .query('product_variants')
-             .filter(q => q.eq(q.field('product_id'), product._id))
-             .collect()
-
-           return {
-             ...product,
-             main_image: mainImage
-               ? mainImage
-               : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
-             variants,
-           }
-         })
-       )
+        return {
+          ...product,
+          main_image: mainImage
+            ? mainImage
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+          variants,
+        }
+      })
+    )
   },
 })
-
-
 
 export const getShallowProductsByType = query({
   args: {
@@ -168,7 +186,12 @@ export const getShallowProductsByType = query({
 // get shallow products by type and includ the main image
 export const getShallowProductsWithMainImage = query({
   args: {
-    type: v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift'), v.literal('custom_label')),
+    type: v.union(
+      v.literal('wine'),
+      v.literal('spirit'),
+      v.literal('gift'),
+      v.literal('custom_label')
+    ),
   },
   handler: async (ctx, args) => {
     const products = await ctx.db
@@ -176,10 +199,10 @@ export const getShallowProductsWithMainImage = query({
       .filter(q => q.eq(q.field('product_type'), args.type))
       .collect()
 
-      // order the products by the first item in the categories array
-     const sortedProducts = products.sort(
-       (a:Doc<'products'>, b: Doc<'products'>) => a.sort_order! - b.sort_order!
-     )
+    // order the products by the first item in the categories array
+    const sortedProducts = products.sort(
+      (a: Doc<'products'>, b: Doc<'products'>) => a.sort_order! - b.sort_order!
+    )
 
     return Promise.all(
       sortedProducts.map(async product => {
@@ -200,6 +223,47 @@ export const getShallowProductsWithMainImage = query({
         }
       })
     )
+  },
+})
+
+// get shallow products by type and includ the main image
+export const getProductsOnSaleWithMainImage = query({
+  args: {},
+  handler: async (ctx, args) => {
+    const products = await ctx.db.query('products').collect()
+
+    // order the products by the first item in the categories array
+    const sortedProducts = products.sort(
+      (a: Doc<'products'>, b: Doc<'products'>) => a.sort_order! - b.sort_order!
+    )
+
+    const allProducts = await Promise.all(
+      sortedProducts.map(async product => {
+        const mainImage = await ctx.storage.getUrl(product.main_image)
+
+        // fetch the product variants
+        const variants = await ctx.db
+          .query('product_variants')
+          .filter(q => q.eq(q.field('product_id'), product._id))
+          .collect()
+
+
+
+        return {
+          ...product,
+          main_image: mainImage
+            ? mainImage
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+          variants,
+        }
+      })
+    )
+
+    return await allProducts.filter(product =>
+      product.variants.some(variant => variant.is_on_sale)
+    )
+
+
   },
 })
 
@@ -382,7 +446,12 @@ export const updateProduct = mutation({
     images: v.optional(v.array(v.id('_storage'))),
     in_stock: v.optional(v.boolean()),
     product_type: v.optional(
-      v.union(v.literal('wine'), v.literal('spirit'), v.literal('gift'), v.literal('custom_label'))
+      v.union(
+        v.literal('wine'),
+        v.literal('spirit'),
+        v.literal('gift'),
+        v.literal('custom_label')
+      )
     ),
     slug: v.optional(v.string()),
     meta_description: v.optional(v.string()),
@@ -409,7 +478,6 @@ export const updateProduct = mutation({
     return id
   },
 })
-
 
 export const updateSortOrder = mutation({
   args: {
