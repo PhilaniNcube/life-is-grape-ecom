@@ -104,7 +104,7 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
 
                       {wines?.map(wine => (
                         <SelectItem value={wine._id} key={wine._id}>
-                          {wine.name} - {wine.variants[0].is_on_sale ? formatPrice(wine.variants[0].sale_price!) : formatPrice(wine.variants[0].price)}
+                          {wine.name} - {wine.on_sale && wine.sale_price ? formatPrice(wine.sale_price!) : formatPrice(wine.price)}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -124,7 +124,7 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
                    }
                     const variant = selectedWine?.variants[0]
 
-                   addToCart(selectedWine, variant, {
+                   addToCart(selectedWine, {
 
                      name: gift.name,
                      price: gift.price,

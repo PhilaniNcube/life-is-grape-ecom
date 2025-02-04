@@ -53,27 +53,27 @@ export default function Cart() {
         <ScrollArea className='mt-4 h-[calc(100vh-12rem)] pb-4 pr-4'>
           {cart.map(item => (
             <div
-              key={`${item.product._id}-${item.variant._id}`}
+              key={`${item.product._id}`}
               className='flex items-center justify-between border-b py-4'
             >
               <div>
                 <h3 className='font-medium'>{item.product.name}</h3>
                 <p className='text-sm text-gray-500'>
-                  {item.variant.volume}ml - {formatPrice(item.variant.price)}
+                  {item.product.volume && `${item.product.volume} ml - `} {formatPrice(item.product.price)}
                 </p>
-                <span className='text-xs text-red-700'>
-                  {item.giftBox &&
-                    `${item.giftBox.name} - ${formatPrice(item.giftBox.price)} x ${item.giftBox.quantity}`}
-                </span>
+                {item.giftBox && (
+                  <span className='text-xs text-red-700'>
+                    {item.giftBox &&
+                      `${item.giftBox.name} - ${formatPrice(item.giftBox.price)} x ${item.giftBox.quantity}`}
+                  </span>
+                )}
               </div>
               <div className='flex items-center gap-2'>
                 <Button
                   variant='outline'
                   size='icon'
                   className='h-8 w-8'
-                  onClick={() =>
-                    decrementQuantity(item.product._id, item.variant._id)
-                  }
+                  onClick={() => decrementQuantity(item.product._id)}
                 >
                   <Minus className='h-4 w-4' />
                 </Button>
@@ -82,9 +82,7 @@ export default function Cart() {
                   variant='outline'
                   size='icon'
                   className='h-8 w-8'
-                  onClick={() =>
-                    incrementQuantity(item.product._id, item.variant._id)
-                  }
+                  onClick={() => incrementQuantity(item.product._id)}
                 >
                   <Plus className='h-4 w-4' />
                 </Button>
@@ -92,9 +90,7 @@ export default function Cart() {
                   variant='ghost'
                   size='icon'
                   className='h-8 w-8 text-destructive'
-                  onClick={() =>
-                    removeFromCart(item.product._id, item.variant._id)
-                  }
+                  onClick={() => removeFromCart(item.product._id)}
                 >
                   <Trash2 className='h-4 w-4' />
                 </Button>
@@ -108,7 +104,12 @@ export default function Cart() {
             <span className='font-bold'>{formatPrice(totalPrice)}</span>
           </div>
           <Link href='/checkout'>
-            <Button onClick={() => toggleCart()} className='w-full rounded-none'>Proceed to Checkout</Button>
+            <Button
+              onClick={() => toggleCart()}
+              className='w-full rounded-none'
+            >
+              Proceed to Checkout
+            </Button>
           </Link>
         </div>
       </SheetContent>

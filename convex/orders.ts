@@ -33,11 +33,6 @@ export const createOrder = mutation({
         }),
         quantity: v.number(),
         price_at_time: v.number(),
-        variant: v.object({
-          id: v.id('product_variants'),
-          volume: v.optional(v.number()),
-          price: v.number(),
-        }),
         gift_box: v.optional(
           v.object({
             name: v.string(),
@@ -83,7 +78,6 @@ export const createOrder = mutation({
         product: item.product,
         quantity: item.quantity,
         price_at_time: item.price_at_time,
-        variant: item.variant,
         gift_box: item.gift_box,
       })
     }

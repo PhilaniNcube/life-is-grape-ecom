@@ -15,16 +15,14 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
       id: product_id,
     }
   )
-  const variantsPromise = fetchQuery(api.products.getProductVariants, {
-    product_id: product_id,
-  })
 
-  const [product, variants] = await Promise.all([
+
+  const [product] = await Promise.all([
     productPromise,
-    variantsPromise,
+
   ])
 
-  if (!product || !variants) return null
+  if (!product) return null
 
   return (
     <article className='relative overflow-hidden rounded-lg flex flex-col justify-between shadow-md @container'>
@@ -39,7 +37,7 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
       </Link>
 
       {/* Sales Badge */}
-      {variants[0].is_on_sale && (
+      {product.on_sale && (
         <div className='absolute top-0 right-0 bg-red-500 text-white font-bold text-xs p-2'>
           Sale
         </div>
@@ -53,10 +51,10 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
 
         {/* Price and Action Button */}
         <span className='text-sm font-bold text-gray-900 md:text-lg'>
-          {variants && variants[0].is_on_sale ? formatPrice(variants[0].sale_price!) :  formatPrice(product.price)}
+          {product.on_sale && product.sale_price ? formatPrice(product.sale_price!) :  formatPrice(product.price)}
         </span>
         <div className='mt-4 flex items-end justify-between '>
-          <ListAddToCartButton product={product} variants={variants} />
+          <ListAddToCartButton product={product}  />
           <Link
             href={`/products/${product.slug}`}
             className='hidden @md:inline-block'

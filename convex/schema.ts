@@ -239,14 +239,10 @@ export default defineSchema({
         quantity: v.optional(v.number()),
       })
     ),
-    variant: v.object({
-      id: v.id('product_variants'),
-      volume: v.optional(v.number()),
-      price: v.number(),
-    }),
+
   })
     .index('byOrder', ['order_id'])
     .index('byProduct', ['product.id'])
-    .index('byVariant', ['variant.id']),
+     ,
 })
 

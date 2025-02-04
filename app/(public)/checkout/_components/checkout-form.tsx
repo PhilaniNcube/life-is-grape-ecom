@@ -73,12 +73,7 @@ export default function CheckoutForm() {
     const orderItems = cart.map(item => ({
       product: { id: item.product._id, name: item.product.name },
       quantity: item.quantity,
-      price_at_time: item.variant.price || item.product.price,
-      variant: {
-        id: item.variant._id,
-        volume: item.variant.volume,
-        price: item.variant.price,
-      },
+      price_at_time: item.product.price,
       gift_box: item.giftBox
         ? {
             name: item.giftBox.name,
@@ -290,7 +285,7 @@ export default function CheckoutForm() {
             <CardContent className='space-y-4'>
               {cart.map(item => (
                 <div
-                  key={`${item.product._id}-${item.variant._id}`}
+                  key={`${item.product._id}-${item.product._id}`}
                   className='flex justify-between'
                 >
                   <span>

@@ -54,87 +54,55 @@ const giftWrappingOptions: GiftWrappingOption[] = [
 ]
 
 const AddToCart = ({
-  variants,
+
   product,
 }: {
-  variants: Doc<'product_variants'>[]
+
   product: Doc<'products'>
 }) => {
   const { addToCart, openCart } = useCartStore(state => state)
 
-  const [selectedVariantId, setSelectedVariantId] =
-    useState<Id<'product_variants'> | null>(variants[0]?._id)
 
-  const selectedVariant = variants.find(
-    variant => variant._id === selectedVariantId
-  )
+
+
 
   const [selectedGiftBox, setSelectedGiftBox] =
     useState<GiftWrappingOption | null>(null)
 
   return (
     <div className='w-full'>
-      {variants.map(variant => (
-        <Badge
-          key={variant._id}
-          onClick={() => setSelectedVariantId(variant._id)}
-          className={cn(
-            'cursor-pointer',
-            selectedVariantId === variant._id
-              ? 'bg-blue-800 text-white'
-              : 'mx-3 bg-slate-100 text-slate-600',
-            variant.stock_level > 0 ? '' : 'opacity-80'
-          )}
-        >
-          {variant.volume}ml -{' '}
-          {variant.is_on_sale
-            ? formatPrice(variant.sale_price!)
-            : formatPrice(variant.price)}
-          {selectedVariantId === variant._id && (
-            <Check className='ml-2' size={12} />
-          )}
-        </Badge>
-      ))}
 
-      {selectedVariant && (
-        <Button
-          disabled={selectedVariant?.stock_level < 1}
-          onClick={() => {
-            if (!selectedVariant) return
 
-            if (!selectedGiftBox) {
-              addToCart(product, selectedVariant)
-              return
-            }
+      <Button
+        onClick={() => {
+          if (!selectedGiftBox) {
+            addToCart(product)
+            return
+          }
 
-            // if the product has the type of custom_label, do not add a wrapping option and the product can only be added in multiples of 6
+          // if the product has the type of custom_label, do not add a wrapping option and the product can only be added in multiples of 6
 
-            const wrappingOption = {
-              name: selectedGiftBox.name || '',
-              price: selectedGiftBox.price,
-              dimensions: selectedGiftBox.dimensions,
-              description: selectedGiftBox.description,
-              quantity: 1,
-            }
+          const wrappingOption = {
+            name: selectedGiftBox.name || '',
+            price: selectedGiftBox.price,
+            dimensions: selectedGiftBox.dimensions,
+            description: selectedGiftBox.description,
+            quantity: 1,
+          }
 
-            addToCart(product, selectedVariant, wrappingOption || undefined)
-          }}
-          className={cn(
-            'mt-4 w-full rounded-none',
-            selectedVariant.stock_level < 1
-              ? 'cursor-not-allowed bg-red-200 text-gray-800 hover:bg-red-300 hover:text-gray-800'
-              : 'bg-gray-700 text-white hover:text-white'
-          )}
-        >
-          {selectedVariant.stock_level < 1 ? (
-            'Out of Stock'
-          ) : (
-            <span className='flex items-center justify-center'>
-              <ShoppingCart className='mr-2' /> Add to Cart
-            </span>
-          )}
-        </Button>
-      )}
+          addToCart(product, wrappingOption || undefined)
+        }}
+        className={cn(
+          'mt-4 w-full rounded-none',
+          product.in_stock === false
+            ? 'cursor-not-allowed bg-red-200 text-gray-800 hover:bg-red-300 hover:text-gray-800'
+            : 'bg-gray-700 text-white hover:text-white'
+        )}
+      >
+        <span className='flex items-center justify-center'>
+          <ShoppingCart className='mr-2' /> Add to Cart
+        </span>
+      </Button>
 
       {/* Add gift wrapping/box options to add to the cart along with the product */}
       {product.product_type === 'wine' && (
