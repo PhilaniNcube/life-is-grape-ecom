@@ -3,6 +3,7 @@ import DashboardShell from './_components/dashboard-shell'
 import { auth } from '@clerk/nextjs/server'
 import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
+import { redirect } from 'next/navigation'
 
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
@@ -15,9 +16,9 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
       clerkUserId: clerKUserId,
     })
 
-    // if (!user || user.role !== 'admin') {
-    //   redirect('/sign-in')
-    // }
+    if (!user || user.role !== 'admin') {
+      redirect('/sign-in')
+    }
 
   return <DashboardShell>{children}</DashboardShell>
 }
