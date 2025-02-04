@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
@@ -36,13 +37,13 @@ const DeleteCategory = ({id, slug}:{id:Id<"categories">, slug:string}) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <h3 className='mb-4 text-lg font-semibold'>Delete Category</h3>
+        <DialogTitle className='mb-4 text-lg font-semibold'>Delete Category</DialogTitle>
         <p className='text-gray-600'>
-          Are you sure you want to delete this category?
+         {categoryProductsCount === undefined || categoryProductsCount === 0 ? 'Are you sure you want to delete this category?' : 'This category has products. First remove the products from this category to delete it.'}
         </p>
         <form action={formAction} className='mt-6 flex justify-end'>
           <Input type='hidden' name='id' value={id} />
-          {categoryProductsCount !== undefined && categoryProductsCount > 0 && (
+          {categoryProductsCount === undefined || categoryProductsCount === 0 && (
             <Button
               type='submit'
               variant='destructive'
