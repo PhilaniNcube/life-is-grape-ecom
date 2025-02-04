@@ -44,9 +44,7 @@ export default function CustomWineLabels() {
             </div>
           </div>
           <div className='lg:w-1/2 lg:pl-12'>
-            <p className='mb-6 text-lg text-gray-600'>
-              We do personalised wine labels for weddings or corporate gifting.
-            </p>
+
             <p className='mb-6 text-lg text-gray-600'>
               We do personalised wine labels for weddings or corporate gifting.
               We print your wine label on matt vinyl or matt paper stickers
