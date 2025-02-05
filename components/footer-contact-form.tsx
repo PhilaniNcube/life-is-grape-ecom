@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { startTransition, useActionState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -20,6 +20,8 @@ import { CircleDashed } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
+import { contactFormAction } from '@/actions/contact-form-action'
+
 
 const FormSchema = z.object({
   name: z.string({
@@ -73,6 +75,18 @@ const FooterContactForm = () => {
       tel: values.data.tel,
       message: values.data.message,
     })
+
+    const formEntries = new FormData()
+    formData.append('name', values.data.name)
+    formData.append('email', values.data.email)
+    formData.append('subject', values.data.subject)
+    formData.append('tel', values.data.tel)
+    formData.append('message', values.data.message)
+
+    contactFormAction(formEntries)
+
+    // startTransition(() => {
+    // })
 
 
     return {
