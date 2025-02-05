@@ -22,6 +22,7 @@ export async function experienceBookingAction(
   const { data, error } = await resend.emails.send({
     from: 'Life Is Grape <shop@lifeisgrape.co.za>',
     to: 'Life Is Grape <shop@lifeisgrape.co.za>',
+    cc: email as string,
     subject: 'New Tasting Booking Enquiry',
     react: TastingBooking({
       email: email as string,
