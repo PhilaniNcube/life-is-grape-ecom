@@ -67,7 +67,7 @@ const TastingBooking = ({
           <Section className='flex items-center justify-center mb-4'>
             <Link
               href='https://lifeisgrape.co.za/products'
-              className='mx-auto mt-5 flex w-[200px] items-center justify-center rounded-sm bg-slate-700 px-5 py-2 text-center font-semibold uppercase text-white'
+              className='mx-auto mt-5 flex items-center justify-center rounded-sm bg-slate-700 px-5 py-2 text-center font-semibold uppercase text-white'
             >
               View Products
             </Link>
