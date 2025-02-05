@@ -41,56 +41,13 @@ const FormSchema = z.object({
 
 const FooterContactForm = () => {
 
-  const sendMessageMutation = useMutation(api.contact_form_submissions.createContactFormSubmission)
-
-
-  async function sendMessage(prevState: unknown, formData: FormData) {
-
-    const formValues = Object.fromEntries(formData.entries())
-
-    // get the values from the formData
-    const values = FormSchema.safeParse({
-      name: formValues.name,
-      email: formValues.email,
-      subject: formValues.subject,
-      tel: formValues.tel,
-      message: formValues.message,
-    })
-
-    if(!values.success) {
-      return {
-        success: false,
-        message: 'Please enter all required fields',
-        errors: values.error.flatten(),
-        values: values.data,
-      }
-    }
-
-
-    // send the message
-    await sendMessageMutation({
-      name: values.data.name,
-      email: values.data.email,
-      subject: values.data.subject,
-      tel: values.data.tel,
-      message: values.data.message,
-    })
-
-
-    return {
-      success: true,
-      message: 'Message sent successfully',
-      values: values.data,
-    }
-
-  }
-
     const form = useForm<z.infer<typeof FormSchema>>({
       resolver: zodResolver(FormSchema),
       mode: 'onBlur',
     })
 
-  const [state, formAction, isPending] = useActionState(sendMessage, null)
+  const [state, formAction, isPending] = useActionState(contactFormAction, null)
+
 
   return (
     <div>
