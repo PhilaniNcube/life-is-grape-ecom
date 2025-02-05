@@ -31,7 +31,7 @@ const TastingBooking = ({
   return (
     <Tailwind>
       <Html>
-        <Container className='bg-slate-100 py-5'>
+        <Container className='bg-slate-100 py-5 my-5'>
           <Text className='text-center text-2xl font-extrabold'>
             Tasting Booking Enquiry
           </Text>
@@ -64,9 +64,14 @@ const TastingBooking = ({
               </Text>
             )}
           </Section>
-          <Link href='https://lifeisgrape.co.za/products' className='w-fit mx-auto'>
-            <Button className='mt-5 bg-slate-700 text-white font-semibold uppercase'>View Products</Button>
-          </Link>
+          <Section className='flex items-center justify-center mb-4'>
+            <Link
+              href='https://lifeisgrape.co.za/products'
+              className='mx-auto mt-5 flex w-[200px] items-center justify-center rounded-sm bg-slate-700 px-5 py-2 text-center font-semibold uppercase text-white'
+            >
+              View Products
+            </Link>
+          </Section>
         </Container>
       </Html>
     </Tailwind>
