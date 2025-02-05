@@ -19,7 +19,7 @@ const ExperienceOptions = async () => {
   )
 
   return (
-    <div id='experiences'>
+    <div id='experiences' className='mb-10'>
       <h2
         className={cn(
           'mb-6 text-center text-2xl font-bold text-gray-900',
@@ -50,6 +50,7 @@ const ExperienceOptions = async () => {
                 <BookingDialog
                   servings={experience.servings}
                   price={experience.price}
+                  type={experience.type}
                 />
               </CardFooter>
             </Card>

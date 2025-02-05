@@ -28,9 +28,11 @@ import { useState } from 'react'
 const BookingDialog = ({
   servings,
   price,
+  type
 }: {
   servings: string
   price: number
+  type: string | undefined
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -47,7 +49,7 @@ const BookingDialog = ({
           experience @{formatPrice(price)} per person
         </DialogTitle>
         <form>
-          <div className='grid md:grid-cols-2 gap-4'>
+          <div className='grid gap-4 md:grid-cols-2'>
             <div>
               <Label htmlFor='name'>Name</Label>
               <Input id='name' name='name' />
@@ -77,7 +79,22 @@ const BookingDialog = ({
               <Label htmlFor='date'>Date</Label>
               <Input id='date' name='date' type='date' />
             </div>
+            {type === 'brandy' && (
+              <div>
+                <Label htmlFor='extras'>Optional Extras</Label>
+                <Select name='extras'>
+                  <SelectTrigger className=''>
+                    <SelectValue placeholder='Do you want any extras' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='none'>None</SelectItem>
+                    <SelectItem value='chocolate truffles'>Chocolate Truffles (extra cost)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
+
           <Button type='submit' className='mt-4'>
             Send
           </Button>
@@ -87,7 +104,7 @@ const BookingDialog = ({
             <EnvelopeIcon className='h-6 w-6' />
             <a href='mailto:wine@lifeisgrape.co.za'>wine@lifeisgrape.co.za</a>
           </div>
-          <div className='flex mt-2 items-center gap-x-2'>
+          <div className='mt-2 flex items-center gap-x-2'>
             <Phone className='h-5 w-5' />
             <a href='tel:0027829311253'>082 9311 253</a>
           </div>
