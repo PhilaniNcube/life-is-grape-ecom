@@ -1,5 +1,6 @@
 'use client'
 
+import { experienceBookingAction } from '@/actions/experience-booking-action'
 import { littlepot } from '@/app/fonts'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,8 +23,8 @@ import {
 import { Doc } from '@/convex/_generated/dataModel'
 import { cn, formatPrice } from '@/lib/utils'
 import { EnvelopeIcon } from '@sanity/icons'
-import { Phone, PhoneCall } from 'lucide-react'
-import { useState } from 'react'
+import { CircleDashed, Phone, PhoneCall } from 'lucide-react'
+import { useActionState, useState } from 'react'
 
 const BookingDialog = ({
   servings,
@@ -35,6 +36,8 @@ const BookingDialog = ({
   type: string | undefined
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+
+  const [state, formAction, isPending] = useActionState(experienceBookingAction, null)
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -48,8 +51,13 @@ const BookingDialog = ({
           Enquire about making a tasting experience booking for the {servings}{' '}
           experience @{formatPrice(price)} per person
         </DialogTitle>
-        <form>
+        <form action={(formData) => {
+          formAction(formData)
+          // setIsOpen(false)
+        }}>
           <div className='grid gap-4 md:grid-cols-2'>
+            <Input type='hidden' name='experience' value={servings} />
+            <Input type='hidden' name='price' value={price} />
             <div>
               <Label htmlFor='name'>Name</Label>
               <Input id='name' name='name' />
@@ -88,16 +96,21 @@ const BookingDialog = ({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value='none'>None</SelectItem>
-                    <SelectItem value='chocolate truffles'>Chocolate Truffles (extra cost)</SelectItem>
+                    <SelectItem value='chocolate truffles'>
+                      Chocolate Truffles (extra cost)
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             )}
           </div>
 
-          <Button type='submit' className='mt-4'>
-            Send
+          <Button type='submit' disabled={isPending} className='mt-4'>
+            {isPending ? <CircleDashed className='animate-spin' /> : 'Send Enquiry'}
           </Button>
+
+          {state?.error && <p className='text-red-500'>{state.error}</p>}
+          {state?.data && <p className='text-green-500'>Enquiry sent successfully</p>}
         </form>
         <div className='mt-3'>
           <div className='flex items-center gap-x-2'>
