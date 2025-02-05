@@ -19,7 +19,7 @@ const WinesSection = async () => {
   const featuredWines = await fetchQuery(api.products.getFeaturedProducts, {type: 'wine'})
 
   return (
-    <section className='bg-gray-100 py-12'>
+    <section className='py-12'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <h2
           className={cn(
