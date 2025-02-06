@@ -62,11 +62,12 @@ export async function createCategoryAction(
 export async function updateCategoryAction(
   prevState: unknown,
   formData: FormData
-): Promise<ActionResponse> {
+) {
   try {
     const validatedFields = UpdateCategorySchema.partial().safeParse(formData)
 
     if (!validatedFields.success) {
+
       return {
         success: false,
         error: 'Invalid form data',
@@ -78,15 +79,19 @@ export async function updateCategoryAction(
 
 
     const category = await fetchMutation(api.categories.updateCategory, {
-      id: validatedFields.data.id as Id<"categories">,
+      id: id,
       parent_id: parent_id ? parent_id : undefined,
       type: validatedFields.data.type,
       name: validatedFields.data.name,
+
     })
+
+    console.log("Testing",category)
 
     revalidatePath('/dashboard/categories')
     return { success: true, data: category }
   } catch (error) {
+    console.log(error)
     return {
       success: false,
       error: 'Failed to update category',

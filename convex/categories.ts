@@ -136,27 +136,22 @@ export const updateCategory = mutation({
     name: v.optional(v.string()),
     parent_id: v.optional(v.id('categories')),
     type: v.optional(v.union(v.literal('wine'), v.literal('spirit'))),
-    attributes: v.optional(v.array(v.string())),
+
   },
   handler: async (ctx, args) => {
-    const { id, ...updates } = args
+    const { id, name, parent_id, type } = args
 
     // Verify category exists
     const category = await ctx.db.get(id)
     if (!category) throw new Error('Category not found')
 
-    // If changing parent, verify new parent exists
-    if (updates.parent_id) {
-      const parent = await ctx.db.get(updates.parent_id)
-      if (!parent) throw new Error('Parent category not found')
 
-      // Prevent circular reference
-      if (updates.parent_id === id) {
-        throw new Error('Category cannot be its own parent')
-      }
-    }
 
-    await ctx.db.patch(id, updates)
+    await ctx.db.patch(id, {
+      name,
+      parent_id : parent_id ? parent_id : undefined,
+      type,
+    })
     return id
   },
 })

@@ -4,6 +4,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { fetchQuery } from "convex/nextjs";
 import Link from "next/link";
+import UpdateCategory from "../_components/update-category";
 
 const CategoryPage = async ({params}:{params:Promise<{id:Id<"categories">}>}) => {
 
@@ -14,7 +15,6 @@ const CategoryPage = async ({params}:{params:Promise<{id:Id<"categories">}>}) =>
 
   const [products, category] = await Promise.all([productData, categoryData])
 
-  console.log(products);
 
 
   return (
@@ -25,6 +25,10 @@ const CategoryPage = async ({params}:{params:Promise<{id:Id<"categories">}>}) =>
           ({category?.category.type})
         </span>
       </h1>
+      <Separator className='my-2' />
+      <div className="grid md:grid-cols-2 gap-4">
+
+      </div>
       {category?.children && category?.children.length > 0 && (
         <>
           <p>Sub Categories</p>
