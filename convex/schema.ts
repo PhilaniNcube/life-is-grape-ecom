@@ -59,11 +59,11 @@ export default defineSchema({
   // Product variants (different sizes/packaging)
   product_variants: defineTable({
     product_id: v.id('products'),
-    sku: v.string(),
+    sku: v.optional(v.string()),
     volume: v.optional(v.number()), // in ml
     label_dimensions: v.optional(v.string()), // in mm
-    price: v.number(),
-    stock_level: v.number(),
+    price: v.optional(v.number()),
+    stock_level: v.optional(v.number()),
     barcode: v.optional(v.string()),
     is_on_sale: v.optional(v.boolean()),
     sale_price: v.optional(v.number()),
@@ -109,6 +109,7 @@ export default defineSchema({
     serving_suggestion: v.optional(v.string()),
     awards: v.optional(v.array(v.string())),
     pairing_suggestions: v.optional(v.string()),
+    description: v.optional(v.string()),
   }).index('byProduct', ['product_id']),
   tasting_experiences: defineTable({
     name: v.string(),
@@ -221,7 +222,10 @@ export default defineSchema({
     redeemed_at: v.optional(v.number()),
     redeemed_order_id: v.optional(v.id('orders')),
     redeemed_by: v.optional(v.string()),
-  }).index('byCode', ['code']).index('byRecipient', ['recipient_email']).index('byPurchaser', ['purchaser_email']),
+  })
+    .index('byCode', ['code'])
+    .index('byRecipient', ['recipient_email'])
+    .index('byPurchaser', ['purchaser_email']),
   order_items: defineTable({
     order_id: v.id('orders'),
     product: v.object({
@@ -239,10 +243,8 @@ export default defineSchema({
         quantity: v.optional(v.number()),
       })
     ),
-
   })
     .index('byOrder', ['order_id'])
-    .index('byProduct', ['product.id'])
-     ,
+    .index('byProduct', ['product.id']),
 })
 

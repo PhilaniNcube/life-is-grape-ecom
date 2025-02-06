@@ -474,6 +474,7 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
     pairing_suggestions: formData.get('pairing_suggestions') || '',
     aging: formData.get('aging') || "",
     distillation_method: formData.get('distillation_method') || '',
+    description: formData.get('description') || '',
   })
 
 
@@ -508,16 +509,17 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
     // if the product type is not wine, then we don't need to add the variety and vintage
     if(productType !== 'wine') {
      const data = await fetchMutation(api.products.addProductAttributes, {
-        product_id: productId,
-        alcohol_content: validatedFields.data.alcohol_content,
-        region: validatedFields.data.region,
-        tasting_notes: validatedFields.data.tasting_notes,
-        serving_suggestion: validatedFields.data.serving_suggestion,
-        awards: validatedFields.data.awards || [],
-        // pairing_suggestions: validatedFields.data.pairing_suggestions,
-        aging: validatedFields.data.aging,
-        distillation_method: validatedFields.data.distillation_method,
-      })
+       product_id: productId,
+       alcohol_content: validatedFields.data.alcohol_content,
+       region: validatedFields.data.region,
+       tasting_notes: validatedFields.data.tasting_notes,
+       serving_suggestion: validatedFields.data.serving_suggestion,
+       awards: validatedFields.data.awards || [],
+       // pairing_suggestions: validatedFields.data.pairing_suggestions,
+       aging: validatedFields.data.aging,
+       distillation_method: validatedFields.data.distillation_method,
+       description: validatedFields.data.description,
+     })
 
           revalidatePath(`/dashboard/products/${productId}`, 'layout')
 
@@ -531,6 +533,7 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
       alcohol_content: validatedFields.data.alcohol_content,
       region: validatedFields.data.region,
       tasting_notes: validatedFields.data.tasting_notes,
+      description: validatedFields.data.description,
       // serving_suggestion: validatedFields.data.serving_suggestion,
       // awards: validatedFields.data.awards,
       // pairing_suggestions: validatedFields.data.pairing_suggestions,

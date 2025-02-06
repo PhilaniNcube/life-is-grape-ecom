@@ -82,13 +82,14 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form action={(formData) => {
-
-           startTransition(() => {
-            formAction(formData)
-           })
-
-          }} className='space-y-4'>
+          <form
+            action={formData => {
+              startTransition(() => {
+                formAction(formData)
+              })
+            }}
+            className='space-y-4'
+          >
             <FormField
               control={form.control}
               name='product_id'
@@ -102,6 +103,19 @@ const AddProductAttributeDialog: React.FC<AddProductAttributeDialogProps> = ({
                       value={productId}
                     />
                   </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='description'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder='description' {...field} />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

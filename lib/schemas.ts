@@ -35,6 +35,8 @@ const AttributesSchema = z.object({
   pairing_suggestions: z.string().optional(),
   aging: z.string().optional(),
   distillation_method: z.string().optional(),
+  description: z.string().optional(),
+
 })
 
 // Product variant schema

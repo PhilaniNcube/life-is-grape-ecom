@@ -570,6 +570,7 @@ export const addProductAttributes = mutation({
     serving_suggestion: v.optional(v.string()),
     awards: v.optional(v.array(v.string())),
     pairing_suggestions: v.optional(v.string()),
+    description: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     // Verify product exists
@@ -595,6 +596,7 @@ export const updateProductAttributes = mutation({
     serving_suggestion: v.optional(v.string()),
     awards: v.optional(v.array(v.string())),
     pairing_suggestions: v.optional(v.string()),
+    description: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args
