@@ -4,6 +4,7 @@ import { Dialog } from '@/components/ui/dialog'
 import { api } from '@/convex/_generated/api'
 import { formatPrice } from '@/lib/utils'
 import { useCartStore } from '@/store/cart-store-provider'
+import { AlertDialogTitle } from '@radix-ui/react-alert-dialog'
 import { useQuery } from 'convex/react'
 
 import { useState } from 'react'
@@ -39,6 +40,10 @@ const CustomLabelPopup = () => {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
+        <AlertDialogTitle>Select A House Wine</AlertDialogTitle>
+        <p className='mb-4 text-xs text-gray-500'>
+          Select a house wine to add to your cart. The personalised labels can only be added in multiples of 6. You will need a minimum of 6 bottles to match the number of personalised labels.
+          </p>
         <div className='grid grid-cols-2 gap-4'>
           {housewines.map(housewine => (
             <div

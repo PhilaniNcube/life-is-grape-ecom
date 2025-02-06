@@ -80,14 +80,6 @@ const AddToCart = ({
 
   return (
     <div className='w-full'>
-      {product.product_type === 'custom_label' && (
-        <div className="py-5">
-          <p className="text-sm text-gray-500 py-2">
-            Custom labels can only be added in multiples of 6, please select a house wine to add to the cart. We will contact you to confirm the label details.
-            </p>
-          <CustomLabelPopup />
-        </div>
-      )}
       <Button
         onClick={() => {
           if (!selectedGiftBox) {
@@ -118,6 +110,17 @@ const AddToCart = ({
           <ShoppingCart className='mr-2' /> Add to Cart
         </span>
       </Button>
+
+      {product.product_type === 'custom_label' && (
+        <div className='py-5'>
+          <p className='py-2 text-sm text-gray-500'>
+            Custom labels can only be added in multiples of 6, please select a
+            house wine to add to the cart. We will contact you to confirm the
+            label details.
+          </p>
+          <CustomLabelPopup />
+        </div>
+      )}
 
       {/* Add gift wrapping/box options to add to the cart along with the product */}
       {product.product_type === 'wine' && (
