@@ -73,7 +73,14 @@ export const getParentCategories = query({
       query = query.filter(q => q.eq(q.field('type'), args.type))
     }
 
-    return await query.collect()
+    const categories = await query.collect()
+
+    // Sort categories by sort_order
+    const sortedCategories = categories.sort((a, b) => {
+      return a.sort_order! - b.sort_order!
+    })
+
+    return sortedCategories
   },
 })
 
@@ -316,7 +323,12 @@ export const getParentCategoryiesWithChildren = query({
         })
       )
 
-      return categoriesWithChildren
+      // sort parent categories by sort_order
+      const sortedCategories = categoriesWithChildren.sort((a, b) => {
+        return a.sort_order! - b.sort_order!
+      })
+
+      return sortedCategories
     } catch (error) {
       console.error(error)
       return []
@@ -326,10 +338,17 @@ export const getParentCategoryiesWithChildren = query({
 
 export const getWineCategories = query({
   handler: async ctx => {
-    return await ctx.db
+    const categories = await ctx.db
       .query('categories')
       .filter(q => q.eq(q.field('type'), 'wine'))
       .collect()
+
+    // Sort categories by sort_order
+    const sortedCategories = categories.sort((a, b) => {
+      return a.sort_order! - b.sort_order!
+    })
+
+    return sortedCategories
   },
 })
 
@@ -354,7 +373,12 @@ export const getWineCategoriesWithChildren = query({
       })
     )
 
+    // sort categories by sort_order
+    const sortedCategories = categoriesWithChildren.sort((a, b) => {
+      return a.sort_order! - b.sort_order!
+    })
 
-    return categoriesWithChildren
+
+    return sortedCategories
   },
 })
