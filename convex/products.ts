@@ -237,7 +237,7 @@ export const getProductsOnSaleWithMainImage = query({
       (a: Doc<'products'>, b: Doc<'products'>) => a.sort_order! - b.sort_order!
     )
 
-    const allProducts = await Promise.all(
+  return await Promise.all(
       sortedProducts.map(async product => {
         const mainImage = await ctx.storage.getUrl(product.main_image)
 
@@ -259,9 +259,7 @@ export const getProductsOnSaleWithMainImage = query({
       })
     )
 
-    return await allProducts.filter(product =>
-      product.variants.some(variant => variant.is_on_sale)
-    )
+
 
 
   },
