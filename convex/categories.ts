@@ -5,7 +5,14 @@ import slugify from 'slugify'
 // Get all categories
 export const getCategories = query({
   handler: async ctx => {
-    return await ctx.db.query('categories').collect()
+    const categories = await ctx.db.query('categories').collect()
+
+    // Sort categories by sort_order
+    const sortedCategories = categories.sort((a, b) => {
+      return a.sort_order! - b.sort_order!
+    })
+
+    return sortedCategories
   },
 })
 
