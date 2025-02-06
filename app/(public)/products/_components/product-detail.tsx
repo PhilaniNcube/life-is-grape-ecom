@@ -50,7 +50,7 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
 
   return (
     <div className='container mx-auto px-4 py-8'>
-      <div className='grid gap-8 md:grid-cols-2 relative'>
+      <div className='relative grid gap-8 md:grid-cols-2'>
         {product === null ? (
           <div className='aspect-square w-full bg-slate-200'>
             Product image not found
@@ -72,19 +72,17 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
                 </Badge>
               )}
               <p className={cn('text-2xl font-semibold')}>
-                {product.variants[0].is_on_sale ? (
+                {product.product.on_sale && product.product.sale_price ? (
                   <div className='flex flex-col items-start'>
                     <span className='text-sm font-semibold text-gray-500 line-through'>
-                      {formatPrice(product.variants[0].price)}
+                      {formatPrice(product.product.price)}
                     </span>
                     <span className=''>
-                      {formatPrice(product.variants[0].sale_price!)}
+                      {formatPrice(product.product.sale_price!)}
                     </span>
                   </div>
                 ) : (
-                  <span className=''>
-                    {formatPrice(product.variants[0].price)}
-                  </span>
+                  <span className=''>{formatPrice(product.product.price)}</span>
                 )}
               </p>
               <p className='text-sm text-gray-600 dark:text-gray-50'>
@@ -98,11 +96,7 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
               </Card>
               <Card>
                 <CardContent className='p-3'>
-
-                  <AddToCart
-
-                    product={product.product}
-                  />
+                  <AddToCart product={product.product} />
                 </CardContent>
               </Card>
             </>
