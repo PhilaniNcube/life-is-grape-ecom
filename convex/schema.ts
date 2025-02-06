@@ -1,3 +1,4 @@
+import { sortingFns } from '@tanstack/react-table'
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 
@@ -90,6 +91,7 @@ export default defineSchema({
     slug: v.string(),
     type: v.union(v.literal('wine'), v.literal('spirit')),
     attributes: v.array(v.string()), // List of applicable attribute IDs
+    sort_order: v.optional(v.number()),
   })
     .index('byParent', ['parent_id'])
     .index('bySlug', ['slug']),

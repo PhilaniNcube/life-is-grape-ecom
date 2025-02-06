@@ -22,6 +22,7 @@ export const getCategoriesByType = query({
   },
 })
 
+
 // Get category by ID with children
 export const getCategoryWithChildren = query({
   args: {
@@ -92,6 +93,26 @@ export const addCategory = mutation({
     })
   },
 })
+
+
+export const updateCategorySortOrder = mutation({
+  args: {
+    id: v.id('categories'),
+    sort_order: v.number(),
+  },
+  handler: async (ctx, args) => {
+
+    const { id, sort_order } = args
+
+    // Verify category exists
+    const category = await ctx.db.get(id)
+    if (!category) throw new Error('Category not found')
+
+    return await ctx.db.patch(id, { sort_order })
+
+  }
+})
+
 
 // Get category by ID
 export const getCategory = query({

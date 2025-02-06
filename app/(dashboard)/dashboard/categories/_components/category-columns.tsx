@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -13,7 +13,8 @@ import { Doc } from '@/convex/_generated/dataModel'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
-import DeleteCategory from './delete-category';
+import DeleteCategory from './delete-category'
+import SortCategoryDialog from './update-category-sort-order'
 
 export const columns: ColumnDef<Doc<'categories'>>[] = [
   {
@@ -57,6 +58,28 @@ export const columns: ColumnDef<Doc<'categories'>>[] = [
       )
     },
     cell: ({ row }) => <div className='capitalize'>{row.getValue('type')}</div>,
+  },
+  {
+    accessorKey: 'sort_order',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Type
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      return (
+        <SortCategoryDialog
+          id={row.original._id}
+          sort_order={row.original.sort_order}
+        />
+      )
+    },
   },
 
   {

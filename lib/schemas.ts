@@ -1,6 +1,4 @@
 import { z } from 'zod'
-import { JSONContent } from 'novel'
-import { on } from 'events'
 // define zod schemas for form actions
 
 // Base product schema
@@ -175,6 +173,7 @@ export const CategoryFormSchema = z.object({
   }),
   parent_id: z.string().optional(),
   attributes: z.array(z.string()).default([]),
+  sort_order: z.coerce.number().int().min(0).default(0).optional(),
 })
 
 // Create category schema
