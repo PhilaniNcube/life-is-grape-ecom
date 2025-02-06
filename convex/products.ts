@@ -141,11 +141,13 @@ export const getProductsByProducer = query({
 export const getUnlabelledProducts = query({
   args: {},
   handler: async (ctx, args) => {
-    const producerId = 'kh7ek0c19zrajw48060jtckqe979crzw' as Id<'producers'>
+
+    //  get the unlabelled category
+    const unlabelledCategory = await ctx.db.query('producers').filter(q => q.eq(q.field('name'), 'Unlabelled')).first()
 
     const unlabbledWines = await ctx.db
       .query('products')
-      .filter(q => q.eq(q.field('producer_id'), producerId))
+      .filter(q => q.eq(q.field('producer_id'), unlabelledCategory?._id))
       .filter(q => q.eq(q.field('product_type'), 'wine'))
       .collect()
 

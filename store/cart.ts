@@ -37,6 +37,11 @@ export type CartStore = {
 
     giftBox?: GiftBox
   ) => void
+  addCartQuantity: (
+    product: ProductWithImage,
+
+    quantity: number
+  ) => void
   // remove a product from the cart by id and variant id
   removeFromCart: (
     id: Id<'products'>,
@@ -103,6 +108,31 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
                       quantity: giftBox?.name === 'Custom wine label' ? 6 : 1,
                     }
                   : undefined,
+              },
+            ],
+            isOpen: true,
+          }))
+        },
+        addCartQuantity: (product, quantity) => {
+          const cartItem = get().cart.find(
+            item =>
+              item.product._id === product._id
+          )
+
+          if (cartItem) {
+            get().updateQuantity(product._id, quantity)
+            set({ isOpen: true })
+            return
+          }
+
+          set(state => ({
+            cart: [
+              ...state.cart,
+              {
+                product,
+                quantity: quantity,
+
+                giftBox: undefined,
               },
             ],
             isOpen: true,
