@@ -230,7 +230,7 @@ export const getShallowProductsWithMainImage = query({
 export const getProductsOnSaleWithMainImage = query({
   args: {},
   handler: async (ctx, args) => {
-    const products = await ctx.db.query('products').collect()
+    const products = await ctx.db.query('products').filter(q => q.eq(q.field('on_sale'), true)).collect()
 
     // order the products by the first item in the categories array
     const sortedProducts = products.sort(

@@ -38,7 +38,7 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
 
       {/* Sales Badge */}
       {product.on_sale && (
-        <div className='absolute top-0 right-0 bg-red-500 text-white font-bold text-xs p-2'>
+        <div className='absolute top-0 right-0 bg-red-500 text-white font-bold text-x z-10 p-2'>
           Sale
         </div>
       )}
