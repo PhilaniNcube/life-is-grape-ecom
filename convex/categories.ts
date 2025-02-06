@@ -22,10 +22,18 @@ export const getCategoriesByType = query({
     type: v.union(v.literal('wine'), v.literal('spirit')),
   },
   handler: async (ctx, args) => {
-    return await ctx.db
+    const categories = await ctx.db
       .query('categories')
       .filter(q => q.eq(q.field('type'), args.type))
       .collect()
+
+    // Sort categories by sort_order
+
+    const sortedCategories = categories.sort((a, b) => {
+      return a.sort_order! - b.sort_order!
+    })
+
+    return sortedCategories
   },
 })
 
