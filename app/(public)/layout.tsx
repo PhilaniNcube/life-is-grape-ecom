@@ -6,9 +6,9 @@ import { ToastProvider } from '@/components/ui/toast'
 import ComingSoon from '@/components/coming-soon'
 
 export default async function PublicLayout({
-  // children,
+  children,
 }: Readonly<{
-  // children: React.ReactNode
+  children: React.ReactNode
 }>) {
   return (
     <CartStoreProvider>
@@ -16,8 +16,8 @@ export default async function PublicLayout({
         {/* <PublicHeader /> */}
         <main className='grow'>
           {/* <AgeVerificationBanner /> */}
-          {/* {children} */}
-          <ComingSoon  />
+          {children}
+
         </main>
         <ToastProvider />
         <Footer />

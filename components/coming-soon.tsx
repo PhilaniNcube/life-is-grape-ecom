@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { littlepot } from '@/app/fonts'
 
 
 interface ComingSoonProps {
@@ -32,15 +34,11 @@ export default function ComingSoon() {
   }
 
   return (
-    <div className='text-center flex flex-col items-center justify-center h-full'>
-      <h1 className='mb-4 text-4xl font-bold'>Coming Soon</h1>
+    <div className='flex h-[100dvh] flex-col items-center justify-center text-center'>
+      <h1 className={cn('mb-4 text-4xl font-bold', littlepot.className)}>Coming Soon</h1>
       <p className='mb-8 text-xl'>
         We're working hard to bring you something amazing. Stay tuned!
       </p>
-
-
-
-
     </div>
   )
 }

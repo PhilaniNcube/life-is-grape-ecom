@@ -1,3 +1,4 @@
+import ComingSoon from "@/components/coming-soon";
 import AboutUs from "./_components/about-us";
 import DeliveryInfo from "./_components/delivery-info";
 import HomePageGrid from "./_components/home-page-grid";
@@ -8,15 +9,16 @@ import WinesSection from "./_components/wines-section";
 export default function Home() {
   return (
     <section className=''>
-      <HomePageHero />
+         <ComingSoon  />
+      {/* <HomePageHero /> */}
 
-      <DeliveryInfo />
-      <HomePageGrid />
-      <WinesSection />
+      {/* <DeliveryInfo /> */}
+      {/* <HomePageGrid /> */}
+      {/* <WinesSection /> */}
       {/* <Brands /> */}
-      <AboutUs />
+      {/* <AboutUs /> */}
       {/* <GiftBoxes /> */}
-      <SpecialsBanner />
+      {/* <SpecialsBanner /> */}
     </section>
   )
 }
