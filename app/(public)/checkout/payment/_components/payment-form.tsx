@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { formatPrice } from '@/lib/utils'
+import { cn, formatPrice } from '@/lib/utils'
 import { startTransition, useActionState, useState } from 'react'
 import { useCartStore } from '@/store/cart-store-provider'
 import Voucher from '../../_components/voucher'
@@ -55,7 +55,7 @@ const PaymentForm = ({ order }: { order: Doc<'orders'> }) => {
           />
           <div className='space-y-2'>
             {order.voucher_value && (
-              <div className='flex justify-between bg-blue-600 text-white p-2'>
+              <div className='flex justify-between bg-blue-600 p-2 text-white'>
                 <small>Voucher</small>
                 <small>{formatPrice(order.voucher_value)}</small>
               </div>
@@ -64,7 +64,7 @@ const PaymentForm = ({ order }: { order: Doc<'orders'> }) => {
               <span>Subtotal</span>
 
               <div className='flex flex-col'>
-                <small className='text-red-600 line-through'>
+                <small className={cn(order.voucher_value && 'line-through')}>
                   {formatPrice(order.subtotal)}
                 </small>
                 <small>
