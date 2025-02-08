@@ -1,44 +1,63 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { littlepot } from '@/app/fonts'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { X } from 'lucide-react'
+import Image from 'next/image'
 
+export default function RedesignOverlay() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDismissed, setIsDismissed] = useState(false)
 
-interface ComingSoonProps {
-  launchDate: string
-}
+  useEffect(() => {
+    const overlayDismissed = searchParams.get('overlayDismissed')
+    setIsVisible(overlayDismissed !== 'true')
+  }, [searchParams])
 
-export default function ComingSoon() {
-  // const [timeRemaining, setTimeRemaining] = useState(
-  //   getTimeRemaining(launchDate)
-  // )
-  const [email, setEmail] = useState('')
-
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setTimeRemaining(getTimeRemaining(launchDate))
-  //   }, 1000)
-
-  //   return () => clearInterval(timer)
-  // }, [launchDate])
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Here you would typically send the email to your backend
-    console.log('Submitted email:', email)
-    setEmail('')
-    alert("Thank you for your interest! We'll notify you when we launch.")
+  const handleDismiss = () => {
+    setIsDismissed(true)
+    const params = new URLSearchParams(searchParams)
+    params.set('overlayDismissed', 'true')
+    router.push(`?${params.toString()}`)
+    setTimeout(() => setIsVisible(false), 500) // Wait for fade-out animation
   }
 
+  if (!isVisible) return null
+
   return (
-    <div className='flex h-[100dvh] flex-col items-center justify-center text-center'>
-      <h1 className={cn('mb-4 text-4xl font-bold', littlepot.className)}>Coming Soon</h1>
-      <p className='mb-8 text-xl'>
-        We're working hard to bring you something amazing. Stay tuned!
-      </p>
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 transition-opacity duration-500 ease-in-out ${
+        isDismissed ? 'opacity-0' : 'opacity-100'
+      }`}
+    >
+      <div
+        className={`relative mx-4 w-full max-w-5xl min-h-[70vh] rounded-lg bg-white p-8 text-center shadow-2xl transition-all duration-500 ease-in-out flex flex-col items-center justify-center ${
+          isDismissed ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
+        }`}
+      >
+
+        <h1 className='mb-4 text-3xl font-bold text-gray-800'>
+          Website Under Redesign
+        </h1>
+        <p className='mb-6 text-xl max-w-3xl mx-auto text-gray-600'>
+          We're working on something exciting! Our website will be back soon
+          with a fresh new look.
+        </p>
+        <div className=''>
+          <Image
+            src='/images/life-is-grape-logo.png'
+            width={400}
+            height={100}
+            alt='Life Is Grape'
+            className='w-64 object-cover'
+          />
+        </div>
+        <p className='mt-6 text-sm text-gray-500'>
+          Thank you for your patience!
+        </p>
+      </div>
     </div>
   )
 }

@@ -132,3 +132,75 @@ export const deleteGiftVoucher = mutation({
     await ctx.db.delete(id)
   },
 })
+
+
+// get giftVoucher by code
+export const getGiftVoucherByCode = query({
+  args: {
+    code: v.string(),
+  },
+  handler: async (ctx, { code }) => {
+    const giftVoucher = await ctx.db
+      .query('gift_vouchers')
+      .filter(q => q.eq(q.field('code'), code))
+      .first()
+
+    return giftVoucher
+  },
+})
+
+
+// apply the gift voucher to the order
+export const applyGiftVoucher = mutation({
+  args: {
+    code: v.string(),
+    order_id: v.id('orders'),
+  },
+  handler: async (ctx, args) => {
+    // check if the gift voucher code exists
+    const giftVoucher = await ctx.db
+      .query('gift_vouchers')
+      .filter(q => q.eq(q.field('code'), args.code))
+      .first()
+
+    if (!giftVoucher) {
+      throw new Error('Gift voucher code does not exist')
+    }
+
+    // check if the gift voucher has already been redeemed
+    if (giftVoucher.redeemed) {
+      throw new Error('Gift voucher has already been redeemed')
+    }
+
+    // check if the gift voucher has been paid for
+    if (!giftVoucher.paid) {
+      throw new Error('Gift voucher has not been paid for')
+    }
+
+    //  update the order value with the gift voucher value
+    const order = await ctx.db.get(args.order_id)
+
+    //  check if the order exists
+    if (!order) {
+      throw new Error('Order does not exist')
+    }
+
+    //  check if the order has already been paid for
+    if (order.status === 'paid') {
+      throw new Error('Order has already been paid for')
+    }
+
+    // check if the voucher value is greater than the order total
+    if (giftVoucher.value > order.subtotal) {
+      throw new Error('Gift voucher value is greater than order total')
+    }
+
+    // patch the order with the gift voucher value
+    await ctx.db.patch(args.order_id, {
+      voucher_value: giftVoucher.value,
+      voucher_id: giftVoucher._id,
+    })
+
+    return giftVoucher
+  },
+})

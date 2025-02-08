@@ -17,8 +17,8 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { redirect, useRouter } from 'next/navigation'
-import { Textarea } from '@/components/ui/textarea'
+import { useRouter } from 'next/navigation'
+
 
 interface CheckoutFormInputs {
   first_name: string
@@ -41,11 +41,15 @@ export default function CheckoutForm() {
 
 
 
+
+
+
+
   const { cart, totalCartPrice, clearCart } = useCartStore(state => state)
   const totalPrice = totalCartPrice()
 
-   const streetAddress = watch('street') || ''
-   const city = watch('city') || ''
+  const streetAddress = watch('street') || ''
+  const city = watch('city') || ''
 
   const shipping =
     totalPrice > 2000
@@ -118,6 +122,8 @@ export default function CheckoutForm() {
     // Clear the cart
     // clearCart()
   }
+
+  const applyVoucher = () => {}
 
   return (
     <div className='container mx-auto px-4 py-8'>
@@ -307,6 +313,7 @@ export default function CheckoutForm() {
               <Separator />
               <div className='flex justify-between'>
                 <span>Subtotal</span>
+
                 <span>{formatPrice(totalPrice)}</span>
               </div>
               <div className='flex justify-between'>
@@ -314,6 +321,7 @@ export default function CheckoutForm() {
                 <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
               </div>
               <Separator />
+
               <div className='flex justify-between font-bold'>
                 <span>Total</span>
                 <span>{formatPrice(total)}</span>

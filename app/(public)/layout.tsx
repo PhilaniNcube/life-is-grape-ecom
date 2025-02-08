@@ -12,8 +12,9 @@ export default async function PublicLayout({
 }>) {
   return (
     <CartStoreProvider>
+      <ComingSoon />
       <div className='flex h-[100dvh] flex-col bg-white'>
-        {/* <PublicHeader /> */}
+        <PublicHeader />
         <main className='grow'>
           {/* <AgeVerificationBanner /> */}
           {children}

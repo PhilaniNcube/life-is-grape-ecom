@@ -12,29 +12,23 @@ import {
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { formatPrice } from '@/lib/utils'
-import { startTransition, useActionState } from 'react'
+import { startTransition, useActionState, useState } from 'react'
 import { useCartStore } from '@/store/cart-store-provider'
+import Voucher from '../../_components/voucher'
 
 const PaymentForm = ({ order }: { order: Doc<'orders'> }) => {
   const [state, formAction, isPending] = useActionState(updateOrderStatus, null)
-   const { clearCart } = useCartStore(state => state)
+  const { clearCart } = useCartStore(state => state)
+
+  const [code, setCode] = useState('')
+  const [voucherValue, setVoucherValue] = useState(0)
+
+  const orderTotal = order.voucher_value
+    ? order.subtotal - order.voucher_value + order.shipping
+    : order.total
 
   return (
-    <form
-      action={() => {
-        const data = new FormData()
-
-        data.append('order_id', order._id)
-        data.append('email', order.email)
-        data.append('amount', order.total.toString())
-
-        startTransition(() => {
-          formAction(data)
-          // clearCart()
-        })
-      }}
-      className='container mx-auto py-10'
-    >
+    <div className='my-8'>
       <Card className='mx-auto max-w-md'>
         <CardHeader>
           <CardTitle>Order Summary</CardTitle>
@@ -53,10 +47,31 @@ const PaymentForm = ({ order }: { order: Doc<'orders'> }) => {
             </div>
           </div>
           <Separator />
+          <Voucher
+            code={code}
+            setCode={setCode}
+            setVoucherValue={setVoucherValue}
+            order_id={order._id}
+          />
           <div className='space-y-2'>
+            {order.voucher_value && (
+              <div className='flex justify-between bg-blue-600 text-white p-2'>
+                <small>Voucher</small>
+                <small>{formatPrice(order.voucher_value)}</small>
+              </div>
+            )}
             <div className='flex justify-between'>
               <span>Subtotal</span>
-              <span>{formatPrice(order.subtotal)}</span>
+
+              <div className='flex flex-col'>
+                <small className='text-red-600 line-through'>
+                  {formatPrice(order.subtotal)}
+                </small>
+                <small>
+                  {order.voucher_value &&
+                    formatPrice(order.subtotal - order.voucher_value)}
+                </small>
+              </div>
             </div>
             <div className='flex justify-between'>
               <span>Shipping</span>
@@ -64,21 +79,36 @@ const PaymentForm = ({ order }: { order: Doc<'orders'> }) => {
             </div>
             <div className='flex justify-between font-semibold'>
               <span>Total</span>
-              <span>{formatPrice(order.total)}</span>
+              <span>{formatPrice(orderTotal)}</span>
             </div>
           </div>
-        </CardContent>
-        <CardFooter>
-          <Button
-            disabled={isPending}
-            className='w-full rounded-none'
-            size='lg'
+
+          <form
+            action={() => {
+              const data = new FormData()
+
+              data.append('order_id', order._id)
+              data.append('email', order.email)
+              data.append('amount', orderTotal.toString())
+
+              startTransition(() => {
+                formAction(data)
+                // clearCart()
+              })
+            }}
+            className=''
           >
-            Confirm Order
-          </Button>
-        </CardFooter>
+            <Button
+              disabled={isPending}
+              className='w-full rounded-none'
+              size='lg'
+            >
+              Confirm Order
+            </Button>
+          </form>
+        </CardContent>
       </Card>
-    </form>
+    </div>
   )
 }
 export default PaymentForm

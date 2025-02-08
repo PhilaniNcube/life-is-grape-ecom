@@ -194,6 +194,8 @@ export default defineSchema({
     payment_reference: v.optional(v.string()),
     subtotal: v.number(),
     shipping: v.number(),
+    voucher_value: v.optional(v.number()),
+    voucher_id: v.optional(v.id('gift_vouchers')),
     total: v.number(),
     // Timestamps
     updated_at: v.optional(v.number()),

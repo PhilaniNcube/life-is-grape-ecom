@@ -9,16 +9,16 @@ import WinesSection from "./_components/wines-section";
 export default function Home() {
   return (
     <section className=''>
-         <ComingSoon  />
-      {/* <HomePageHero /> */}
 
-      {/* <DeliveryInfo /> */}
-      {/* <HomePageGrid /> */}
-      {/* <WinesSection /> */}
+      <HomePageHero />
+
+      <DeliveryInfo />
+      <HomePageGrid />
+      <WinesSection />
       {/* <Brands /> */}
-      {/* <AboutUs /> */}
+      <AboutUs />
       {/* <GiftBoxes /> */}
-      {/* <SpecialsBanner /> */}
+      <SpecialsBanner />
     </section>
   )
 }
