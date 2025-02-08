@@ -12,14 +12,14 @@ export default function RedesignOverlay() {
   const [isDismissed, setIsDismissed] = useState(false)
 
   useEffect(() => {
-    const overlayDismissed = searchParams.get('overlayDismissed')
+    const overlayDismissed = searchParams.get('dismissed')
     setIsVisible(overlayDismissed !== 'true')
   }, [searchParams])
 
   const handleDismiss = () => {
     setIsDismissed(true)
     const params = new URLSearchParams(searchParams)
-    params.set('overlayDismissed', 'true')
+    params.set('dismissed', 'true')
     router.push(`?${params.toString()}`)
     setTimeout(() => setIsVisible(false), 500) // Wait for fade-out animation
   }
