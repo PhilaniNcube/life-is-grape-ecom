@@ -40,7 +40,7 @@ export default function RedesignOverlay() {
         {' '}
         <button
           onClick={handleDismiss}
-          className='absolute right-2 top-2 text-gray-500 transition-colors duration-200 hover:text-gray-700'
+          className='absolute right-2 top-2 transition-colors duration-200 text-white hover:text-gray-700'
           aria-label='Dismiss'
         >
           <X size={24} />
