@@ -33,15 +33,22 @@ export default function RedesignOverlay() {
       }`}
     >
       <div
-        className={`relative mx-4 w-full max-w-5xl min-h-[70vh] rounded-lg bg-white p-8 text-center shadow-2xl transition-all duration-500 ease-in-out flex flex-col items-center justify-center ${
+        className={`relative mx-4 flex min-h-[70vh] w-full max-w-5xl flex-col items-center justify-center rounded-lg bg-white p-8 text-center shadow-2xl transition-all duration-500 ease-in-out ${
           isDismissed ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
         }`}
       >
-
+        {' '}
+        <button
+          onClick={handleDismiss}
+          className='absolute right-2 top-2 text-gray-500 transition-colors duration-200 hover:text-gray-700'
+          aria-label='Dismiss'
+        >
+          <X size={24} />
+        </button>
         <h1 className='mb-4 text-3xl font-bold text-gray-800'>
           Website Under Redesign
         </h1>
-        <p className='mb-6 text-xl max-w-3xl mx-auto text-gray-600'>
+        <p className='mx-auto mb-6 max-w-3xl text-xl text-gray-600'>
           We're working on something exciting! Our website will be back soon
           with a fresh new look.
         </p>
