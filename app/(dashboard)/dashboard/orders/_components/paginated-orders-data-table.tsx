@@ -80,7 +80,7 @@ const PaginatedOrdersTable = () => {
           className='rounded-md bg-primary px-4 py-2 text-white'
           disabled={isLoading || status === 'Exhausted'}
         >
-          {isLoading ? 'Loading...' : 'Load More'}
+          {isLoading ? 'Loading..' : 'Load More'}
         </Button>
       </div>
     </div>

@@ -12,7 +12,7 @@ export default async function PublicLayout({
 }>) {
   return (
     <CartStoreProvider>
-      <ComingSoon />  
+      {/* <ComingSoon />   */}
       <div className='flex h-[100dvh] flex-col bg-white'>
         <PublicHeader />
         <main className='grow'>
