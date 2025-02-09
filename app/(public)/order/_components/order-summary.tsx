@@ -13,6 +13,8 @@ import { format } from 'date-fns'
 import { Doc } from '@/convex/_generated/dataModel'
 import { formatPrice } from '@/lib/utils'
 import { Separator } from '@radix-ui/react-dropdown-menu'
+import { fetchQuery } from 'convex/nextjs'
+import { api } from '@/convex/_generated/api'
 
 
 
@@ -21,8 +23,13 @@ type OrderSummaryProps = {
   orderItems: Doc<"order_items">[]
 }
 
-export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
+export default async function OrderSummary({ order, orderItems }: OrderSummaryProps) {
 
+  
+  // check if there is a personalised label attached to the order
+  const personalisedLabel = await fetchQuery(api.personalised_labels.getPersonalisedLabelByOrderId, {
+    order_id: order._id
+  })
 
   const statusColor = {
     pending: 'bg-yellow-500',
@@ -109,6 +116,30 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
           </Table>
         </CardContent>
       </Card>
+
+      {personalisedLabel && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Personalised Label</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className='grid gap-6 md:grid-cols-2'>
+              <div>
+                <h3 className='mb-2 font-semibold'>Label Information</h3>
+                <p>Message: {personalisedLabel.message}</p>
+              </div>
+              <div>
+                <h3 className='mb-2 font-semibold'>Uploaded Image</h3>
+                <img
+                  src={personalisedLabel.image!}
+                  alt='Personalised Label'
+                  className='w-48 object-cover'
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>
