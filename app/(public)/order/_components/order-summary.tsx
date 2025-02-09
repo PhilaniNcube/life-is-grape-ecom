@@ -120,13 +120,19 @@ export default function OrderSummary({ order, orderItems }: OrderSummaryProps) {
               <span>Subtotal</span>
               <span>{formatPrice(order.subtotal)}</span>
             </div>
+            {order.voucher_value && order.voucher_value > 0 && (
+              <div className='flex justify-between text-green-600'>
+                <span>Voucher Applied</span>
+                <span>-{formatPrice(order.voucher_value)}</span>
+              </div>
+            )}
             <div className='flex flex-row justify-between'>
               <span>Shipping</span>
               <span>{formatPrice(order.shipping)}</span>
             </div>
             <div className='flex justify-between font-semibold'>
               <span>Total</span>
-              <span>{formatPrice(order.total)}</span>
+              <span>{order.voucher_value ? formatPrice((order.subtotal - order.voucher_value) + order.shipping) : formatPrice(order.total)}</span>
             </div>
             <Separator className='my-3' />
             {order.payment_reference && (
