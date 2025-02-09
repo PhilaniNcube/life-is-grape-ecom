@@ -82,10 +82,7 @@ export const redeemGiftVoucher = mutation({
       throw new Error('Gift voucher has not been paid for')
     }
 
-    // check if the receipient email matches the redeemed by email
-    if (giftVoucher.recipient_email !== args.redeemed_by) {
-      throw new Error('Gift voucher recipient email does not match redeemed by email')
-    }
+ 
 
     // update the gift voucher
     await ctx.db.patch(giftVoucher._id, {

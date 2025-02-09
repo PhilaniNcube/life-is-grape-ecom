@@ -64,6 +64,27 @@ export async function POST(req: NextRequest) {
         status: 'paid',
       })
 
+      // if the order has a voucher, redeem the voucher
+
+      if(order.voucher_id) {
+   
+        //  first get the voucher
+        const voucher = await fetchQuery(api.gift_vouchers.getGiftVoucher, {
+          id: order.voucher_id,
+        })
+  
+          //  if the voucher exists,  and has not been redeeme then redeem it
+        if(voucher && !voucher.redeemed) {
+          await fetchMutation(api.gift_vouchers.redeemGiftVoucher, {
+            order_id: order._id,
+            code: voucher.code,
+            redeemed_by: order.email,
+          })
+        } 
+
+        
+    }
+
       // send email to shop@lifeisgrape.co.za that a new order has been placed
       await resend.emails.send({
         from: 'shop@lifeisgrape.co.za',
