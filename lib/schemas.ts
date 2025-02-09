@@ -260,7 +260,20 @@ export const RedeemGiftVoucherSchema = z.object({
   redeemed_by: z.string(),
 })
 
+// Base Personalised Label Schema
+const PersonalisedLabelSchema = z.object({
+  order_id: z.string(),
+  image: z.string(),
+  message: z.string().max(500, 'Message must be less than 500 characters'),
+});
 
+export const CreatePersonalisedLabelSchema = PersonalisedLabelSchema;
+
+export const UpdatePersonalisedLabelSchema = PersonalisedLabelSchema.partial().extend({
+  id: z.string(),
+});
+
+export type PersonalisedLabel = z.infer<typeof PersonalisedLabelSchema>;
 
 export type GiftVoucher = z.infer<typeof GiftVoucherSchema>
 

@@ -250,5 +250,10 @@ export default defineSchema({
   })
     .index('byOrder', ['order_id'])
     .index('byProduct', ['product.id']),
+    personalised_labels: defineTable({
+    order_id: v.id('orders'),
+    image: v.id('_storage'),
+    message: v.string(),
+    }),
 })
 
