@@ -28,13 +28,13 @@ export default function Footer() {
               <FaFacebookF className='h-6 w-6' />
             </Link>
             <Link
-              href='https://www.instagram.com/lifeisgrapewine'
+              href='https://www.instqagram.com/lifeisgrapesa/'
               className='text-sm'
             >
               <FaInstagram className='h-6 w-6' />
             </Link>
             <Link
-              href='https://www.instagram.com/lifeisgrapewine'
+              href='https://www.tiktok.com/@life.is.grape'
               className='text-sm'
             >
               <FaTiktok className='h-6 w-6' />
