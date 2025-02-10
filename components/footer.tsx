@@ -28,7 +28,7 @@ export default function Footer() {
               <FaFacebookF className='h-6 w-6' />
             </Link>
             <Link
-              href='https://www.instqagram.com/lifeisgrapesa/'
+              href='https://www.instagram.com/lifeisgrapesa/'
               className='text-sm'
             >
               <FaInstagram className='h-6 w-6' />
