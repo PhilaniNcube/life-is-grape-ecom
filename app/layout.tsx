@@ -30,6 +30,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://lifeisgrape.co.za'),
   title: 'Life Is Grape',
   description:
     'Established on 1 April 2016, our purpose is to introduce proudly South African brands of hand-crafted wines and spirits to those operating in the trade, and to consumers. These products are produced in South Africa with quality and passion. South Africa is recognised worldwide as producing premium quality, interesting and distinctive wines and spirits in an environmentally sensitive and ethically responsible manner.',
@@ -52,6 +53,23 @@ export const metadata: Metadata = {
     'environmentally sensitive',
     'ethically responsible',
   ],
+  openGraph: {
+    type: 'website',
+    locale: 'en_ZA',
+    url: 'https://lifeisgrape.co.za',
+    title: 'Life Is Grape',
+    
+    description:
+      'Established on 1 April 2016, our purpose is to introduce proudly South African brands of hand-crafted wines and spirits to those operating in the trade, and to consumers. These products are produced in South Africa with quality and passion. South Africa is recognised worldwide as producing premium quality, interesting and distinctive wines and spirits in an environmentally sensitive and ethically responsible manner.',
+    images: [
+      {
+        url: 'https://lifeisgrape.co.za/images/circle_logo.png',
+        width: 500,
+        height: 500,
+        alt: 'Life Is Grape',
+      },
+    ],
+  },
 }
 
 export default function RootLayout({
