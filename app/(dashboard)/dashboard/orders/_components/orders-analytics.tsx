@@ -14,8 +14,7 @@ const OrdersAnalytics = async () => {
   // calculate the number of total orders
   const totalOrders = orders.status === 'fulfilled' ? orders.value.length : 0
 
-  // calculate the number of total order items
-  const totalOrderItems = orderItems.status === 'fulfilled' ? orderItems.value.length : 0
+
 
   // calculate the total revenue
   const totalRevenue = orders.status === 'fulfilled' ? orders.value.reduce((acc, order) => acc + order.total, 0) : 0
@@ -39,17 +38,7 @@ const OrdersAnalytics = async () => {
 
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>
-              Total Items Sold
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>{totalOrderItems}</div>
-
-          </CardContent>
-        </Card>
+  
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>
