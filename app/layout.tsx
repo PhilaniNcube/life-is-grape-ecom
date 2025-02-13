@@ -3,14 +3,12 @@ import localFont from 'next/font/local'
 import { ClerkProvider } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
 import { Poppins } from 'next/font/google'
-
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import Providers from '@/components/providers'
 
 import './globals.css'
 
 import { Toaster } from 'sonner'
-
-
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -58,7 +56,7 @@ export const metadata: Metadata = {
     locale: 'en_ZA',
     url: 'https://lifeisgrape.co.za',
     title: 'Life Is Grape',
-    
+
     description:
       'Established on 1 April 2016, our purpose is to introduce proudly South African brands of hand-crafted wines and spirits to those operating in the trade, and to consumers. These products are produced in South Africa with quality and passion. South Africa is recognised worldwide as producing premium quality, interesting and distinctive wines and spirits in an environmentally sensitive and ethically responsible manner.',
     images: [
@@ -84,14 +82,15 @@ export default function RootLayout({
           className={cn(
             'flex min-h-screen flex-col bg-white',
 
-            poppins.className,
-
+            poppins.className
           )}
         >
-          <Providers>
-            {children}
-            <Toaster />
-          </Providers>
+          <NuqsAdapter>
+            <Providers>
+              {children}
+              <Toaster />
+            </Providers>
+          </NuqsAdapter>
         </body>
       </html>
     </ClerkProvider>
