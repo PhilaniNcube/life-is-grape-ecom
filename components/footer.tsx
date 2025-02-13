@@ -21,12 +21,12 @@ export default function Footer() {
             </Link>
           </div>
           <div className='mt-3 flex items-center gap-x-3'>
-            {/* <Link
-              href='https://www.facebook.com/lifeisgrape40'
+            <Link
+              href='https://www.facebook.com/lifeisgrapeSA/'
               className='text-sm'
             >
               <FaFacebookF className='h-6 w-6' />
-            </Link> */}
+            </Link>
             <Link
               href='https://www.instagram.com/lifeisgrapesa/'
               className='text-sm'
