@@ -34,6 +34,8 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
           width={500}
           height={500}
           className='aspect-square w-full'
+          priority
+          quality={100}
         />
       </Link>
 
