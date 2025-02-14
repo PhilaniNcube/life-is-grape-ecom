@@ -51,7 +51,8 @@ const page = async ({ params }: Props) => {
       price: product.product.on_sale ? product.product.sale_price : product?.product.price,
       priceCurrency: 'ZAR',
       availability: product.product.in_stock ? 'InStock' : 'OutOfStock',
-      url: `https://lifeisgrape.co.za/products/${slug}`
+      url: `https://lifeisgrape.co.za/products/${slug}`,
+      
     }
   }
 
