@@ -75,7 +75,7 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
               <h1 className={cn('text-3xl font-bold', littlepot.className)}>
                 {product.product.name}
               </h1>
-              {product.variants[0].is_on_sale && (
+              {product.product.on_sale && (
                 <Badge className='absolute right-0 top-0 rounded-full bg-red-600 text-xs text-white'>
                   Sale
                 </Badge>
