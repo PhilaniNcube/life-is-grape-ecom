@@ -44,7 +44,7 @@ const ProductPage = async ({
             <VariantList product_id={id} />
           </Suspense> */}
           {attributes.length > 0 ? (
-            <h2 className='text-center text-2xl font-bold'>Attribute</h2>
+            <h2 className='text-2xl font-bold'>Attribute</h2>
           ) : (
             <AddProductAttributeDialog
               productId={id}
