@@ -34,18 +34,23 @@ const page = async ({ params }: Props) => {
   const { slug } = await params
   const product = await fetchQuery(api.products.getProductBySlug, { slug })
 
+  if (!product) return <div>Product not found</div>
+
+  // get the product image
+  const productImage = await fetchQuery(api.products.getMainImage, { id: product?.product.main_image! })
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product?.product.name,
-    description: product?.product.description,
-    image: product?.product.main_image,
+    name: product.product.name,
+    description: product.product.description,
+    image: productImage,
     sku: product?.product._id,
     offers: {
       '@type': 'Offer',
-      price: product?.product.on_sale ? product.product.sale_price : product?.product.price,
+      price: product.product.on_sale ? product.product.sale_price : product?.product.price,
       priceCurrency: 'ZAR',
-      availability: product?.product.in_stock ? 'InStock' : 'OutOfStock',
+      availability: product.product.in_stock ? 'InStock' : 'OutOfStock',
       url: `https://lifeisgrape.co.za/products/${slug}`
     }
   }
