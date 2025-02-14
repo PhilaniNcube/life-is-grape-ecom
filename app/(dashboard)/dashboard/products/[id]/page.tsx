@@ -39,10 +39,10 @@ const ProductPage = async ({
           producers={producers}
         />
         <div className='w-2/5'>
-          <AddProductVariant productId={id} />
+          {/* <AddProductVariant productId={id} />
           <Suspense fallback={<div>Loading...</div>}>
             <VariantList product_id={id} />
-          </Suspense>
+          </Suspense> */}
           {attributes.length > 0 ? (
             <h2 className='text-center text-2xl font-bold'>Attribute</h2>
           ) : (
