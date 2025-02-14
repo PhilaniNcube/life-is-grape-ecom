@@ -34,7 +34,7 @@ const WinesSection = async () => {
         </div>
         <div className='mt-8 text-center'>
           <Link href='/wines'>
-            <Button className='px-6 py-3 text-lg text-white bg-gray-700'>
+            <Button aria-describedby='view all wines' aria-description='view all wines' className='px-6 py-3 text-lg text-white bg-gray-700'>
               View All Wines
             </Button>
           </Link>

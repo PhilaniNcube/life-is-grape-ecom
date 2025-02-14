@@ -60,7 +60,7 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
             href={`/products/${product.slug}`}
             className='hidden @md:inline-block'
           >
-            <Button className='rounded-md bg-gray-700 text-white'>
+            <Button aria-description='view product details' className='rounded-md bg-gray-700 text-white'>
               <span className='hidden text-xs lg:inline-block'>
                 View Details
               </span>

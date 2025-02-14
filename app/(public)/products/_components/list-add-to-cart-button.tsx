@@ -31,6 +31,7 @@ const ListAddToCartButton = ({
 
   return (
     <Button
+      aria-description="Add to cart"
       variant='outline'
       className='border-slate-600 text-xs font-medium text-slate-600 outline-4 outline-slate-600 '
       onClick={() => addToCart(product)}

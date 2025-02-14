@@ -81,6 +81,7 @@ const AddToCart = ({
   return (
     <div className='w-full'>
       <Button
+        aria-description='Add to cart'
         onClick={() => {
           if (!selectedGiftBox) {
             addToCart(product)
