@@ -39,26 +39,7 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
     Id<'products'> | undefined
   >()
 
-  // if (!wines) {
-  //   return
-  // }
 
-  // const [selectedWineId, setSelectedWineId] = useState<
-  //   Id<'products'> | undefined
-  // >(wines[0]._id)
-
-  // if (!selectedWineId) {
-  //   return
-  // }
-
-  // // Fetch variants based on selectedWineId
-  // const variants = wines.map(wine => wine.variants).flat()
-
-  // console.log('variants', variants)
-
-  // if (!variants) {
-  //   return
-  // }
 
   return (
     <div className='container mx-auto py-10'>
@@ -122,7 +103,7 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
                     alert('Please select a wine')
                     return
                    }
-                    const variant = selectedWine?.variants[0]
+                 
 
                    addToCart(selectedWine, {
 
