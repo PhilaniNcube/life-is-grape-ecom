@@ -1,4 +1,6 @@
 User-Agent: *
 Allow: /
 Disallow: /dashboard
+Disallow: /orders
+Disallow: /checkout
 Sitemap: https://lifeisgrape.co.za/sitemap.xml
