@@ -16,9 +16,9 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
       clerkUserId: clerKUserId,
     })
 
-    // if (!user || user.role !== 'admin') {
-    //   redirect('/sign-in')
-    // }
+    if (!user || user.role !== 'admin') {
+      redirect('/sign-in')
+    }
 
   return <DashboardShell>{children}</DashboardShell>
 }
