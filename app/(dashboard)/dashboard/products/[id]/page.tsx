@@ -16,12 +16,21 @@ const ProductPage = async ({
 }) => {
   const { id } = await params
 
-  const product = await fetchQuery(api.products.getShallowProduct, { id })
-  const categories = await fetchQuery(api.categories.getCategories)
-  const producers = await fetchQuery(api.producers.getProducers)
-  const attributes = await fetchQuery(api.products.getProductAttributes, {
+  const productData =  fetchQuery(api.products.getShallowProduct, { id })
+  const categoriesData =  fetchQuery(api.categories.getCategories)
+  const producersData =  fetchQuery(api.producers.getProducers)
+  const attributesData =  fetchQuery(api.products.getProductAttributes, {
     product_id: id,
   })
+
+  const [product, categories, producers, attributes] = await Promise.all([
+    productData,
+    categoriesData,
+    producersData,
+    attributesData,
+  ])
+
+
 
   if (!product) return <div>Product not found</div>
 

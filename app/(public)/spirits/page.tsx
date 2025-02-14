@@ -44,12 +44,6 @@ const SpritsPage = async ({
 
   const filter = (await searchParams).filter ?? ''
 
-  const spiritCategories = await preloadQuery(
-    api.categories.getCategoriesByType,
-    {
-      type: 'spirit',
-    }
-  )
 
   // Add JSON-LD script
   return (

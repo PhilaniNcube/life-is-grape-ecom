@@ -1,15 +1,9 @@
-import { fetchQuery } from "convex/nextjs";
-import Filter from "../../products/_components/filter";
-import { api } from "@/convex/_generated/api";
 import { Suspense } from "react";
-import ProductImage from "../../_components/product-image";
-import { formatPrice } from "@/lib/utils";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CategoryProducts from "./_components/category-products";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
+
 
 const CategoryPage = async ({params}:{params:Promise<{slug:string}>}) => {
 

@@ -1,12 +1,10 @@
 // wines-section.tsx
-import React, { Suspense } from 'react'
-import Image from 'next/image'
+
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
-import { cn, formatPrice } from '@/lib/utils'
-import ProductImage from './product-image'
+import { cn } from '@/lib/utils'
 import { littlepot } from '@/app/fonts'
 import ProductItem from './product-item'
 

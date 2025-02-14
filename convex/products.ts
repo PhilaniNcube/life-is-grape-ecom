@@ -44,18 +44,14 @@ export const getProductWithVairants = query({
 
     const mainImage = await ctx.storage.getUrl(product.main_image)
 
-    // fetch the product variants
-    const variants = await ctx.db
-      .query('product_variants')
-      .filter(q => q.eq(q.field('product_id'), args.id))
-      .collect()
+
 
     return {
       ...product,
       main_image: mainImage
         ? mainImage
         : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
-      variants,
+    
     }
   },
 })
@@ -155,18 +151,12 @@ export const getUnlabelledProducts = query({
       unlabbledWines.map(async product => {
         const mainImage = await ctx.storage.getUrl(product.main_image)
 
-        // fetch the product variants
-        const variants = await ctx.db
-          .query('product_variants')
-          .filter(q => q.eq(q.field('product_id'), product._id))
-          .collect()
 
         return {
           ...product,
           main_image: mainImage
             ? mainImage
-            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
-          variants,
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52'
         }
       })
     )
@@ -210,18 +200,12 @@ export const getShallowProductsWithMainImage = query({
       sortedProducts.map(async product => {
         const mainImage = await ctx.storage.getUrl(product.main_image)
 
-        // fetch the product variants
-        const variants = await ctx.db
-          .query('product_variants')
-          .filter(q => q.eq(q.field('product_id'), product._id))
-          .collect()
-
         return {
           ...product,
           main_image: mainImage
             ? mainImage
             : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
-          variants,
+       
         }
       })
     )
@@ -243,20 +227,13 @@ export const getProductsOnSaleWithMainImage = query({
       sortedProducts.map(async product => {
         const mainImage = await ctx.storage.getUrl(product.main_image)
 
-        // fetch the product variants
-        const variants = await ctx.db
-          .query('product_variants')
-          .filter(q => q.eq(q.field('product_id'), product._id))
-          .collect()
-
-
 
         return {
           ...product,
           main_image: mainImage
             ? mainImage
             : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
-          variants,
+        
         }
       })
     )
@@ -357,13 +334,8 @@ export const getProductBySlug = query({
       .withIndex('byProduct', q => q.eq('product_id', product._id))
       .first()
 
-    // Get product variants
-    const variants = await ctx.db
-      .query('product_variants')
-      .withIndex('byProduct', q => q.eq('product_id', product._id))
-      .collect()
 
-    return { product, attributes, variants }
+    return { product, attributes }
   },
 })
 
@@ -400,12 +372,9 @@ export const getProductById = query({
       .withIndex('byProduct', q => q.eq('product_id', args.id))
       .first()
 
-    const variants = await ctx.db
-      .query('product_variants')
-      .withIndex('byProduct', q => q.eq('product_id', args.id))
-      .collect()
 
-    return { product, attributes, variants }
+
+    return { product, attributes }
   },
 })
 

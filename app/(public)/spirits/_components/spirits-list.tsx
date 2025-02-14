@@ -1,18 +1,13 @@
 import { api } from '@/convex/_generated/api'
 import { fetchQuery } from 'convex/nextjs'
-import { Suspense } from 'react'
-import ProductImage from '../../_components/product-image'
-import { cn, formatPrice } from '@/lib/utils'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { Id } from '@/convex/_generated/dataModel'
-import Image from 'next/image'
-import ListAddToCartButton from '../../products/_components/list-add-to-cart-button'
 import ProductItem from '../../_components/product-item'
 import { littlepot } from '@/app/fonts'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
+
   const spirits = await fetchQuery(
     api.products.getShallowProductsWithMainImage,
     {
