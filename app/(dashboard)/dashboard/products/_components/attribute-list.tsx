@@ -7,6 +7,8 @@ import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { formatPrice } from '@/lib/utils'
+import UpdateAttribute from './update-attribute'
+import { Separator } from '@/components/ui/separator'
 
 type AttributeListProps = {
   product_id: Id<'products'>
@@ -58,6 +60,8 @@ const AttributeList = async ({ product_id, attributes }: AttributeListProps) => 
               {attr.tasting_notes || '-'}
             </span>
           </div>
+          <Separator className="my-2" />
+          <UpdateAttribute attributes={attr} />
         </li>
       ))}
     </ul>

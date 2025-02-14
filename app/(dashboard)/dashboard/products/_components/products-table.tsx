@@ -37,6 +37,7 @@ import {
 } from '@/components/ui/table'
 import { Doc, Id } from '@/convex/_generated/dataModel'
 import { formatPrice } from '@/lib/utils'
+import { parseAsInteger, useQueryState } from 'nuqs'
 import { useRouter, useSearchParams } from 'next/navigation'
 import DeleteProductDialog from './delete-product'
 import { Pencil1Icon } from '@radix-ui/react-icons'
@@ -48,8 +49,6 @@ import SortDialog from './sort-dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ProductSaleToggle } from './toggle-on-sale'
 import { ProductPriceEdit } from './product-price-edit'
-
-
 
 const columns: ColumnDef<Doc<'products'>>[] = [
   {
@@ -207,8 +206,8 @@ export default function ProductTable({
 
   const searchParams = useSearchParams()
 
-  const page = searchParams.get('page') ?? '1'
-  const nameFilter = searchParams.get('name') ?? ''
+  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(0))
+  const [name, setName] = useQueryState('name')
 
   const table = useReactTable({
     data: products,
@@ -225,11 +224,11 @@ export default function ProductTable({
       sorting,
       columnFilters,
       columnVisibility,
-      globalFilter: nameFilter,
+      globalFilter: name,
       rowSelection,
       pagination: {
-        pageIndex: 0,
-        pageSize: 100,
+        pageIndex: page,
+        pageSize: 80,
       },
     },
   })
@@ -241,9 +240,10 @@ export default function ProductTable({
           <Input
             placeholder='Filter products...'
             value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-            onChange={event =>
+            onChange={event => {
+              setName(event.target.value)
               table.getColumn('name')?.setFilterValue(event.target.value)
-            }
+            }}
             className='max-w-sm'
           />
           <DropdownMenu>
@@ -369,13 +369,15 @@ export default function ProductTable({
         <div className='flex-1 text-sm text-muted-foreground'>
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
-
         </div>
         <div className='space-x-2'>
           <Button
             variant='outline'
             size='sm'
-            onClick={() => table.previousPage()}
+            onClick={() => {
+              table.previousPage()
+              setPage(page - 1)
+            }}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
@@ -383,7 +385,10 @@ export default function ProductTable({
           <Button
             variant='outline'
             size='sm'
-            onClick={() => table.nextPage()}
+            onClick={() => {
+              ;() => table.nextPage()
+              setPage(page + 1)
+            }}
             disabled={!table.getCanNextPage()}
           >
             Next

@@ -267,6 +267,54 @@ export const getProductsOnSaleWithMainImage = query({
   },
 })
 
+
+// get related products
+export const getRelatedProducts = query({
+  args: {
+    product_id: v.id('products'),
+    limit: v.number(),
+  },
+  handler: async (ctx, args) => {
+   
+    const product = await ctx.db.get(args.product_id)
+
+    if (!product) {
+      throw new Error('Product not found')
+    }
+
+    // get the first category id
+    const categoryId = product.categories[0]
+
+    // get all products in the same category
+       const products = await ctx.db
+            .query('products')
+            .withIndex('byCategories')
+            .collect()
+
+    // filter the products to include products with the same category id but exclude the current product
+    const filteredProducts = products.filter(product => product._id !== args.product_id && product.categories.includes(categoryId))
+    
+    // limit the number of products to return based on the limit argument
+    const limitedProducts = filteredProducts.slice(0, args.limit)
+
+    return Promise.all(
+      limitedProducts.map(async product => {
+        const mainImage = await ctx.storage.getUrl(product.main_image)
+
+        return {
+          ...product,
+          main_image: mainImage
+            ? mainImage
+            : 'https://quiet-caterpillar-834.convex.cloud/api/storage/f0e6f530-ea17-4788-813c-e3f3df4b6a52',
+        }
+      })
+    )
+    
+
+  }
+})
+
+
 export const getFilteredProducts = query({
   args: {
     type: v.optional(v.union(v.literal('wine'), v.literal('spirit'))),

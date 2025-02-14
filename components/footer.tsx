@@ -22,19 +22,19 @@ export default function Footer() {
           </div>
           <div className='mt-3 flex items-center gap-x-3'>
             <Link
-              href='https://www.facebook.com/lifeisgrape40'
+              href='https://www.facebook.com/lifeisgrapeSA/'
               className='text-sm'
             >
               <FaFacebookF className='h-6 w-6' />
             </Link>
             <Link
-              href='https://www.instagram.com/lifeisgrapewine'
+              href='https://www.instagram.com/lifeisgrapesa/'
               className='text-sm'
             >
               <FaInstagram className='h-6 w-6' />
             </Link>
             <Link
-              href='https://www.instagram.com/lifeisgrapewine'
+              href='https://www.tiktok.com/@life.is.grape'
               className='text-sm'
             >
               <FaTiktok className='h-6 w-6' />

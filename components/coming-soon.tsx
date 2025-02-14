@@ -16,7 +16,7 @@ export default function RedesignOverlay() {
         <div className=''>
           <Image
             src='/images/life-is-grape-logo.png'
-            width={400}
+            width={500}
             height={100}
             alt='Life Is Grape'
             className='w-64 object-cover'

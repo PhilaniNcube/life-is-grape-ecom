@@ -6,9 +6,18 @@ import ProductImage from '../../_components/product-image'
 import AddToCart from './add-to-cart'
 import { littlepot } from '@/app/fonts'
 import { Badge } from '@/components/ui/badge'
+import Image from 'next/image'
+import Link from 'next/link'
 
 const ProductDetail = async ({ slug }: { slug: string }) => {
   const product = await fetchQuery(api.products.getProductBySlug, { slug })
+
+  if (!product) return null
+
+  const relatedProducts = await fetchQuery(api.products.getRelatedProducts, {
+    product_id: product?.product._id,
+    limit: 4,
+  })
 
   const renderAttributes = () => {
     if (!product?.attributes) return null
@@ -101,6 +110,44 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
               </Card>
             </>
           )}
+        </div>
+      </div>
+      <div>
+        <h2 className='text-2xl font-semibold'>Related Products</h2>
+        <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'>
+          {relatedProducts?.map(product => (
+            <Link key={product._id} href={`/products/${product.slug}`}>
+              <Card>
+                <CardHeader>
+                  <CardTitle className='sr-only'>{product.name}</CardTitle>
+                </CardHeader>
+                <Image
+                  src={product.main_image}
+                  alt={product.name}
+                  width={300}
+                  height={300}
+                />
+                <CardContent>
+                  <p className='line-clamp-1 text-sm'>{product.name}</p>
+
+                  <p className='text-md font-light'>
+                    {product.on_sale && product.sale_price ? (
+                      <div className='flex flex-col items-start'>
+                        <span className='text-sm font-semibold text-gray-500 line-through'>
+                          {formatPrice(product.price)}
+                        </span>
+                        <span className=''>
+                          {formatPrice(product.sale_price)}
+                        </span>
+                      </div>
+                    ) : (
+                      <span className=''>{formatPrice(product.price)}</span>
+                    )}
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

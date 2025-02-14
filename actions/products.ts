@@ -3,7 +3,7 @@ import "server-only"
 
 import { revalidatePath } from 'next/cache'
 
-import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateProductSchema, UpdateProductVariantSchema, UpdateVariantPriceSchema, UpdateVariantSaleStatusSchema, UpdateVariantStockSchema, UpdateVariantVolumeSchema } from '@/lib/schemas'
+import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema, UpdateAttributesSchema, UpdateProductSchema, UpdateProductVariantSchema, UpdateVariantPriceSchema, UpdateVariantSaleStatusSchema, UpdateVariantStockSchema, UpdateVariantVolumeSchema } from '@/lib/schemas'
 import { fetchMutation, fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
@@ -581,6 +581,67 @@ export const updateSortOrderAction = async (id: Id<'products'>, sortOrder: numbe
     return {
       success: false,
       error: 'Failed to update sort order',
+    }
+  }
+
+}
+
+
+export async function updateProductAttributeAction(prevState:unknown, formData:FormData) {
+
+  const validatedFields = UpdateAttributesSchema.safeParse({
+    id: formData.get('id'),
+    variety: formData.get('variety') || '',
+    vintage: formData.get('vintage') || 2023,
+    alcohol_content: formData.get('alcohol_content'),
+    region: formData.get('region'),
+    tasting_notes: formData.get('tasting_notes'),
+    serving_suggestion: formData.get('serving_suggestion') || '',
+    awards: formData.get('awards') || [],
+    pairing_suggestions: formData.get('pairing_suggestions') || '',
+    aging: formData.get('aging') || "",
+    distillation_method: formData.get('distillation_method') || '',
+    description: formData.get('description') || '',
+  })
+
+  if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten().fieldErrors)
+    return {
+      success: false,
+      error: 'Invalid form data',
+    }
+  }
+
+  const attributeId = validatedFields.data.id as Id<'product_attributes'>
+
+
+  try {
+    const result = await fetchMutation(api.products.updateProductAttributes, {
+      id: attributeId,
+      variety: validatedFields.data.variety,
+      vintage: validatedFields.data.vintage,
+      alcohol_content: validatedFields.data.alcohol_content,
+      region: validatedFields.data.region,
+      tasting_notes: validatedFields.data.tasting_notes,
+      serving_suggestion: validatedFields.data.serving_suggestion,
+      awards: validatedFields.data.awards,
+      pairing_suggestions: validatedFields.data.pairing_suggestions,
+      aging: validatedFields.data.aging,
+      distillation_method: validatedFields.data.distillation_method,
+      description: validatedFields.data.description,
+    })
+
+    if (!result) {
+      throw new Error('Failed to update product attribute')
+    }
+
+    revalidatePath(`/dashboard/products`, 'layout')
+
+    return { success: true, data: result }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to update product attribute',
     }
   }
 
