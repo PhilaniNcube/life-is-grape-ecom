@@ -50,7 +50,7 @@ export default function Cart() {
             Review your items and proceed to checkout
           </SheetDescription>
         </SheetHeader>
-        <ScrollArea className='mt-4 h-[calc(100vh-12rem)] pb-4 pr-4'>
+        <ScrollArea className='mt-4 h-[calc(100dvh-20rem)] pb-4 pr-4'>
           {cart.map(item => (
             <div
               key={`${item.product._id}`}
