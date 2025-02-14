@@ -11,6 +11,7 @@ import { Metadata } from "next";
 export const metadata:Metadata = {
   title: 'Life is Grape',
   description: 'Your one-stop shop for exquisite wines and spirits. Discover new favorites and enjoy convenient delivery.',
+  keywords: 'wine shop, wine delivery, spirits, wine, alcohol, wine store, wine online, wine near me, wine delivery near me, wine delivery service, wine delivery',
   verification: {
     google: "e8fWRAIfxJNV7ACBM9jTrNN_PoF6fVEloPeuZxnCDAY",
   },
