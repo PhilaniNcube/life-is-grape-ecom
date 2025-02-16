@@ -7,8 +7,8 @@ import { CreateAttributesSchema, CreateProductSchema, CreateProductVariantSchema
 import { fetchMutation, fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
-import { redirect } from "next/navigation"
-import { form } from "sanity/structure"
+
+import {  currentUser } from "@clerk/nextjs/server"
 
 
 
@@ -24,6 +24,26 @@ export async function createProductAction(
   prevState:unknown,
   formData: FormData
 ): Promise<ActionResponse> {
+
+
+  // get the current user from the session
+const user = await currentUser()
+
+if(!user) {
+  return {
+    success: false,
+    error: 'User not found',
+  }
+}
+
+const {role} = user?.privateMetadata
+
+if(role !== 'shop-admin') {
+  return {
+    success: false,
+    error: 'User not authorized',
+  }
+}
 
 
   try {
@@ -104,6 +124,24 @@ export async function createProductAction(
 
 export async function toggleOnSaleAction(prevState:unknown , id: Id<"products">){
 
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
+
   try {
     const product = await fetchMutation(api.products.toggleOnSale, { id })
 
@@ -121,6 +159,24 @@ export async function toggleOnSaleAction(prevState:unknown , id: Id<"products">)
 }
 
 export async function updatePriceAction(prevState:unknown, formData:FormData) {
+
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
 
   const values = Object.fromEntries(formData.entries())
 
@@ -164,6 +220,24 @@ export async function updateProductAction(
   formData: FormData
 ): Promise<ActionResponse> {
 
+
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
 
 
   try {
@@ -233,6 +307,26 @@ export async function updateProductAction(
 }
 
 export async function deleteProductAction(id: Id<"products">): Promise<ActionResponse> {
+
+const user = await currentUser()
+
+if(!user) {
+  return {
+    success: false,
+    error: 'User not found',
+  }
+}
+
+const {role} = user?.privateMetadata
+
+if(role !== 'shop-admin') {
+  return {
+    success: false,
+    error: 'User not authorized',
+  }
+}
+
+
   try {
     await fetchMutation(api.products.deleteProduct, { id })
 
@@ -248,6 +342,24 @@ export async function deleteProductAction(id: Id<"products">): Promise<ActionRes
 
 
 export async function addVariantAction(prevState:unknown, formData:FormData) {
+
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
 
   const validatedFields = CreateProductVariantSchema.safeParse({
     product_id: formData.get('product_id'),
@@ -303,6 +415,27 @@ export async function addVariantAction(prevState:unknown, formData:FormData) {
 
 
 export async function updateVariantVolumeAction(prevState: unknown, formData: FormData) {
+
+
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
+
+
   const validatedFields = UpdateVariantVolumeSchema.safeParse({
     id: formData.get('id'),
     volume: formData.get('volume'),
@@ -344,6 +477,26 @@ export async function updateVariantVolumeAction(prevState: unknown, formData: Fo
 
 
 export async function updateVariantPriceAction(prevState: unknown, formData: FormData) {
+
+
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
+
   const validatedFields = UpdateVariantPriceSchema.safeParse({
     id: formData.get('id'),
     price: formData.get('price'),
@@ -382,6 +535,26 @@ export async function updateVariantPriceAction(prevState: unknown, formData: For
 }
 
 export async function updateStockAction(prevState: unknown, formData: FormData) {
+
+const user = await currentUser()
+
+if(!user) {
+  return {
+    success: false,
+    error: 'User not found',
+  }
+}
+
+const {role} = user?.privateMetadata
+
+if(role !== 'shop-admin') {
+  return {
+    success: false,
+    error: 'User not authorized',
+  }
+}
+
+
   const validatedFields = UpdateVariantStockSchema.safeParse({
     id: formData.get('id'),
     stock_level: formData.get('stock_level'),
@@ -416,6 +589,25 @@ export async function updateStockAction(prevState: unknown, formData: FormData) 
 
 
 export async function updateSaleStatusAction(prevState: unknown, formData: FormData) {
+
+
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
 
   const validatedFields = UpdateVariantSaleStatusSchema.safeParse({
     id: formData.get('id'),
@@ -461,6 +653,24 @@ export async function updateSaleStatusAction(prevState: unknown, formData: FormD
 
 
 export async function addAttributeAction(prevState:unknown, formData:FormData) {
+
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
 
   const validatedFields = CreateAttributesSchema.safeParse({
     product_id: formData.get('product_id'),
@@ -564,6 +774,24 @@ export async function addAttributeAction(prevState:unknown, formData:FormData) {
 
 export const updateSortOrderAction = async (id: Id<'products'>, sortOrder: number) => {
 
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
+
   try {
     const result = await fetchMutation(api.products.updateSortOrder, {
       id,
@@ -588,6 +816,24 @@ export const updateSortOrderAction = async (id: Id<'products'>, sortOrder: numbe
 
 
 export async function updateProductAttributeAction(prevState:unknown, formData:FormData) {
+
+  const user = await currentUser()
+  
+  if(!user) {
+    return {
+      success: false,
+      error: 'User not found',
+    }
+  }
+  
+  const {role} = user?.privateMetadata
+  
+  if(role !== 'shop-admin') {
+    return {
+      success: false,
+      error: 'User not authorized',
+    }
+  }
 
   const validatedFields = UpdateAttributesSchema.safeParse({
     id: formData.get('id'),
