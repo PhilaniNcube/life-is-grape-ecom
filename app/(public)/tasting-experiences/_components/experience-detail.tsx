@@ -33,7 +33,7 @@ const ExperienceDetail = async ({ id }: { id: Id<'tasting_experiences'> }) => {
           <div className='md:flex'>
             <div className='md:w-1/2'>
               <Image
-                src={experience.image}
+                src={experience.image || '/images/placeholder.svg'}
                 alt={experience.name}
                 width={600}
                 height={400}
