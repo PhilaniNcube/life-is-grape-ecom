@@ -11,9 +11,6 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import {   UpdateGift, updateGiftSchema } from '@/lib/schemas'
 import {  updateGiftAction } from '@/actions/gifts'
-import { useToast } from '@/hooks/use-toast'
-import { useMutation } from 'convex/react'
-import { api } from '@/convex/_generated/api'
 import { Doc } from '@/convex/_generated/dataModel'
 import { useRouter } from 'next/navigation'
 
@@ -52,7 +49,7 @@ export default function UpdateGiftProductForm({
 
 
   return (
-    <div className=''>
+    <div className='flex-1'>
       <form
         action={(formData) => {
             startTransition(() => {
@@ -156,7 +153,7 @@ export default function UpdateGiftProductForm({
           type='submit'
           disabled={isPending}
         >
-          {isPending ? 'Creating...' : 'Create Gift'}
+          {isPending ? 'Updating...' : 'Update Gift'}
         </Button>
 
       

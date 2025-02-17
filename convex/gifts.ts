@@ -119,6 +119,14 @@ export const generateGiftUploadUrl = mutation(async ctx => {
 })
 
 
+export const updateImageId = mutation({
+  args: { gift_id: v.id('gifts'), image_id: v.id('_storage') },
+  handler: async (ctx, { gift_id, image_id }) => {
+    await ctx.db.patch(gift_id, { main_image: image_id })
+  },
+})
+
+
 export const deleteGift = mutation({
   args: { gift_id: v.id('gifts') },
   handler: async (ctx, { gift_id }) => {

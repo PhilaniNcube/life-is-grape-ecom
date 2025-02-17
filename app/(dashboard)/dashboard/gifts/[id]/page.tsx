@@ -3,6 +3,7 @@ import { Id } from '@/convex/_generated/dataModel'
 import { fetchQuery } from 'convex/nextjs'
 import React from 'react'
 import UpdateGiftProductForm from '../_components/update-gift'
+import UpdateGiftImage from '../_components/update-gift-image'
 
 const GiftDashboardPage = async ({params}:{params:Promise<{id:Id<'gifts'>}>}) => {
 
@@ -20,8 +21,9 @@ const GiftDashboardPage = async ({params}:{params:Promise<{id:Id<'gifts'>}>}) =>
 
 
   return (
-    <div>
+    <div className="flex flex-col md:flex-row gap-4">
         <UpdateGiftProductForm gift={gift} />
+        <UpdateGiftImage gift_id={id} image_id={gift.main_image} />
     </div>
   )
 }
