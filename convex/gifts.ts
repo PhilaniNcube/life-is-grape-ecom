@@ -92,8 +92,8 @@ export const updateGift = mutation({
     description: v.optional(v.string()),
     price: v.optional(v.number()),
     in_stock: v.optional(v.boolean()),
-    main_image: v.optional(v.id('_storage')),
-    images: v.optional(v.array(v.id('_storage'))),
+    dimensions: v.optional(v.string()), 
+    type: v.optional(v.union(v.literal('box'), v.literal('label'), v.literal('bag'), v.literal('voucher'))), 
   },
   handler: async (ctx, args) => {
     const { gift_id, ...updates } = args

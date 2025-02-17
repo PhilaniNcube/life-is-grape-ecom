@@ -2,8 +2,9 @@
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { mutation } from '@/convex/_generated/server'
-import { createGiftSchema } from '@/lib/schemas'
+import { createGiftSchema, updateGiftSchema } from '@/lib/schemas'
 import { fetchMutation } from 'convex/nextjs'
+import { Gift } from 'lucide-react'
 import { revalidatePath } from 'next/cache'
 import 'server-only'
 
@@ -99,3 +100,58 @@ export async function deleteGiftAction(id: Id<"gifts">) {
   return { data: deletedGift, status: 200 }
 
 }
+
+
+export async function updateGiftAction(
+  prevState: unknown,
+  formData: FormData
+) {
+
+ console.log("ID:",formData.get('gift_id'))
+
+  const validatedFields = updateGiftSchema.safeParse({
+    name: formData.get('name'),
+    description: formData.get('description'),
+    price: formData.get('price'),
+    type: formData.get('type'),
+    in_stock: formData.get('in_stock') === 'on' ? true : false,
+    dimensions: formData.get('dimensions'),
+    gift_id: formData.get('gift_id'),
+  })
+
+  if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten().fieldErrors)
+    return {
+      error: `Error invalid fields ${validatedFields.error.message}`,
+      status: 400,
+    }
+  }
+
+
+
+    const giftId = validatedFields.data.gift_id as Id<'gifts'>
+
+  const updatedGift = fetchMutation(api.gifts.updateGift, {
+    gift_id: giftId,
+    name: validatedFields.data.name,
+    description: validatedFields.data.description,
+    price: validatedFields.data.price,
+    in_stock: validatedFields.data.in_stock,
+    type: validatedFields.data.type,
+    dimensions: validatedFields.data.dimensions,
+  })
+
+  console.log(JSON.stringify(updatedGift, null, 2))
+
+  if (!updatedGift) {
+    console.log("Gift not updated")
+    return { error: 'Gift not updated', status: 400 }
+  }
+
+  revalidatePath(`/dashboard/gifts/${giftId}`)
+  revalidatePath(`/gifts`, "page")
+
+  return { data: updatedGift, status: 200 }
+
+}
+

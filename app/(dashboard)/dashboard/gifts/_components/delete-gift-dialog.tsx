@@ -4,7 +4,7 @@ import { deleteGiftAction } from '@/actions/gifts'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Id } from '@/convex/_generated/dataModel'
-import { CircleDashed } from 'lucide-react'
+import { CircleDashed, Trash2 } from 'lucide-react'
 import { useActionState } from 'react'
 
 const DeleteGiftDialog = ({id}: {id:Id<"gifts">}) => {
@@ -18,7 +18,9 @@ const DeleteGiftDialog = ({id}: {id:Id<"gifts">}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className='bg-red-500 text-white' size="sm">Delete</Button>
+        <Button className='bg-red-500 text-white' size="sm">
+          <Trash2 className='' size={16} />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <div className='flex flex-col gap-4'>

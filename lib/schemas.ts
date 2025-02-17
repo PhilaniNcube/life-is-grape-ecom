@@ -24,7 +24,12 @@ export const BaseProductSchema = z.object({
 // Product attributes schema
 const AttributesSchema = z.object({
   variety: z.string().optional(),
-  vintage: z.coerce.number().int().min(1900).max(new Date().getFullYear()).optional(),
+  vintage: z.coerce
+    .number()
+    .int()
+    .min(1900)
+    .max(new Date().getFullYear())
+    .optional(),
   alcohol_content: z.coerce.number().min(0).max(100),
   region: z.string(),
   tasting_notes: z.string().optional(),
@@ -34,7 +39,6 @@ const AttributesSchema = z.object({
   aging: z.string().optional(),
   distillation_method: z.string().optional(),
   description: z.string().optional(),
-
 })
 
 // Product variant schema
@@ -140,8 +144,11 @@ export const updateGiftSchema = z.object({
   description: z.string().min(1).optional(),
   price: z.coerce.number().min(0).optional(),
   in_stock: z.boolean().optional(),
-  main_image: z.string().optional(),
-  images: z.array(z.string()).optional(),
+  // main_image: z.string().optional(),
+  // images: z.array(z.string()).optional(),
+  type: z.enum(['box', 'label', 'bag', 'voucher']),
+  dimensions: z.string().optional(),
+  // compatible_wine_types: z.array(z.enum(['red', 'white'])),
 })
 
 // Gift Customization Schema
@@ -231,7 +238,6 @@ export const DeleteProducerSchema = z.object({
   }),
 })
 
-
 const GiftVoucherSchema = z.object({
   recipient_email: z.string().email(),
   purchaser_email: z.string().email(),
@@ -265,8 +271,7 @@ const PersonalisedLabelSchema = z.object({
   order_id: z.string(),
   image: z.string(),
   message: z.string().max(500, 'Message must be less than 500 characters'),
-});
-
+})
 
 const ExperienceSchema = z.object({
   name: z.string(),
@@ -275,7 +280,7 @@ const ExperienceSchema = z.object({
   duration: z.string(),
   type: z.string().optional(),
   servings: z.string(),
-  image: z.string().optional(), 
+  image: z.string().optional(),
 })
 
 export const CreateExperienceSchema = ExperienceSchema
@@ -288,14 +293,13 @@ export const UpdateExperienceSchema = ExperienceSchema.partial().extend({
 
 export type Experience = z.infer<typeof UpdateExperienceSchema>
 
-export const CreatePersonalisedLabelSchema = PersonalisedLabelSchema;
+export const CreatePersonalisedLabelSchema = PersonalisedLabelSchema
 
-export const UpdatePersonalisedLabelSchema = PersonalisedLabelSchema.partial().extend({
-  id: z.string(),
-});
+export const UpdatePersonalisedLabelSchema =
+  PersonalisedLabelSchema.partial().extend({
+    id: z.string(),
+  })
 
-export type PersonalisedLabel = z.infer<typeof PersonalisedLabelSchema>;
+export type PersonalisedLabel = z.infer<typeof PersonalisedLabelSchema>
 
 export type GiftVoucher = z.infer<typeof GiftVoucherSchema>
-
-

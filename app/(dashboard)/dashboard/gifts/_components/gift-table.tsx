@@ -14,6 +14,7 @@ import { api } from '@/convex/_generated/api'
 import { Button } from '@/components/ui/button'
 import { deleteGiftAction } from '@/actions/gifts'
 import DeleteGiftDialog from './delete-gift-dialog'
+import Link from 'next/link'
 
 // Sample gift data based on the previous schema
 
@@ -29,9 +30,10 @@ export default async function GiftTable() {
               <TableHead>Name</TableHead>
               <TableHead>Type</TableHead>
               <TableHead>Price</TableHead>
-              <TableHead>Customization</TableHead>
+           
               <TableHead>Compatible Wines</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>View</TableHead>
               <TableHead>Delete</TableHead>
             </TableRow>
           </TableHeader>
@@ -56,24 +58,7 @@ export default async function GiftTable() {
                   {gift.type.charAt(0).toUpperCase() + gift.type.slice(1)}
                 </TableCell>
                 <TableCell>{formatPrice(gift.price)}</TableCell>
-                <TableCell>
-                  <ul className='list-inside list-disc'>
-                    {gift.customization_options.allows_message && (
-                      <li>
-                        Message (max{' '}
-                        {gift.customization_options.message_max_length} chars)
-                      </li>
-                    )}
-                    {gift.customization_options.allows_design_choice && (
-                      <li>
-                        Designs:{' '}
-                        {gift.customization_options.available_designs?.join(
-                          ', '
-                        )}
-                      </li>
-                    )}
-                  </ul>
-                </TableCell>
+      
                 <TableCell>
                   {gift.compatible_wine_types.map(type => (
                     <Badge key={type} variant='secondary' className='mr-1'>
@@ -91,6 +76,15 @@ export default async function GiftTable() {
                   >
                     {gift.in_stock ? 'In Stock' : 'Out of Stock'}
                   </Badge>
+                </TableCell>
+                <TableCell>
+                  <Link
+                    className='text-slate-600'
+                    href={`/dashboard/gifts/${gift._id}`}
+                  >
+                    <Badge className='bg-blue-800 text-white'>View</Badge>
+                    
+                  </Link>
                 </TableCell>
                 <TableCell>
                   <DeleteGiftDialog id={gift._id} />
