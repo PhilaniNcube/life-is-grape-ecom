@@ -341,6 +341,7 @@ export default function ProductTable({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
