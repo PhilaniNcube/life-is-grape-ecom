@@ -2,8 +2,8 @@ import PublicHeader from '@/components/header'
 import Footer from '@/components/footer'
 import { CartStoreProvider } from '@/store/cart-store-provider'
 import AgeVerificationBanner from '@/components/age-verification'
-import { ToastProvider } from '@/components/ui/toast'
 import ComingSoon from '@/components/coming-soon'
+import { Toaster } from '@/components/ui/sonner'
 
 export default async function PublicLayout({
   children,
@@ -20,7 +20,7 @@ export default async function PublicLayout({
           {children}
 
         </main>
-        <ToastProvider />
+        <Toaster />
         <Footer />
       </div>
     </CartStoreProvider>
