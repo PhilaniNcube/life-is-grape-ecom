@@ -28,7 +28,7 @@ export default async function TastingExperiences() {
           <Card key={index} className='flex flex-col overflow-hidden'>
             <div className='relative h-48'>
               <Image
-                src={experience.image}
+                src={experience?.image || '/images/placeholder.svg'}
                 alt={experience.name}
 
                 width={600}
