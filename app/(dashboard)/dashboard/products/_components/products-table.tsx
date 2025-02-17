@@ -178,7 +178,7 @@ const columns: ColumnDef<Doc<'products'>>[] = [
         <div className='flex gap-x-5'>
           <Link href={`/dashboard/products/${product._id}`}>
             <Button type='button' variant='outline'>
-              <Pencil1Icon />
+              <Pencil1Icon /> Edit Product
             </Button>
           </Link>
 
