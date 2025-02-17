@@ -62,7 +62,7 @@ export default function UpdateGiftProductForm({
         }}
         className='w-full max-w-4xl space-y-6 rounded-lg bg-white p-6 shadow'
       >
-        <h1 className='mb-6 text-2xl font-bold'>Create Gift Product</h1>
+        <h1 className='mb-6 text-2xl font-bold'>Update Gift Product</h1>
         <div className='grid grid-cols-2 gap-4'>
             <Input type='hidden' id='id' {...register('gift_id')} />
           <div>
