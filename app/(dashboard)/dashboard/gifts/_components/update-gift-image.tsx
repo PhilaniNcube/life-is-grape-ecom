@@ -29,6 +29,7 @@ const UpdateGiftImage = ({
   console.log(image)
 
   const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    setIsUploading(true)
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -50,7 +51,7 @@ const UpdateGiftImage = ({
     console.log(storageId)
 
     try {
-      setIsUploading(true)
+    
       await updateImageMutation({ gift_id, image_id: storageId })
       toast('Please wait while we update the image')
     } catch (error) {
