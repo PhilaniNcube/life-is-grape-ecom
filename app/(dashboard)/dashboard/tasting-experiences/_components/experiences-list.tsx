@@ -19,7 +19,7 @@ const ExpreiencesList = async () => {
   )
 
   return (
-    <Card className='max-w-3xl mt-8'>
+    <Card className='max-w-4xl mt-8'>
       <Table>
         <TableHeader>
           <TableRow>

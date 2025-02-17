@@ -267,6 +267,27 @@ const PersonalisedLabelSchema = z.object({
   message: z.string().max(500, 'Message must be less than 500 characters'),
 });
 
+
+const ExperienceSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  price: z.coerce.number().positive(),
+  duration: z.string(),
+  type: z.string().optional(),
+  servings: z.string(),
+  image: z.string().optional(), 
+})
+
+export const CreateExperienceSchema = ExperienceSchema
+
+export type CreateExperience = z.infer<typeof CreateExperienceSchema>
+
+export const UpdateExperienceSchema = ExperienceSchema.partial().extend({
+  id: z.string(),
+})
+
+export type Experience = z.infer<typeof UpdateExperienceSchema>
+
 export const CreatePersonalisedLabelSchema = PersonalisedLabelSchema;
 
 export const UpdatePersonalisedLabelSchema = PersonalisedLabelSchema.partial().extend({

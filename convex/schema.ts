@@ -119,7 +119,7 @@ export default defineSchema({
     price: v.number(),
     servings: v.string(),
     duration: v.string(),
-    image: v.id('_storage'),
+    image: v.optional(v.id('_storage')),
     type: v.optional(v.string()),
   }),
   bookings: defineTable({

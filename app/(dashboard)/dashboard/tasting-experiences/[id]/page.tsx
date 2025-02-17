@@ -3,6 +3,7 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { formatPrice } from '@/lib/utils'
 import { fetchQuery } from 'convex/nextjs'
+import UpdateTastingExperienceForm from '../_components/UpdateTastingExperienceForm'
 
 const ExperiencePage = async (props: {
   params: Promise<{ id: Id<'tasting_experiences'> }>
@@ -16,18 +17,7 @@ const ExperiencePage = async (props: {
 
   return (
     <div>
-      <h1 className='text-lg font-semibold'>{experience.name}</h1>
-      <p>{formatPrice(experience.price)}</p>
-      <Separator />
-      <p>
-        <strong>Description:</strong> {experience.description}
-      </p>
-      <p>
-        <strong>Serving:</strong> {experience.servings}
-      </p>
-      <p>
-        <strong>Duration:</strong> {experience.duration}
-      </p>
+       <UpdateTastingExperienceForm experience={experience} />
     </div>
   )
 }

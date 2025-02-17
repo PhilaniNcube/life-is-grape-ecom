@@ -7,14 +7,7 @@ export const getTastingExperiences = query({
   handler: async (ctx) => {
     const experiences = await ctx.db.query('tasting_experiences').collect();
 
-    const promiseData = await Promise.all(experiences.map(async (experience) => {
-      return {
-        ...experience,
-        image: (await ctx.storage.getUrl(experience.image)) || ''
-      };
-    }))
-
-    return promiseData;
+    return experiences;
   }
 })
 
@@ -29,10 +22,7 @@ export const getTastingExperience = query({
           )
         }
 
-    return {
-      ...experience,
-      image: (await ctx.storage.getUrl(experience.image)) || ''
-    };
+    return experience;
   }
 })
 
@@ -43,7 +33,7 @@ export const createExperience = mutation({
     price: v.number(),
     servings: v.string(),
     duration: v.string(),
-    image: v.id('_storage'),
+    image: v.optional(v.id('_storage')),
     type: v.optional(v.string())
   },
   handler: async (ctx, {description, price, servings, duration, image, name, type}) => {
@@ -61,10 +51,8 @@ export const updateExperience = mutation({
     price: v.optional(v.number()),
     servings: v.optional(v.string()),
     duration: v.optional(v.string()),
-    image: v.optional(v.id('_storage')),
-    type: v.optional(v.string())
   },
-  handler: async (ctx, {id, description, price, servings, duration, image, name, type}) => {
+  handler: async (ctx, {id, description, price, servings, duration, name}) => {
 
     const experience = await await ctx.db.get(id)
 
@@ -74,6 +62,9 @@ export const updateExperience = mutation({
       )
     }
 
-    return await ctx.db.patch( id, {description, price, servings, duration, image, name, type});
+    const data = await ctx.db.patch( id, {description, price, servings, duration, name, type:experience.type})
+
+    return data;
+  
   }
 })
