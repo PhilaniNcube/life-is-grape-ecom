@@ -255,5 +255,11 @@ export default defineSchema({
     image: v.id('_storage'),
     message: v.string(),
     }),
+  banner: defineTable({
+    title: v.string(),
+    subtitle: v.string(),
+    image: v.id('_storage'),
+    link: v.string(),
+  }),  
 })
 

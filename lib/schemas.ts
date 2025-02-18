@@ -283,6 +283,23 @@ const ExperienceSchema = z.object({
   image: z.string().optional(),
 })
 
+const BannerSchema = z.object({
+  title: z.string(),
+  subtitle: z.string(),
+  image: z.string(),
+  link: z.string(),
+})
+
+export const CreateBannerSchema = BannerSchema
+
+export const UpdateBannerSchema = BannerSchema.partial().extend({
+  id: z.string(),
+})
+
+export type Banner = z.infer<typeof BannerSchema>
+
+export type CreateBanner = z.infer<typeof CreateBannerSchema>
+
 export const CreateExperienceSchema = ExperienceSchema
 
 export type CreateExperience = z.infer<typeof CreateExperienceSchema>
