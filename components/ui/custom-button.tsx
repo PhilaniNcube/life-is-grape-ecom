@@ -51,8 +51,8 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         case 'outline':
           return {
             backgroundColor: 'transparent',
-            color: styles.color,
-            border: `1px solid ${styles.color}`,
+            color: styles.bg,
+            border: `1px solid ${styles.bg}`,
             boxShadow: isHovered ? `0 0 0 1px ${styles.color}` : 'none',
           }
         case 'ghost':
