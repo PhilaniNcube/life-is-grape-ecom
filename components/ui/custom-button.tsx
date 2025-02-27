@@ -53,7 +53,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
             backgroundColor: 'transparent',
             color: styles.bg,
             border: `1px solid ${styles.bg}`,
-            boxShadow: isHovered ? `0 0 0 1px ${styles.color}` : 'none',
+            boxShadow: isHovered ? `0 0 0 1px ${styles.bg}` : 'none',
           }
         case 'ghost':
           return {
