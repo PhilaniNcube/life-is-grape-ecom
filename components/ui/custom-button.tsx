@@ -58,7 +58,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         case 'ghost':
           return {
             backgroundColor: 'transparent',
-            color: styles.color,
+            color: styles.bg,
             boxShadow: 'none',
             border: 'none',
           }
