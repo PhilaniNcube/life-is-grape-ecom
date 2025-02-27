@@ -1,5 +1,3 @@
-import { sortingFns } from '@tanstack/react-table'
-import { color } from 'bun'
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 
