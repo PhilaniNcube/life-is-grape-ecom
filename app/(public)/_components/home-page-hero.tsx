@@ -1,4 +1,5 @@
 import { littlepot } from '@/app/fonts'
+import { CustomButton } from '@/components/ui'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
@@ -28,12 +29,12 @@ const HomePageHero = () => {
             <strong>personalised wine gifts.</strong>
           </p>
           <Link href='/products'>
-            <Button
+            <CustomButton
               size='lg'
-              className='transform rounded-none bg-gray-700 px-8 py-3 text-lg text-white transition duration-300 ease-in-out hover:bg-slate-800 lg:min-w-[300px]'
+              className='transform rounded-none px-8 py-3 text-lg transition duration-300 ease-in-out hover:bg-slate-800 lg:min-w-[300px]'
             >
               Shop Now
-            </Button>
+            </CustomButton>
           </Link>
         </div>{' '}
         <Image

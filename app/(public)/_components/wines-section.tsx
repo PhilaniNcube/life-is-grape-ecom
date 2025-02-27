@@ -7,14 +7,12 @@ import { api } from '@/convex/_generated/api'
 import { cn } from '@/lib/utils'
 import { littlepot } from '@/app/fonts'
 import ProductItem from './product-item'
-
-
-
-
+import { CustomButton } from '@/components/ui'
 
 const WinesSection = async () => {
-
-  const featuredWines = await fetchQuery(api.products.getFeaturedProducts, {type: 'wine'})
+  const featuredWines = await fetchQuery(api.products.getFeaturedProducts, {
+    type: 'wine',
+  })
 
   return (
     <section className='py-12'>
@@ -34,9 +32,13 @@ const WinesSection = async () => {
         </div>
         <div className='mt-8 text-center'>
           <Link href='/wines'>
-            <Button aria-describedby='view all wines' aria-description='view all wines' className='px-6 py-3 text-lg text-white bg-gray-700'>
+            <CustomButton
+              aria-describedby='view all wines'
+              aria-description='view all wines'
+              className='bg-gray-700 px-6 py-3 text-lg text-white'
+            >
               View All Wines
-            </Button>
+            </CustomButton>
           </Link>
         </div>
       </div>

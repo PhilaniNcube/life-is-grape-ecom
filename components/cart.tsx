@@ -15,6 +15,7 @@ import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react'
 import { useCartStore } from '@/store/cart-store-provider'
 import { formatPrice } from '@/lib/utils'
 import Link from 'next/link'
+import { CustomButton } from './ui'
 
 export default function Cart() {
   const {
@@ -59,7 +60,8 @@ export default function Cart() {
               <div>
                 <h3 className='font-medium'>{item.product.name}</h3>
                 <p className='text-sm text-gray-500'>
-                  {item.product.volume && `${item.product.volume} ml - `} {formatPrice(item.product.price)}
+                  {item.product.volume && `${item.product.volume} ml - `}{' '}
+                  {formatPrice(item.product.price)}
                 </p>
                 {item.giftBox && (
                   <span className='text-xs text-red-700'>
@@ -104,12 +106,12 @@ export default function Cart() {
             <span className='font-bold'>{formatPrice(totalPrice)}</span>
           </div>
           <Link href='/checkout'>
-            <Button
+            <CustomButton
               onClick={() => toggleCart()}
               className='w-full rounded-none'
             >
               Proceed to Checkout
-            </Button>
+            </CustomButton>
           </Link>
         </div>
       </SheetContent>

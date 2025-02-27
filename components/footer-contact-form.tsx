@@ -21,15 +21,17 @@ import { cn } from '@/lib/utils'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { contactFormAction } from '@/actions/contact-form-action'
-
+import { CustomButton } from './ui'
 
 const FormSchema = z.object({
   name: z.string({
     message: 'Please enter your name',
   }),
-  email: z.string({
-    message: 'Please enter a valid email address',
-  }).email(),
+  email: z
+    .string({
+      message: 'Please enter a valid email address',
+    })
+    .email(),
   subject: z.string({
     message: 'Please enter a subject',
   }),
@@ -40,14 +42,12 @@ const FormSchema = z.object({
 })
 
 const FooterContactForm = () => {
-
-    const form = useForm<z.infer<typeof FormSchema>>({
-      resolver: zodResolver(FormSchema),
-      mode: 'onBlur',
-    })
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    mode: 'onBlur',
+  })
 
   const [state, formAction, isPending] = useActionState(contactFormAction, null)
-
 
   return (
     <div>
@@ -145,21 +145,23 @@ const FooterContactForm = () => {
               />
             </div>
             <div className='col-span-2'>
-              <Button
+              <CustomButton
                 disabled={isPending}
-                className='w-full rounded-md bg-primary p-2 text-white md:w-1/2'
+                className='w-full p-2 text-white md:w-1/2'
               >
                 {isPending ? (
                   <CircleDashed className='animate-spin' />
                 ) : (
                   'Send Message'
                 )}
-              </Button>
+              </CustomButton>
             </div>
-            <div className="col-span-2">
+            <div className='col-span-2'>
               {state?.message && (
                 <div
-                  className={cn(state.success ? 'text-green-500' : 'text-red-500')}
+                  className={cn(
+                    state.success ? 'text-green-500' : 'text-red-500'
+                  )}
                 >
                   {state.message}
                 </div>

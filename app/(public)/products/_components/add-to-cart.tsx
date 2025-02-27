@@ -13,13 +13,13 @@ import { cn, formatPrice } from '@/lib/utils'
 import { GiftBox } from '@/store/cart'
 import { useCartStore } from '@/store/cart-store-provider'
 import { Check, ShoppingCart } from 'lucide-react'
-import {  useState } from 'react'
+import { useState } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 
 import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
 import CustomLabelPopup from './custom-label-popup'
-
+import { CustomButton } from '@/components/ui'
 
 type GiftWrappingOption = {
   name: string
@@ -53,13 +53,7 @@ const giftWrappingOptions: GiftWrappingOption[] = [
   },
 ]
 
-const AddToCart = ({
-
-  product,
-}: {
-
-  product: Doc<'products'>
-}) => {
+const AddToCart = ({ product }: { product: Doc<'products'> }) => {
   const { addToCart, openCart, cart } = useCartStore(state => state)
 
   console.log(product.product_type)
@@ -80,7 +74,7 @@ const AddToCart = ({
 
   return (
     <div className='w-full'>
-      <Button
+      <CustomButton
         aria-description='Add to cart'
         onClick={() => {
           if (!selectedGiftBox) {
@@ -110,7 +104,7 @@ const AddToCart = ({
         <span className='flex items-center justify-center'>
           <ShoppingCart className='mr-2' /> Add to Cart
         </span>
-      </Button>
+      </CustomButton>
 
       {product.product_type === 'custom_label' && (
         <div className='py-5'>

@@ -1,7 +1,7 @@
 'use client'
 
-
 import { applyGiftVoucherAction } from '@/actions/gift-voucher-actions'
+import { CustomButton } from '@/components/ui'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -12,7 +12,7 @@ const Voucher = ({
   code,
   setCode,
   setVoucherValue,
-  order_id
+  order_id,
 }: {
   code: string
   setCode: (code: string) => void
@@ -30,16 +30,16 @@ const Voucher = ({
         onChange={e => setCode(e.target.value)}
       />
       <small className='block text-sm text-gray-500'>
-        If you have a gift voucher, enter your gift voucher code to apply it to your order. The value will
-        be deducted from your total.
+        If you have a gift voucher, enter your gift voucher code to apply it to
+        your order. The value will be deducted from your total.
       </small>
-      <Button
+      <CustomButton
         onClick={async () => {
           startTransition(async () => {
             const voucher = await applyGiftVoucherAction(order_id, code)
             console.log('Voucher:', voucher)
 
-             if (voucher.error) {
+            if (voucher.error) {
               alert(voucher.error)
               return
             }
@@ -49,7 +49,7 @@ const Voucher = ({
         className='mt-2 rounded bg-slate-800'
       >
         {isPending ? 'Applying...' : 'Apply'}
-      </Button>
+      </CustomButton>
     </div>
   )
 }

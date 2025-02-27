@@ -1,4 +1,5 @@
 import { ibm_sans } from '@/app/fonts'
+import { CustomButton } from '@/components/ui'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ArrowRight } from 'lucide-react'
@@ -32,13 +33,10 @@ const GrapeDescisions = () => {
                 </span>
               </h1>
               <Link href='/products' prefetch={true}>
-                <Button
-                  className='mt-10 w-fit rounded-full text-white'
-                  size='lg'
-                >
+                <CustomButton className='mt-10 w-fit' size='lg'>
                   Shop Now
                   <ArrowRight className='ml-2' />
-                </Button>
+                </CustomButton>
               </Link>
             </div>
           </div>

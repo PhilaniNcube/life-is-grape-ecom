@@ -1,15 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { api } from '@/convex/_generated/api'
-import {  Id } from '@/convex/_generated/dataModel'
+import { Id } from '@/convex/_generated/dataModel'
 import { formatPrice } from '@/lib/utils'
 import { fetchQuery } from 'convex/nextjs'
 import Image from 'next/image'
 import ListAddToCartButton from '../products/_components/list-add-to-cart-button'
 import Link from 'next/link'
 import { EyeIcon } from 'lucide-react'
+import { CustomButton } from '@/components/ui'
 
 const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
-
   const productPromise = fetchQuery(
     api.products.getShallowProductWithMainImage,
     {
@@ -17,16 +17,12 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
     }
   )
 
-
-  const [product] = await Promise.all([
-    productPromise,
-
-  ])
+  const [product] = await Promise.all([productPromise])
 
   if (!product) return null
 
   return (
-    <article className='relative overflow-hidden rounded-lg flex flex-col justify-between shadow-md @container'>
+    <article className='relative flex flex-col justify-between overflow-hidden rounded-lg shadow-md @container'>
       <Link href={`/products/${product.slug}`} className='cursor-pointer'>
         <Image
           src={product.main_image}
@@ -41,7 +37,7 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
 
       {/* Sales Badge */}
       {product.on_sale && (
-        <div className='absolute top-0 right-0 bg-red-500 text-white font-bold text-x z-10 p-2'>
+        <div className='text-x absolute right-0 top-0 z-10 bg-red-500 p-2 font-bold text-white'>
           Sale
         </div>
       )}
@@ -54,20 +50,25 @@ const ProductItem = async ({ product_id }: { product_id: Id<'products'> }) => {
 
         {/* Price and Action Button */}
         <span className='text-sm font-bold text-gray-900 md:text-lg'>
-          {product.on_sale && product.sale_price ? formatPrice(product.sale_price!) :  formatPrice(product.price)}
+          {product.on_sale && product.sale_price
+            ? formatPrice(product.sale_price!)
+            : formatPrice(product.price)}
         </span>
-        <div className='mt-4 flex items-end justify-between '>
-          <ListAddToCartButton product={product}  />
+        <div className='mt-4 flex items-end justify-between'>
+          <ListAddToCartButton product={product} />
           <Link
             href={`/products/${product.slug}`}
             className='hidden @md:inline-block'
           >
-            <Button aria-description='view product details' className='rounded-md bg-gray-700 text-white'>
+            <CustomButton
+              aria-description='view product details'
+              className='rounded-md bg-gray-700 text-white'
+            >
               <span className='hidden text-xs lg:inline-block'>
                 View Details
               </span>
               <EyeIcon className='h-4 w-4' />
-            </Button>
+            </CustomButton>
           </Link>
         </div>
       </div>

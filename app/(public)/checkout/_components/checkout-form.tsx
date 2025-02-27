@@ -18,7 +18,7 @@ import { api } from '@/convex/_generated/api'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-
+import { CustomButton } from '@/components/ui'
 
 interface CheckoutFormInputs {
   first_name: string
@@ -38,12 +38,6 @@ export default function CheckoutForm() {
     formState: { errors, isSubmitting },
     watch,
   } = useForm<CheckoutFormInputs>()
-
-
-
-
-
-
 
   const { cart, totalCartPrice, clearCart } = useCartStore(state => state)
   const totalPrice = totalCartPrice()
@@ -329,13 +323,13 @@ export default function CheckoutForm() {
             </CardContent>
             <CardFooter>
               <div className='w-full space-y-4'>
-                <Button
+                <CustomButton
                   type='submit'
                   disabled={isSubmitting}
                   className='w-full rounded-none'
                 >
                   Proceed to Payment
-                </Button>
+                </CustomButton>
                 <p className='text-sm text-muted-foreground'>
                   You will be redirected to a secure payment gateway to complete
                   your order.

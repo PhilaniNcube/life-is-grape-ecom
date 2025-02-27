@@ -1,4 +1,5 @@
 import { sortingFns } from '@tanstack/react-table'
+import { color } from 'bun'
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 
@@ -250,16 +251,20 @@ export default defineSchema({
   })
     .index('byOrder', ['order_id'])
     .index('byProduct', ['product.id']),
-    personalised_labels: defineTable({
+  personalised_labels: defineTable({
     order_id: v.id('orders'),
     image: v.id('_storage'),
     message: v.string(),
-    }),
+  }),
   banner: defineTable({
     title: v.string(),
     subtitle: v.string(),
     image: v.id('_storage'),
     link: v.string(),
-  }),  
+  }),
+  buttons: defineTable({
+    bg: v.string(),
+    radius: v.number(),
+    color: v.string(),
+  }),
 })
-

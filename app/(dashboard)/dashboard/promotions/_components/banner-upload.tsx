@@ -11,6 +11,7 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { useRouter } from 'next/navigation'
 import { set } from 'sanity'
+import { CustomButton } from '@/components/ui'
 
 export default function BannerUpload({
   banner_id,
@@ -65,18 +66,14 @@ export default function BannerUpload({
       //   check the file type and make sure it's an image
       console.log(file)
 
-
-
-
       const data = new FormData()
       data.append('image', file)
 
       await uploadImage(data)
-       
+
       setUploading(false)
 
       router.refresh()
-
     }
   }
 
@@ -112,11 +109,11 @@ export default function BannerUpload({
           disabled={uploading}
           className='hidden'
         />
-        <Button asChild>
+        <CustomButton>
           <label htmlFor='banner' className='cursor-pointer'>
-            {uploading ? 'Uploading ...' : 'Upload Banner'}
+            {uploading ? 'Uploading ...' : 'Upload Image'}
           </label>
-        </Button>
+        </CustomButton>
       </div>
     </div>
   )

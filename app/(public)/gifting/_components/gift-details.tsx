@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { CustomButton } from '@/components/ui'
 
 export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
   const { cart, addToCart, toggleCart } = useCartStore(state => state)
@@ -38,8 +39,6 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
   const [selectedWineId, setSelectedWineId] = useState<
     Id<'products'> | undefined
   >()
-
-
 
   return (
     <div className='container mx-auto py-10'>
@@ -85,7 +84,10 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
 
                       {wines?.map(wine => (
                         <SelectItem value={wine._id} key={wine._id}>
-                          {wine.name} - {wine.on_sale && wine.sale_price ? formatPrice(wine.sale_price!) : formatPrice(wine.price)}
+                          {wine.name} -{' '}
+                          {wine.on_sale && wine.sale_price
+                            ? formatPrice(wine.sale_price!)
+                            : formatPrice(wine.price)}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -93,31 +95,29 @@ export default function GiftDetails({ gift }: { gift: GiftWrappingOption }) {
                 </Select>
               </div>
 
-              <Button
+              <CustomButton
                 size='lg'
                 className='rounded-none bg-slate-700 text-white'
                 onClick={() => {
-
-                   const selectedWine = wines.find(wine => wine._id === selectedWineId)
-                   if(!selectedWine) {
+                  const selectedWine = wines.find(
+                    wine => wine._id === selectedWineId
+                  )
+                  if (!selectedWine) {
                     alert('Please select a wine')
                     return
-                   }
-                 
+                  }
 
-                   addToCart(selectedWine, {
-
-                     name: gift.name,
-                     price: gift.price,
-                     description: gift.description,
-                     dimensions: gift.dimensions,
-                     quantity: 1,
-                   })
-
+                  addToCart(selectedWine, {
+                    name: gift.name,
+                    price: gift.price,
+                    description: gift.description,
+                    dimensions: gift.dimensions,
+                    quantity: 1,
+                  })
                 }}
               >
                 Add to Cart
-              </Button>
+              </CustomButton>
             </div>
           </div>
         </CardContent>

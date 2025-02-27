@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { littlepot } from '@/app/fonts'
 import Link from 'next/link'
+import { CustomButton } from '@/components/ui'
 
 export default function CustomWineLabels() {
   return (
@@ -44,7 +45,6 @@ export default function CustomWineLabels() {
             </div>
           </div>
           <div className='lg:w-1/2 lg:pl-12'>
-
             <p className='mb-6 text-lg text-gray-600'>
               We do personalised wine labels for weddings or corporate gifting.
               We print your wine label on matt vinyl or matt paper stickers
@@ -71,9 +71,9 @@ export default function CustomWineLabels() {
               </p>
             </div>
             <Link href='/products/personalised-labels'>
-              <Button size='lg' className='rounded-none bg-slate-700'>
+              <CustomButton size='lg' className='rounded-none bg-slate-700'>
                 Get Custom Labels
-              </Button>
+              </CustomButton>
             </Link>
           </div>
         </div>

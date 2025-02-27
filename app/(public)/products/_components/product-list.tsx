@@ -1,31 +1,25 @@
-import { Button } from "@/components/ui/button";
-import { api } from "@/convex/_generated/api";
-import { Doc, Id } from "@/convex/_generated/dataModel";
-import { formatPrice } from "@/lib/utils";
-import { useQuery } from "convex/react";
-import Image from "next/image";
-import Link from "next/link";
+import { CustomButton } from '@/components/ui'
+import { Button } from '@/components/ui/button'
+import { api } from '@/convex/_generated/api'
+import { Doc, Id } from '@/convex/_generated/dataModel'
+import { formatPrice } from '@/lib/utils'
+import { useQuery } from 'convex/react'
+import Image from 'next/image'
+import Link from 'next/link'
 
-
-type Product =  Omit<Doc<"products">, 'main_image'> & {
+type Product = Omit<Doc<'products'>, 'main_image'> & {
   main_image: string
 }
 
-
 const ProductList = ({ products }: { products: Product[] }) => {
-
-
   return (
     <div className='grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
       {products.map(product => {
-
         return (
           <div
             key={product._id}
-            className='overflow-hidden rounded-lg bg-white shadow-md relative'
+            className='relative overflow-hidden rounded-lg bg-white shadow-md'
           >
-
-
             {/* Product Image */}
             <Image
               src={product.main_image}
@@ -47,9 +41,9 @@ const ProductList = ({ products }: { products: Product[] }) => {
                   {formatPrice(product.price)}
                 </span>
                 <Link href={`/products/${product.slug}`}>
-                  <Button className=' text-white hover:bg-red-700'>
+                  <CustomButton className='text-white hover:bg-red-700'>
                     View Details
-                  </Button>
+                  </CustomButton>
                 </Link>
               </div>
             </div>
@@ -59,4 +53,4 @@ const ProductList = ({ products }: { products: Product[] }) => {
     </div>
   )
 }
-export default ProductList;
+export default ProductList
