@@ -15,6 +15,4 @@ export async function updateButtons(
     color,
     radius,
   })
-
-  revalidatePath('/', 'layout')
 }

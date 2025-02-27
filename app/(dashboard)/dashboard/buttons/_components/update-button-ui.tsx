@@ -3,7 +3,7 @@
 import { updateButtons } from '@/actions/buttons'
 import { api } from '@/convex/_generated/api'
 import { useQuery } from 'convex/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -21,10 +21,11 @@ import { CustomButton } from '@/components/ui'
 export const UpdateButtonUI = () => {
   const button = useQuery(api.buttons.getButton)
 
+  const [isPending, startTransition] = useTransition()
+
   const [bg, setBg] = useState<string>('#ffffff')
   const [color, setColor] = useState<string>('#000000')
   const [radius, setRadius] = useState<number>(4)
-  const [isPending, setIsPending] = useState(false)
 
   useEffect(() => {
     if (button) {
@@ -38,12 +39,11 @@ export const UpdateButtonUI = () => {
     if (!button?._id) return
 
     try {
-      setIsPending(true)
-      await updateButtons(button._id, bg, color, radius)
+      startTransition(async () => {
+        await updateButtons(button._id, bg, color, radius)
+      })
     } catch (error) {
       console.error('Failed to update button styles:', error)
-    } finally {
-      setIsPending(false)
     }
   }
 
