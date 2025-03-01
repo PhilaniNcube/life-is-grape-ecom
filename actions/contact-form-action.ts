@@ -10,9 +10,11 @@ const FormSchema = z.object({
   name: z.string({
     message: 'Please enter your name',
   }),
-  email: z.string({
-    message: 'Please enter a valid email address',
-  }).email(),
+  email: z
+    .string({
+      message: 'Please enter a valid email address',
+    })
+    .email(),
   subject: z.string({
     message: 'Please enter a subject',
   }),
@@ -24,7 +26,10 @@ const FormSchema = z.object({
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-export async function contactFormAction(prevState:unknown, formData: FormData) {
+export async function contactFormAction(
+  prevState: unknown,
+  formData: FormData
+) {
   const formValues = Object.fromEntries(formData.entries())
 
   const values = FormSchema.safeParse({
@@ -48,16 +53,17 @@ export async function contactFormAction(prevState:unknown, formData: FormData) {
 
   const { data, error } = await resend.emails.send({
     from: 'Life Is Grape <shop@lifeisgrape.co.za>',
-    to: 'Life Is Grape <shop@lifeisgrape.co.za>',
-    cc: email ,
+    to: 'Life Is Grape <wine@lifeisgrape.co.za>',
+    cc: email,
+    bcc: 'Life Is Grape <shop@lifeisgrape.co.za',
     subject: 'New Contact Form Submission',
     text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nPhone: ${tel}\nMessage: ${message}`,
     react: ContactFormTemplate({
-      name: name ,
-      email: email ,
-      subject: subject ,
-      tel: tel ,
-      message: message ,
+      name: name,
+      email: email,
+      subject: subject,
+      tel: tel,
+      message: message,
     }),
   })
 
