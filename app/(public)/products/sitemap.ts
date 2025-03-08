@@ -14,27 +14,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const productRoutes = products.map(product => ({
     url: `${baseUrl}/products/${product.slug}`,
     lastModified: new Date(),
+    id: product._id,
+    title: product.name,
+    description: product.description,
+
+    link: `${baseUrl}/products/${product.slug}`,
+    images: [product.main_image],
+    price: `${product.price} ZAR`,
+    currency: 'ZAR',
+    availability: product.in_stock ? 'in_stock' : 'out_of_stock',
+    condition: 'New',
+    shipping: {
+      country: 'ZA',
+      service: 'Standard',
+      price: '65.00 ZAR',
+    },
+    googleProductCategory: 'Food & Drink > Beverages',
     changeFrequency: 'weekly' as const,
     priority: 0.8,
-    title: `${product.name} | Life is Grape`,
-    description: product.description,
-    item: {
-      id: product._id,
-      title: product.name,
-      description: product.description,
-      link: `${baseUrl}/products/${product.slug}`,
-      image: product.main_image,
-      price: `${product.price} ZAR`,
-      currency: 'ZAR',
-      availability: product.in_stock ? 'in_stock' : 'out_of_stock',
-      condition: 'New',
-      shipping: {
-        country: 'ZA',
-        service: 'Standard',
-        price: '65.00 ZAR',
-      },
-      googleProductCategory: 'Food & Drink > Beverages',
-    },
   }))
 
   return [...productRoutes]
