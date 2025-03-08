@@ -8,11 +8,19 @@ import { littlepot } from '@/app/fonts'
 import { Badge } from '@/components/ui/badge'
 import Image from 'next/image'
 import Link from 'next/link'
+import { trackViewItem } from '@/lib/analytics'
 
 const ProductDetail = async ({ slug }: { slug: string }) => {
   const product = await fetchQuery(api.products.getProductBySlug, { slug })
 
   if (!product) return null
+
+  await trackViewItem({
+    id: product.product._id,
+    name: product.product.name,
+    price: product.product.price,
+    category: product.product.product_type,
+  })
 
   const relatedProducts = await fetchQuery(api.products.getRelatedProducts, {
     product_id: product?.product._id,

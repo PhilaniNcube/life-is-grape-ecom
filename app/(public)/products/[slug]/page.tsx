@@ -40,13 +40,6 @@ const page = async ({ params }: Props) => {
 
   if (!product) return <div>Product not found</div>
 
-  trackViewItem({
-    id: product.product._id,
-    name: product.product.name,
-    price: product.product.price,
-    category: product.product.product_type,
-  })
-
   // get the product image
   const productImage = await fetchQuery(api.products.getMainImage, {
     id: product?.product.main_image!,
