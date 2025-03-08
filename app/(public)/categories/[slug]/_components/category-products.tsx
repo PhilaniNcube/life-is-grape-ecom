@@ -20,17 +20,6 @@ const CategoryProducts = async ({ slug }: { slug: string }) => {
     productsPromise,
   ])
 
-  trackViewItemList(
-    products.map((product, index) => ({
-      id: product._id,
-      name: product.name,
-      price: product.price,
-      category: product.product_type,
-      position: index + 1,
-    })),
-    `Category: ${category?.name}`
-  )
-
   return (
     <section className='w-full py-12'>
       <ScrollArea className='mx-auto h-[calc(100dvh-16rem)] w-full max-w-7xl'>
