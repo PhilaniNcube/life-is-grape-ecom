@@ -1,10 +1,13 @@
 import { Id, Doc } from '@/convex/_generated/dataModel'
+import {
+  trackAddToCart,
+  trackRemoveFromCart,
+  trackViewCart,
+} from '@/lib/analytics'
 import { UpdateProducerSchema, UpdateProductVariantSchema } from '@/lib/schemas'
 import { z } from 'zod'
 import { create, createStore } from 'zustand'
 import { persist } from 'zustand/middleware'
-
-
 
 export type GiftBox = {
   name: string
@@ -43,10 +46,7 @@ export type CartStore = {
     quantity: number
   ) => void
   // remove a product from the cart by id and variant id
-  removeFromCart: (
-    id: Id<'products'>,
-
-  ) => void
+  removeFromCart: (id: Id<'products'>) => void
   // update the quantity of a product in the cart by id and variant id
   updateQuantity: (
     id: Id<'products'>,
@@ -55,14 +55,8 @@ export type CartStore = {
   ) => void
   // clear the cart
   clearCart: () => void
-  incrementQuantity: (
-    id: Id<'products'>,
-
-  ) => void
-  decrementQuantity: (
-    id: Id<'products'>,
-
-  ) => void
+  incrementQuantity: (id: Id<'products'>) => void
+  decrementQuantity: (id: Id<'products'>) => void
   // get the total number of items in the cart
   totalCartItems: () => number
   // get the total price of the items in the cart
@@ -80,11 +74,10 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
         // cart: [],
         ...initState,
         // implement the add to cart method that takes a product and a variant and an optional gift box
-        addToCart: (product,  giftBox) => {
+        addToCart: (product, giftBox) => {
           // check if the product is already in the cart
           const cartItem = get().cart.find(
-            item =>
-              item.product._id === product._id
+            item => item.product._id === product._id
           )
 
           // if the product is already in the cart, increment the quantity
@@ -93,6 +86,14 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
             set({ isOpen: true })
             return
           }
+
+          trackAddToCart({
+            id: product._id,
+            name: product.name,
+            price: product.price,
+            category: product.product_type,
+            quantity: product.product_type === 'custom_label' ? 6 : 1,
+          })
 
           // if the product is not in the cart, add the product to the cart
           set(state => ({
@@ -115,8 +116,7 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
         },
         addCartQuantity: (product, quantity) => {
           const cartItem = get().cart.find(
-            item =>
-              item.product._id === product._id
+            item => item.product._id === product._id
           )
 
           if (cartItem) {
@@ -124,6 +124,14 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
             set({ isOpen: true })
             return
           }
+
+          trackAddToCart({
+            id: product._id,
+            name: product.name,
+            price: product.price,
+            category: product.product_type,
+            quantity: quantity,
+          })
 
           set(state => ({
             cart: [
@@ -139,20 +147,28 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
           }))
         },
         // implement the remove from cart method that takes a product id and a variant id
-        removeFromCart: (id) => {
+        removeFromCart: id => {
           // filter out the product from the cart
           set(state => ({
-            cart: state.cart.filter(
-              item => item.product._id !== id
-            ),
+            cart: state.cart.filter(item => item.product._id !== id),
           }))
+
+          // track the removal of the product from the cart
+          // get the cart item that was removed
+          const cartItem = get().cart.find(item => item.product._id === id)
+
+          trackRemoveFromCart({
+            id: cartItem?.product._id!,
+            name: cartItem?.product.name!,
+            price: cartItem?.product.price!,
+            category: cartItem?.product.product_type!,
+            quantity: 0,
+          })
         },
         // implement the update quantity method that takes a product id and a variant id and a quantity
-        updateQuantity: (id,  quantity) => {
+        updateQuantity: (id, quantity) => {
           // check if the product is in the cart
-          const cartItem = get().cart.find(
-            item => item.product._id === id
-          )
+          const cartItem = get().cart.find(item => item.product._id === id)
 
           // if the product is not in the cart, return
           if (!cartItem) {
@@ -162,7 +178,7 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
           // update the quantity of the product in the cart
           set(state => ({
             cart: state.cart.map(item => {
-              if (item.product._id === id ) {
+              if (item.product._id === id) {
                 return {
                   ...item,
                   quantity,
@@ -181,16 +197,26 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
           set({ cart: [] })
         },
         // implement the increment quantity method that takes a product id and a variant id
-        incrementQuantity: (id) => {
+        incrementQuantity: id => {
           // find the item in the cart
-          const cartItem = get().cart.find(
-            item => item.product._id === id
-          )
+          const cartItem = get().cart.find(item => item.product._id === id)
 
           // if the item is not in the cart, return
           if (!cartItem) {
             return
           }
+
+          // track adding the product to the cart
+          trackAddToCart({
+            id: cartItem.product._id,
+            name: cartItem.product.name,
+            price: cartItem.product.price,
+            category: cartItem.product.product_type,
+            quantity:
+              cartItem.product.product_type === 'custom_label'
+                ? cartItem.quantity + 6
+                : cartItem.quantity + 1,
+          })
 
           // increment the quantity of the item in the cart
           set(state => ({
@@ -219,11 +245,9 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
           }))
         },
         // implement the decrement quantity method that takes a product id and a variant id
-        decrementQuantity: (id) => {
+        decrementQuantity: id => {
           // find the item in the cart
-          const cartItem = get().cart.find(
-            item => item.product._id === id
-          )
+          const cartItem = get().cart.find(item => item.product._id === id)
 
           // if the item is not in the cart, return
           if (!cartItem) {
@@ -231,13 +255,15 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
           }
 
           // if the item quantity is 1, remove the item from the cart
-          if (cartItem.quantity === 1 ) {
+          if (cartItem.quantity === 1) {
             get().removeFromCart(id)
             return
           }
 
-
-          if(cartItem.product.product_type === 'custom_label' && cartItem.quantity <= 6) {
+          if (
+            cartItem.product.product_type === 'custom_label' &&
+            cartItem.quantity <= 6
+          ) {
             get().removeFromCart(id)
             return
           }
@@ -245,7 +271,7 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
           // decrement the quantity of the item in the cart
           set(state => ({
             cart: state.cart.map(item => {
-              if (item.product._id === id ) {
+              if (item.product._id === id) {
                 return {
                   ...item,
                   quantity:
@@ -287,9 +313,36 @@ export const createCartStore = (initState: CartState = { cart: [] }) => {
         isOpen: false,
         toggleCart: () => {
           set(state => ({ isOpen: !state.isOpen }))
+
+          if (!get().isOpen) {
+            return
+          }
+
+          const cart = get().cart.map(item => ({
+            id: item.product._id,
+            name: item.product.name,
+            price: item.product.price,
+            category: item.product.product_type,
+            quantity: item.quantity,
+          }))
+          const cartValue = get().totalCartPrice()
+
+          trackViewCart(cart, cartValue)
         },
         openCart: () => {
           set({ isOpen: true })
+
+          const cart = get().cart.map(item => ({
+            id: item.product._id,
+            name: item.product.name,
+            price: item.product.price,
+            category: item.product.product_type,
+            quantity: item.quantity,
+          }))
+
+          const cartValue = get().totalCartPrice()
+
+          trackViewCart(cart, cartValue)
         },
         closeCart: () => {
           set({ isOpen: false })

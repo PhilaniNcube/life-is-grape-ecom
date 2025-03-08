@@ -4,9 +4,7 @@ import { cn } from '@/lib/utils'
 import ProductItem from '@/app/(public)/_components/product-item'
 import { littlepot } from '@/app/fonts'
 import { ScrollArea } from '@/components/ui/scroll-area'
-
-
-
+import { trackViewItemList } from '@/lib/analytics'
 
 const CategoryProducts = async ({ slug }: { slug: string }) => {
   // const category = await fetchQuery(api.categories.getCategoryBySlug, { slug })
@@ -21,6 +19,17 @@ const CategoryProducts = async ({ slug }: { slug: string }) => {
     categoryPromise,
     productsPromise,
   ])
+
+  trackViewItemList(
+    products.map((product, index) => ({
+      id: product._id,
+      name: product.name,
+      price: product.price,
+      category: product.product_type,
+      position: index + 1,
+    })),
+    `Category: ${category?.name}`
+  )
 
   return (
     <section className='w-full py-12'>

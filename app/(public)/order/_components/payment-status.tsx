@@ -13,10 +13,17 @@ import {
 import { CheckCircle2, XCircle } from 'lucide-react'
 import { Doc } from '@/convex/_generated/dataModel'
 import { useCartStore } from '@/store/cart-store-provider'
+import { trackPurchase } from '@/lib/analytics'
 
-export function PaymentStatus({ status, order }: { status: 'success' | 'failure', order:Doc<"orders"> | null }) {
+export function PaymentStatus({
+  status,
+  order,
+}: {
+  status: 'success' | 'failure'
+  order: Doc<'orders'> | null
+}) {
   const router = useRouter()
-  const {clearCart} = useCartStore(state => state)
+  const { clearCart } = useCartStore(state => state)
 
   const handleContinue = () => {
     clearCart()
@@ -26,6 +33,25 @@ export function PaymentStatus({ status, order }: { status: 'success' | 'failure'
   const handleGoToOrder = () => {
     clearCart()
     router.push(`/order/${order?._id}`) // Redirect back to the checkout page
+  }
+
+  if (status === 'failure') {
+    return (
+      <Card className='mx-auto w-full max-w-md'>
+        <CardHeader>
+          <CardTitle className='text-center'>Payment Failed</CardTitle>
+          <CardDescription className='text-center'>
+            Your payment was not successful, please try again.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className='flex justify-center py-6'>
+          <XCircle className='h-16 w-16 text-red-500' />
+        </CardContent>
+        <CardFooter className='flex justify-center'>
+          <Button onClick={handleContinue}>Continue Shopping</Button>
+        </CardFooter>
+      </Card>
+    )
   }
 
   return (

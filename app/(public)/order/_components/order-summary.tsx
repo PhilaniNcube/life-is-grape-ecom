@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -15,21 +14,24 @@ import { formatPrice } from '@/lib/utils'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
-
-
+import { trackPurchase } from '@/lib/analytics'
 
 type OrderSummaryProps = {
-  order: Doc<"orders">
-  orderItems: Doc<"order_items">[]
+  order: Doc<'orders'>
+  orderItems: Doc<'order_items'>[]
 }
 
-export default async function OrderSummary({ order, orderItems }: OrderSummaryProps) {
-
-  
+export default async function OrderSummary({
+  order,
+  orderItems,
+}: OrderSummaryProps) {
   // check if there is a personalised label attached to the order
-  const personalisedLabel = await fetchQuery(api.personalised_labels.getPersonalisedLabelByOrderId, {
-    order_id: order._id
-  })
+  const personalisedLabel = await fetchQuery(
+    api.personalised_labels.getPersonalisedLabelByOrderId,
+    {
+      order_id: order._id,
+    }
+  )
 
   const statusColor = {
     pending: 'bg-yellow-500',
@@ -163,7 +165,13 @@ export default async function OrderSummary({ order, orderItems }: OrderSummaryPr
             </div>
             <div className='flex justify-between font-semibold'>
               <span>Total</span>
-              <span>{order.voucher_value ? formatPrice((order.subtotal - order.voucher_value) + order.shipping) : formatPrice(order.total)}</span>
+              <span>
+                {order.voucher_value
+                  ? formatPrice(
+                      order.subtotal - order.voucher_value + order.shipping
+                    )
+                  : formatPrice(order.total)}
+              </span>
             </div>
             <Separator className='my-3' />
             {order.payment_reference && (
@@ -174,7 +182,7 @@ export default async function OrderSummary({ order, orderItems }: OrderSummaryPr
             )}
             {order.paid_at && (
               <div className='flex flex-col justify-between md:flex-row'>
-                <span className='text-lg font-bold mt-4'>Paid At</span>
+                <span className='mt-4 text-lg font-bold'>Paid At</span>
                 <span>{format(order.paid_at, 'PPP')}</span>
               </div>
             )}

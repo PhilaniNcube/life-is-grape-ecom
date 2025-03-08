@@ -5,6 +5,7 @@ import { fetchMutation, fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { Resend } from 'resend'
+import { trackPurchase } from '@/lib/analytics'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -64,26 +65,43 @@ export async function POST(req: NextRequest) {
         status: 'paid',
       })
 
+      const orderItems = await fetchQuery(
+        api.order_items.getOrderItemsByOrderId,
+        {
+          orderId: order._id,
+        }
+      )
+
       // if the order has a voucher, redeem the voucher
 
-      if(order.voucher_id) {
-   
+      if (order.voucher_id) {
         //  first get the voucher
         const voucher = await fetchQuery(api.gift_vouchers.getGiftVoucher, {
           id: order.voucher_id,
         })
-  
-          //  if the voucher exists,  and has not been redeeme then redeem it
-        if(voucher && !voucher.redeemed) {
+
+        //  if the voucher exists,  and has not been redeeme then redeem it
+        if (voucher && !voucher.redeemed) {
           await fetchMutation(api.gift_vouchers.redeemGiftVoucher, {
             order_id: order._id,
             code: voucher.code,
             redeemed_by: order.email,
           })
-        } 
+        }
 
-        
-    }
+        const items = orderItems.map(item => ({
+          id: item.product.id,
+          name: item.product.name,
+          price: item.price_at_time,
+          quantity: item.quantity,
+        }))
+
+        trackPurchase(items, {
+          id: order._id,
+          revenue: order.subtotal,
+          shipping: order.shipping,
+        })
+      }
 
       // send email to shop@lifeisgrape.co.za that a new order has been placed
       await resend.emails.send({

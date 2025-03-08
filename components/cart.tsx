@@ -16,6 +16,7 @@ import { useCartStore } from '@/store/cart-store-provider'
 import { formatPrice } from '@/lib/utils'
 import Link from 'next/link'
 import { CustomButton } from './ui'
+import { trackBeginCheckout } from '@/lib/analytics'
 
 export default function Cart() {
   const {
@@ -107,7 +108,17 @@ export default function Cart() {
           </div>
           <Link href='/checkout'>
             <CustomButton
-              onClick={() => toggleCart()}
+              onClick={() => {
+                toggleCart()
+                const cartItems = cart.map(item => ({
+                  id: item.product._id,
+                  name: item.product.name,
+                  price: item.product.price,
+                  category: item.product.product_type,
+                  quantity: item.quantity,
+                }))
+                trackBeginCheckout(cartItems, totalPrice)
+              }}
               className='w-full rounded-none'
             >
               Proceed to Checkout
