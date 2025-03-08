@@ -46,17 +46,6 @@ const ShopPage = async () => {
     })),
   }
 
-  trackViewItemList(
-    products.map((product, index) => ({
-      id: product._id,
-      name: product.name,
-      price: product.price,
-      category: product.product_type,
-      position: index + 1,
-    })),
-    'All Products'
-  )
-
   return (
     <>
       <Script
@@ -75,9 +64,11 @@ const ShopPage = async () => {
             {/* 3-Column Grid */}
             <ScrollArea className='h-[calc(100dvh-14rem)] @container md:flex-1'>
               <div className='grid w-full grid-cols-2 gap-8 @lg:grid-cols-3 @lg:gap-16'>
-                {products.map(product => (
-                  <ProductItem key={product._id} product_id={product._id} />
-                ))}
+                {products.map(product => {
+                  return (
+                    <ProductItem key={product._id} product_id={product._id} />
+                  )
+                })}
               </div>
             </ScrollArea>
           </div>
