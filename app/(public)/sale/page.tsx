@@ -6,6 +6,8 @@ import ProductItem from '../_components/product-item'
 import { cn } from '@/lib/utils'
 import { littlepot } from '@/app/fonts'
 import { trackViewItemList } from '@/lib/analytics'
+import { Send } from 'lucide-react'
+import SendOnSaleTrackingEvent from './_components/send-tracking-event'
 
 export const metadata: Metadata = {
   title: 'Sale Items | Life is Grape',
@@ -51,23 +53,13 @@ const SalePage = async () => {
     })),
   }
 
-  trackViewItemList(
-    products.map((product, index) => ({
-      id: product._id,
-      name: product.name,
-      price: product.price,
-      category: product.product_type,
-      position: index + 1,
-    })),
-    'On Sale'
-  )
-
   return (
     <>
       <Script
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
       <div className='container mx-auto py-12'>
         <h1
           className={cn(
@@ -77,6 +69,7 @@ const SalePage = async () => {
         >
           Products on Sale
         </h1>
+
         <div className='grid grid-cols-2 gap-4 py-6 lg:grid-cols-3'>
           {products.map(product => {
             return <ProductItem key={product._id} product_id={product._id} />
