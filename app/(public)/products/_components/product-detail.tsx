@@ -15,13 +15,6 @@ const ProductDetail = async ({ slug }: { slug: string }) => {
 
   if (!product) return null
 
-  await trackViewItem({
-    id: product.product._id,
-    name: product.product.name,
-    price: product.product.price,
-    category: product.product.product_type,
-  })
-
   const relatedProducts = await fetchQuery(api.products.getRelatedProducts, {
     product_id: product?.product._id,
     limit: 4,

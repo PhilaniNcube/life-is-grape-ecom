@@ -13,13 +13,14 @@ import { cn, formatPrice } from '@/lib/utils'
 import { GiftBox } from '@/store/cart'
 import { useCartStore } from '@/store/cart-store-provider'
 import { Check, ShoppingCart } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 
 import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
 import CustomLabelPopup from './custom-label-popup'
 import { CustomButton } from '@/components/ui'
+import { trackViewItem } from '@/lib/analytics'
 
 type GiftWrappingOption = {
   name: string
@@ -71,6 +72,15 @@ const AddToCart = ({ product }: { product: Doc<'products'> }) => {
 
   const [selectedGiftBox, setSelectedGiftBox] =
     useState<GiftWrappingOption | null>(null)
+
+  useEffect(() => {
+    trackViewItem({
+      id: product._id,
+      name: product.name,
+      price: product.price,
+      category: product.product_type,
+    })
+  }, [])
 
   return (
     <div className='w-full'>
