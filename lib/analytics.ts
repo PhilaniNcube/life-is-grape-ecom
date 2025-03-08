@@ -1,4 +1,5 @@
 import { sendGTMEvent } from '@next/third-parties/google'
+import slugify from 'slugify'
 
 /**
  * Track when a user views a product
@@ -48,6 +49,7 @@ export function trackViewItemList(
   sendGTMEvent({
     event: 'view_item_list',
     ecommerce: {
+      item_list_id: slugify(listName),
       item_list_name: listName,
       items: items.map((item, index) => ({
         item_id: item.id,
