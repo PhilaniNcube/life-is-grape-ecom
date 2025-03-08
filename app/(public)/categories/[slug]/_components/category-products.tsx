@@ -5,6 +5,7 @@ import ProductItem from '@/app/(public)/_components/product-item'
 import { littlepot } from '@/app/fonts'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { trackViewItemList } from '@/lib/analytics'
+import { ProductListViewTracker } from '@/components/analytics/ProductViewTracker'
 
 const CategoryProducts = async ({ slug }: { slug: string }) => {
   // const category = await fetchQuery(api.categories.getCategoryBySlug, { slug })
@@ -22,6 +23,7 @@ const CategoryProducts = async ({ slug }: { slug: string }) => {
 
   return (
     <section className='w-full py-12'>
+      <ProductListViewTracker items={products} listName={slug} />
       <ScrollArea className='mx-auto h-[calc(100dvh-16rem)] w-full max-w-7xl'>
         {/* Section Heading */}
         <h1

@@ -5,9 +5,9 @@ import { Id } from '@/convex/_generated/dataModel'
 import ProductItem from '../../_components/product-item'
 import { littlepot } from '@/app/fonts'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { ProductListViewTracker } from '@/components/analytics/ProductViewTracker'
 
 const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
-
   const spirits = await fetchQuery(
     api.products.getShallowProductsWithMainImage,
     {
@@ -50,7 +50,11 @@ const SpiritsList = async ({ filter }: { filter: Id<'categories'> | '' }) => {
 
   return (
     <section className='w-full py-4 @container peer-has-[data-[pending=true]]:animate-pulse'>
-      <ScrollArea className='mx-auto max-w-7xl h-[calc(100dvh-12rem)]'>
+      <ProductListViewTracker
+        items={filteredSpirits}
+        listName={`Spirits - ${filter}`}
+      />
+      <ScrollArea className='mx-auto h-[calc(100dvh-12rem)] max-w-7xl'>
         {/* Section Heading */}
 
         <h2 className={cn('mb-6 text-3xl text-gray-900', littlepot.className)}>

@@ -6,7 +6,10 @@ import Filter from './_components/filter'
 import ProductItem from '../_components/product-item'
 
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { trackViewItemList } from '@/lib/analytics'
+import {
+  ProductListViewTracker,
+  ProductViewTracker,
+} from '@/components/analytics/ProductViewTracker'
 
 export const metadata: Metadata = {
   title: 'Shop All Products | Life is Grape',
@@ -52,6 +55,7 @@ const ShopPage = async () => {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <ProductListViewTracker items={products} listName='All Products' />
       <section className='py-12'>
         <div className='mx-auto max-w-7xl'>
           {/* Section Heading */}

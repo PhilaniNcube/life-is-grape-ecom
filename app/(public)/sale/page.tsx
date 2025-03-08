@@ -8,6 +8,7 @@ import { littlepot } from '@/app/fonts'
 import { trackViewItemList } from '@/lib/analytics'
 import { Send } from 'lucide-react'
 import SendOnSaleTrackingEvent from './_components/send-tracking-event'
+import { ProductListViewTracker } from '@/components/analytics/ProductViewTracker'
 
 export const metadata: Metadata = {
   title: 'Sale Items | Life is Grape',
@@ -59,7 +60,7 @@ const SalePage = async () => {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
+      <ProductListViewTracker items={products} listName='Sale Items' />
       <div className='container mx-auto py-12'>
         <h1
           className={cn(
