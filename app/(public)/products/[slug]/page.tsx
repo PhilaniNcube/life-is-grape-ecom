@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${product.product.name} | Life is Grape`,
       description: product.product.description,
-      images: [{ url: product.product.main_image || '' }],
+      images: [{ url: product.product.main_image || '', width: 500, height:500 }],
       type: 'website', // Changed from 'product' to 'website'
       locale: 'en_ZA',
     },
