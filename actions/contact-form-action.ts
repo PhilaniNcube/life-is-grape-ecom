@@ -53,7 +53,7 @@ export async function contactFormAction(
 
   const { data, error } = await resend.emails.send({
     from: 'Life Is Grape <shop@lifeisgrape.co.za>',
-    to: 'Life Is Grape <wine@lifeisgrape.co.za>',
+    to: ['wine@lifeisgrape.co.za', 'ncbphi001@gmail.com'],
     cc: email,
     bcc: 'Life Is Grape <shop@lifeisgrape.co.za',
     subject: 'New Contact Form Submission',
