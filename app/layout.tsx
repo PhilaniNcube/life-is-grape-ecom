@@ -93,6 +93,6 @@ export default function RootLayout({
           </NuqsAdapter>
         </body>
       </html>
-    </ClerkProvider>
+   </ClerkProvider>
   )
 }
