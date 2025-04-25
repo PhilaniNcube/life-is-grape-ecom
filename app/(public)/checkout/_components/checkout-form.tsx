@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { useCartStore } from '@/store/cart-store-provider'
 import { formatPrice } from '@/lib/utils'
-import { useMutation } from 'convex/react'
+import { useMutation, useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -32,6 +32,14 @@ interface CheckoutFormInputs {
 }
 
 export default function CheckoutForm() {
+
+  const shippingCosts = useQuery(api.shipping.getShippingCosts)
+
+  const shippingCostInsidePE = shippingCosts?.inside_pe || 0
+  const shippingCostPEOutskirts = shippingCosts?.pe_outskirts || 0
+  const shippingCostRestOfSA = shippingCosts?.rest_of_sa || 0
+
+
   const {
     register,
     handleSubmit,
@@ -54,11 +62,11 @@ export default function CheckoutForm() {
       : streetAddress.toLowerCase().includes('seaview') ||
           streetAddress.toLowerCase().includes('chelsea') ||
           streetAddress.toLowerCase().includes('rowallan park')
-        ? 65
+        ? shippingCostPEOutskirts
         : city.toLowerCase() === 'port elizabeth' ||
             city.toLowerCase() === 'gqeberha'
-          ? 35
-          : 95
+          ? shippingCostInsidePE
+          : shippingCostRestOfSA
     : 0 // Default to 0 if no address info
 
   const total = totalPrice + shipping
