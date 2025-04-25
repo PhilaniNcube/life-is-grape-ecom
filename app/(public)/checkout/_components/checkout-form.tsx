@@ -38,15 +38,18 @@ export default function CheckoutForm() {
     formState: { errors, isSubmitting },
     watch,
   } = useForm<CheckoutFormInputs>()
-
   const { cart, totalCartPrice, clearCart } = useCartStore(state => state)
   const totalPrice = totalCartPrice()
 
   const streetAddress = watch('street') || ''
   const city = watch('city') || ''
 
-  const shipping =
-    totalPrice > 2000
+  // Check if both street address and city are provided
+  const hasAddressInfo = streetAddress !== '' && city !== ''
+
+  // Calculate shipping only if address info is provided
+  const shipping = hasAddressInfo
+    ? totalPrice > 2000
       ? 0
       : streetAddress.toLowerCase().includes('seaview') ||
           streetAddress.toLowerCase().includes('chelsea') ||
@@ -55,7 +58,9 @@ export default function CheckoutForm() {
         : city.toLowerCase() === 'port elizabeth' ||
             city.toLowerCase() === 'gqeberha'
           ? 35
-          : 150
+          : 95
+    : 0 // Default to 0 if no address info
+
   const total = totalPrice + shipping
 
   const addOrder = useMutation(api.orders.createOrder)
@@ -304,22 +309,38 @@ export default function CheckoutForm() {
                   )}
                 </div>
               ))}
-              <Separator />
-              <div className='flex justify-between'>
+              <Separator />              <div className='flex justify-between'>
                 <span>Subtotal</span>
-
                 <span>{formatPrice(totalPrice)}</span>
               </div>
-              <div className='flex justify-between'>
-                <span>Shipping</span>
-                <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
-              </div>
-              <Separator />
-
-              <div className='flex justify-between font-bold'>
-                <span>Total</span>
-                <span>{formatPrice(total)}</span>
-              </div>
+              
+              {hasAddressInfo && (
+                <>
+                  <div className='flex justify-between'>
+                    <span>Shipping</span>
+                    <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
+                  </div>
+                  <Separator />
+                  <div className='flex justify-between font-bold'>
+                    <span>Total</span>
+                    <span>{formatPrice(total)}</span>
+                  </div>
+                </>
+              )}
+              
+              {!hasAddressInfo && (
+                <>
+                  <div className='flex justify-between text-muted-foreground italic'>
+                    <span>Shipping</span>
+                    <span>Enter address for shipping cost</span>
+                  </div>
+                  <Separator />
+                  <div className='flex justify-between font-bold'>
+                    <span>Total</span>
+                    <span>{formatPrice(totalPrice)}</span>
+                  </div>
+                </>
+              )}
             </CardContent>
             <CardFooter>
               <div className='w-full space-y-4'>
