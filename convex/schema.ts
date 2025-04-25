@@ -265,4 +265,9 @@ export default defineSchema({
     radius: v.number(),
     color: v.string(),
   }),
+  shipping_costs: defineTable({
+    inside_pe: v.number(),
+    pe_outskirts: v.number(),
+    rest_of_sa: v.number(),    
+  })
 })
