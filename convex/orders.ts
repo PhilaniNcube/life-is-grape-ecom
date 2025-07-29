@@ -110,12 +110,22 @@ export const getPaidOrders = query({
 // get orders by user ID
 export const getUserOrders = query({
   args: {
-    userId: v.id('users'),
+    userId: v.string(),
   },
   handler: async (ctx, args) => {
+    // fetch the user from the user table
+    const user = await ctx.db
+      .query('users')
+      .filter(q => q.eq(q.field('clerkUserId'), args.userId))
+      .first()
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+
     return await ctx.db
       .query('orders')
-      .filter(q => q.eq(q.field('userId'), args.userId))
+      .filter(q => q.eq(q.field('email'), user.email))
       .order('desc')
       .collect()
   },

@@ -8,27 +8,23 @@ import { Id } from '@/convex/_generated/dataModel'
 const ProfilePage = async () => {
   const { userId } = await auth()
 
+  console.log('User ID:', userId)
+
   if (!userId) {
     redirect('/sign-in')
   }
 
   // Get user's orders
   const orders = await fetchQuery(api.orders.getUserOrders, {
-    userId: userId as Id<'users'>,
+    userId: userId as string,
   })
 
-  // Get the user from our database
-  const user = await fetchQuery(api.users.getUser, { clerkUserId: userId })
-
-  if (!user) {
-    redirect('/sign-in')
-  }
+  console.log('Orders:', orders)
 
   return (
     <div className='container mx-auto py-8'>
-      <div className='mx-auto max-w-4xl'>
+      <div className=''>
         <h1 className='mb-8 text-3xl font-bold'>My Profile</h1>
-        <ProfileContent user={user} orders={orders} />
       </div>
     </div>
   )
