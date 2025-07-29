@@ -26,15 +26,17 @@ const routes = [
   // { name: 'Wine Tasting', href: '/wine-tasting' },
 ]
 
+const userRoutes = [{ name: 'Profile', href: '/profile' }]
+
 export default function Navigation({ user }: { user: Doc<'users'> | null }) {
   return (
-    <header className='sticky top-0 z-50 w-full flex-1 lg:px-0 container'>
+    <header className='container sticky top-0 z-50 w-full flex-1 lg:px-0'>
       <div className='flex h-16 items-center lg:px-0'>
         <div className='flex flex-1 items-center justify-end gap-6'>
           <div className='flex flex-1 flex-row justify-start'>
             <MainNav />
             <MobileNav />
-            <Link href='/' className='md:hidden flex items-center space-x-2'>
+            <Link href='/' className='flex items-center space-x-2 md:hidden'>
               <Image
                 src='https://quiet-caterpillar-834.convex.cloud/api/storage/f73007fc-e4e4-4ab6-a05d-e21895641152'
                 width={500}
@@ -49,7 +51,7 @@ export default function Navigation({ user }: { user: Doc<'users'> | null }) {
           </div>
 
           <SignedOut>
-            <SignInButton >
+            <SignInButton>
               <Button size='sm'>Sign in</Button>
             </SignInButton>
           </SignedOut>
@@ -91,6 +93,17 @@ function MainNav() {
             {route.name}
           </Link>
         ))}
+        <SignedIn>
+          {userRoutes.map(route => (
+            <Link
+              key={route.href}
+              href={route.href}
+              className='md:text-md text-sm text-foreground/60 transition-colors hover:text-foreground/80'
+            >
+              {route.name}
+            </Link>
+          ))}
+        </SignedIn>
       </nav>
     </div>
   )
@@ -140,6 +153,18 @@ function MobileNav() {
               {route.name}
             </Link>
           ))}
+          <SignedIn>
+            {userRoutes.map(route => (
+              <Link
+                onClick={() => setIsOpen(!isOpen)}
+                key={route.href}
+                href={route.href}
+                className='text-muted-foreground transition-colors hover:text-foreground'
+              >
+                {route.name}
+              </Link>
+            ))}
+          </SignedIn>
         </nav>
       </SheetContent>
     </Sheet>

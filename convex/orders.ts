@@ -1,4 +1,3 @@
-
 import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
 import { paginationOptsValidator } from 'convex/server'
@@ -7,7 +6,6 @@ import { Quando } from 'next/font/google'
 // create a new order
 export const createOrder = mutation({
   args: {
-
     total: v.number(),
     status: v.union(
       v.literal('pending'),
@@ -43,15 +41,14 @@ export const createOrder = mutation({
           })
         ),
       })
-    )
+    ),
   },
   handler: async (ctx, args) => {
-
-    console.log("Creating order", args)
+    console.log('Creating order', args)
 
     // create a new order
-    const order = await ctx.db.insert("orders", {
-      status: "pending",
+    const order = await ctx.db.insert('orders', {
+      status: 'pending',
       first_name: args.first_name,
       last_name: args.last_name,
       email: args.email,
@@ -67,13 +64,9 @@ export const createOrder = mutation({
       total: args.total,
     })
 
-
-
-
-
     // create the order items
     for (const item of args.order_items) {
-      await ctx.db.insert("order_items", {
+      await ctx.db.insert('order_items', {
         order_id: order,
         product: item.product,
         quantity: item.quantity,
@@ -84,11 +77,8 @@ export const createOrder = mutation({
 
     // redirect(`/checkout/payment?order_id=${order}`)
     return order
-
   },
 })
-
-
 
 // get order by order_id
 export const getOrder = query({
@@ -102,20 +92,34 @@ export const getOrder = query({
 
 // get all orders
 export const getOrders = query({
-  handler: async (ctx) => {
-    return await ctx.db.query("orders").collect()
+  handler: async ctx => {
+    return await ctx.db.query('orders').collect()
   },
 })
 
 // get paid orders
 export const getPaidOrders = query({
-  handler: async (ctx) => {
-    return await ctx.db.query("orders").filter(q => q.eq(q.field("status"), "paid")).collect()
+  handler: async ctx => {
+    return await ctx.db
+      .query('orders')
+      .filter(q => q.eq(q.field('status'), 'paid'))
+      .collect()
   },
 })
 
-
-
+// get orders by user ID
+export const getUserOrders = query({
+  args: {
+    userId: v.id('users'),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('orders')
+      .filter(q => q.eq(q.field('userId'), args.userId))
+      .order('desc')
+      .collect()
+  },
+})
 
 // update order payment_reference
 export const updateOrderPaymentReference = mutation({
@@ -124,7 +128,6 @@ export const updateOrderPaymentReference = mutation({
     payment_reference: v.string(),
   },
   handler: async (ctx, args) => {
-
     const id = args.order_id
 
     return await ctx.db.patch(id, {
@@ -133,7 +136,6 @@ export const updateOrderPaymentReference = mutation({
   },
 })
 
-
 // update order paid status and paid_at timestamp
 export const updateOrderPaidStatus = mutation({
   args: {
@@ -141,27 +143,25 @@ export const updateOrderPaidStatus = mutation({
     status: v.string(),
   },
   handler: async (ctx, args) => {
-
     const payment_reference = args.payment_reference
     const status = args.status
 
     const order = await ctx.db.get(payment_reference)
     if (!order) {
-      throw new Error("Order not found")
+      throw new Error('Order not found')
     }
 
-    if(order.status === "paid") {
-      console.log("Order already paid")
+    if (order.status === 'paid') {
+      console.log('Order already paid')
       return
     }
 
-     await ctx.db.patch(order._id, {
-      status: status === "paid" ? "paid" : "pending",
+    await ctx.db.patch(order._id, {
+      status: status === 'paid' ? 'paid' : 'pending',
       paid_at: Date.now(),
     })
   },
 })
-
 
 export const getPaginatedOrders = query({
   args: {
