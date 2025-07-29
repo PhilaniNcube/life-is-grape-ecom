@@ -1,3 +1,5 @@
+/* prettier-ignore-start */
+
 /* eslint-disable */
 /**
  * Generated `api` utility.
@@ -19,11 +21,11 @@ import type * as buttons from "../buttons.js";
 import type * as categories from "../categories.js";
 import type * as contact_form_submissions from "../contact_form_submissions.js";
 import type * as custom_label_messages from "../custom_label_messages.js";
-import type * as gift_vouchers from "../gift_vouchers.js";
 import type * as gifts from "../gifts.js";
+import type * as gift_vouchers from "../gift_vouchers.js";
 import type * as http from "../http.js";
-import type * as order_items from "../order_items.js";
 import type * as orders from "../orders.js";
+import type * as order_items from "../order_items.js";
 import type * as personalised_labels from "../personalised_labels.js";
 import type * as producers from "../producers.js";
 import type * as products from "../products.js";
@@ -46,11 +48,11 @@ declare const fullApi: ApiFromModules<{
   categories: typeof categories;
   contact_form_submissions: typeof contact_form_submissions;
   custom_label_messages: typeof custom_label_messages;
-  gift_vouchers: typeof gift_vouchers;
   gifts: typeof gifts;
+  gift_vouchers: typeof gift_vouchers;
   http: typeof http;
-  order_items: typeof order_items;
   orders: typeof orders;
+  order_items: typeof order_items;
   personalised_labels: typeof personalised_labels;
   producers: typeof producers;
   products: typeof products;
@@ -66,3 +68,5 @@ export declare const internal: FilterApi<
   typeof fullApi,
   FunctionReference<any, "internal">
 >;
+
+/* prettier-ignore-end */
