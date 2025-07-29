@@ -25,6 +25,7 @@ const ProfilePage = async () => {
     <div className='container mx-auto py-8'>
       <div className=''>
         <h1 className='mb-8 text-3xl font-bold'>My Profile</h1>
+        <ProfileContent orders={orders} />
       </div>
     </div>
   )

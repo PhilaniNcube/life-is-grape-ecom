@@ -12,11 +12,10 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp, User, Package, Calendar } from 'lucide-react'
 
 type ProfileContentProps = {
-  user: Doc<'users'>
   orders: Doc<'orders'>[]
 }
 
-export default function ProfileContent({ user, orders }: ProfileContentProps) {
+export default function ProfileContent({ orders }: ProfileContentProps) {
   const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set())
 
   const toggleOrderExpansion = (orderId: string) => {
@@ -47,30 +46,6 @@ export default function ProfileContent({ user, orders }: ProfileContentProps) {
 
   return (
     <div className='space-y-8'>
-      {/* User Information Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-2'>
-            <User className='h-5 w-5' />
-            Profile Information
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className='grid gap-4 md:grid-cols-2'>
-            <div>
-              <p className='text-sm text-muted-foreground'>Name</p>
-              <p className='font-medium'>
-                {user.first_name} {user.last_name}
-              </p>
-            </div>
-            <div>
-              <p className='text-sm text-muted-foreground'>Email</p>
-              <p className='font-medium'>{user.email}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Orders Section */}
       <Card>
         <CardHeader>
