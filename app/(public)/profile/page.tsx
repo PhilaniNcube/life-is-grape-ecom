@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import ProfileContent from './_components/profile-content'
+import { Id } from '@/convex/_generated/dataModel'
 
 const ProfilePage = async () => {
   const { userId } = await auth()
@@ -11,17 +12,17 @@ const ProfilePage = async () => {
     redirect('/sign-in')
   }
 
+  // Get user's orders
+  const orders = await fetchQuery(api.orders.getUserOrders, {
+    userId: userId as Id<'users'>,
+  })
+
   // Get the user from our database
   const user = await fetchQuery(api.users.getUser, { clerkUserId: userId })
 
   if (!user) {
     redirect('/sign-in')
   }
-
-  // Get user's orders
-  const orders = await fetchQuery(api.orders.getUserOrders, {
-    userId: user._id,
-  })
 
   return (
     <div className='container mx-auto py-8'>
