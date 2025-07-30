@@ -1,12 +1,4 @@
-import {
-  Button,
-  Container,
-  Html,
-  Section,
-  Tailwind,
-  Text,
-  Link,
-} from '@react-email/components'
+import { Container, Section, Tailwind, Text } from '@react-email/components'
 import * as React from 'react'
 
 interface OrderNotificationProps {
@@ -142,19 +134,23 @@ const OrderNotificationTemplate = ({
             Order Summary
           </Text>
 
-          <div className='border-t border-gray-200 pt-3'>
-            <Text className='flex justify-between'>
-              <span>Subtotal:</span>
-              <span>{formatPrice(subtotal)}</span>
-            </Text>
-            <Text className='flex justify-between'>
-              <span>Shipping:</span>
-              <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
-            </Text>
-            <Text className='mt-2 flex justify-between border-t border-gray-200 pt-2 text-lg font-bold'>
-              <span>Total:</span>
-              <span>{formatPrice(total)}</span>
-            </Text>
+          <div className='space-y-2 border-t border-gray-200 pt-3'>
+            <div className='flex justify-between'>
+              <Text className='m-0'>Subtotal:</Text>
+              <Text className='m-0'>{formatPrice(subtotal)}</Text>
+            </div>
+            <div className='flex justify-between'>
+              <Text className='m-0'>Shipping:</Text>
+              <Text className='m-0'>
+                {shipping === 0 ? 'Free' : formatPrice(shipping)}
+              </Text>
+            </div>
+            <div className='mt-2 flex justify-between border-t border-gray-200 pt-2'>
+              <Text className='m-0 text-lg font-bold'>Total:</Text>
+              <Text className='m-0 text-lg font-bold'>
+                {formatPrice(total)}
+              </Text>
+            </div>
           </div>
         </Section>
 
