@@ -25,8 +25,9 @@ export type Post = {
 }
 
 // create a return type for the getShallowProductWithMainImage query using typescript genericts
-export type ProductWithMainImage = ReturnType<typeof getShallowProductWithMainImage>
-
+export type ProductWithMainImage = ReturnType<
+  typeof getShallowProductWithMainImage
+>
 
 export type ExpandedBooking = {
   _id: Id<'bookings'>
@@ -46,7 +47,6 @@ export type ExpandedBooking = {
   tasting_experience_id: Id<'tasting_experiences'>
   paid: boolean
 }
-
 
 export type LiqourListItem = {
   name: string
@@ -70,7 +70,6 @@ type PastackEventType =
   | 'refund.pending'
   | 'refund.processing'
   | 'refund.processed'
-
 
 export type PaystackEvent = {
   event: PastackEventType
@@ -109,5 +108,66 @@ export type PaystackEvent = {
       phone: string | null
       risk_action: string | null
     }
+  }
+}
+
+export type PaystackVerificationResponse = {
+  status: boolean
+  message: string
+  data?: {
+    id: number
+    domain: string
+    status: string
+    reference: string
+    receipt_number: string | null
+    amount: number
+    message: string | null
+    gateway_response: string
+    paid_at: string
+    created_at: string
+    channel: string
+    currency: string
+    ip_address: string
+    metadata: string | object
+    fees: number
+    customer: {
+      id: number
+      first_name: string | null
+      last_name: string | null
+      email: string
+      customer_code: string
+      phone: string | null
+      metadata: any
+      risk_action: string
+      international_format_phone: string | null
+    }
+    authorization: {
+      authorization_code: string
+      bin: string
+      last4: string
+      exp_month: string
+      exp_year: string
+      channel: string
+      card_type: string
+      bank: string
+      country_code: string
+      brand: string
+      reusable: boolean
+      signature: string
+      account_name: string | null
+    }
+    plan: any
+    split: object
+    order_id: string | null
+    paidAt: string
+    createdAt: string
+    requested_amount: number
+    pos_transaction_data: any
+    source: any
+    fees_breakdown: any
+    connect: any
+    transaction_date: string
+    plan_object: object
+    subaccount: object
   }
 }
