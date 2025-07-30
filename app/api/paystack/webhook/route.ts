@@ -10,7 +10,7 @@ import { trackPurchase } from '@/lib/analytics'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: NextRequest) {
-  const secret = process.env.PAYSTACK_SECRET
+  const secret = process.env.PAYSTACK_WEBHOOK_SECRET
   const hash = req.headers.get('x-paystack-signature')
 
   const event: PaystackEvent = await req.json()
