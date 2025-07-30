@@ -19,6 +19,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { CustomButton } from '@/components/ui'
+import { sendOrderNotificationEmail } from '@/actions/order-notification'
 
 interface CheckoutFormInputs {
   first_name: string
@@ -32,13 +33,11 @@ interface CheckoutFormInputs {
 }
 
 export default function CheckoutForm() {
-
   const shippingCosts = useQuery(api.shipping.getShippingCosts)
 
   const shippingCostInsidePE = shippingCosts?.inside_pe || 0
   const shippingCostPEOutskirts = shippingCosts?.pe_outskirts || 0
   const shippingCostRestOfSA = shippingCosts?.rest_of_sa || 0
-
 
   const {
     register,
@@ -114,6 +113,41 @@ export default function CheckoutForm() {
       })
 
       console.log('Creating order:', order)
+
+      // Send order notification email to the shop
+      try {
+        await sendOrderNotificationEmail({
+          order: {
+            _id: order,
+            _creationTime: Date.now(),
+            first_name: data.first_name,
+            last_name: data.last_name,
+            email: data.email,
+            phone: data.phone,
+            status: 'pending' as const,
+            shipping_address: {
+              street: data.street,
+              city: data.city,
+              province: data.province,
+              postal_code: data.postal_code,
+            },
+            subtotal: totalPrice,
+            shipping: shipping,
+            total: total,
+            userId: undefined,
+            payment_reference: undefined,
+            voucher_value: undefined,
+            voucher_id: undefined,
+            updated_at: undefined,
+            paid_at: undefined,
+          },
+          orderItems: orderItems,
+        })
+        console.log('Order notification email sent successfully')
+      } catch (emailError) {
+        console.error('Failed to send order notification email:', emailError)
+        // Continue with the order process even if email fails
+      }
 
       toast.success('Order placed successfully!')
       router.push(`/checkout/payment/${order}`)
@@ -317,16 +351,18 @@ export default function CheckoutForm() {
                   )}
                 </div>
               ))}
-              <Separator />              <div className='flex justify-between'>
+              <Separator />{' '}
+              <div className='flex justify-between'>
                 <span>Subtotal</span>
                 <span>{formatPrice(totalPrice)}</span>
               </div>
-              
               {hasAddressInfo && (
                 <>
                   <div className='flex justify-between'>
                     <span>Shipping</span>
-                    <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
+                    <span>
+                      {shipping === 0 ? 'Free' : formatPrice(shipping)}
+                    </span>
                   </div>
                   <Separator />
                   <div className='flex justify-between font-bold'>
@@ -335,10 +371,9 @@ export default function CheckoutForm() {
                   </div>
                 </>
               )}
-              
               {!hasAddressInfo && (
                 <>
-                  <div className='flex justify-between text-muted-foreground italic'>
+                  <div className='flex justify-between italic text-muted-foreground'>
                     <span>Shipping</span>
                     <span>Enter address for shipping cost</span>
                   </div>
